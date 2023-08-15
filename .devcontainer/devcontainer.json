@@ -1,6 +1,6 @@
 {
-	"dockerComposeFile": "../docker-compose.dev.yaml",
-	"service": "app",
+  "dockerComposeFile": "../docker-compose.dev.yaml",
+  "service": "app",
   "workspaceFolder": "/home/dev/src",
   "portsAttributes": {
     "5000": {
