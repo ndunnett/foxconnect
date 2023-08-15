@@ -1,0 +1,10 @@
+[MASTER]
+
+disable=
+    C0114, # missing-module-docstring
+    C0301, # line-too-long
+
+[FORMAT]
+
+# Maximum number of characters on a single line.
+max-line-length=119

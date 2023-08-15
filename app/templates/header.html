@@ -1,0 +1,64 @@
+<div class="row header-row">
+  <header class="p-3 text-bg-dark">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <span class="btn btn-light fw-semibold disable-hover">FoxConnect</span>
+      <ul class="nav px-2 col-12 col-lg-auto justify-content-center me-lg-auto">
+        <li><a href="{{ url_for('search') }}" class="nav-link px-2 text-white">Search</a></li>
+        <li><a href="{{ url_for('index') }}" class="nav-link px-2 text-white">Index</a></li>
+      </ul>
+{% if compound is defined or block is defined %}
+      <span>
+        <form method="post" autocomplete="off">
+          <div class="btn-group dropdown">
+            <button type="button" class="btn btn-light border dropdown-toggle dropdown-toggle-split" id="cb-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+              <span class="px-2">{% if compound is defined %}{{ compound }}{% else %}COMPOUND{% endif %}:{% if block is defined %}{{ block }}{% else %}BLOCK{% endif %}</span>
+            </button>
+            <div class="dropdown-menu cb-dropdown-box">
+              <div class="container">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" placeholder="Compound" id="compound-input" name="compound-input" {% if compound is defined %}value="{{ compound }}" {% endif %} required>
+                      <label for="compound-input">Compound</label>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" placeholder="Block" id="block-input" name="block-input" {% if block is defined %}value="{{ block }}" {% endif %} required>
+                      <label for="block-input">Block</label>
+                    </div>
+                  </div>
+                  <div class="col text-center">
+                    <h6>Options</h6>
+                  </div>
+                </div>
+                <div class="row my-2">
+                  <div class="col">
+                    <div class="list-group list-group-flush select-list overflow-auto" id="compound-list"></div>
+                  </div>
+                  <div class="col">
+                    <div class="list-group list-group-flush select-list overflow-auto" id="block-list"></div>
+                  </div>
+                  <div class="col">
+                    <div class="list-group list-group-flush">
+                      <label class="visually-hidden" for="depth-select">Depth</label>
+                      <div class="input-group input-group-sm">
+                        <div class="input-group-text">Depth</div>
+                        <select class="form-select form-select-sm" id="depth-select" name="depth-select">
+                          <option value="-1">Default</option>{% for i in range(0, 5) %}<option{% if depth==i %} selected{% endif %} value="{{ i }}">{{ i }}</option>{% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <input type="submit" formaction="{{ url_for('go_to_diagram') }}" value="Diagram" class="btn btn-light border">
+            <input type="submit" formaction="{{ url_for('go_to_detail') }}" value="Detail" class="btn btn-light border">
+          </div>
+        </form>
+      </span>
+{% endif %}
+    </div>
+  </header>
+</div>
