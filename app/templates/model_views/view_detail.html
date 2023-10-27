@@ -1,0 +1,14 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}FoxConnect | {{ obj }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col">
+    <h5>{{ obj }}</h5>
+    <ul>
+      {% for parameter, value in obj.items() %}<li>{{ parameter }} = {{ value }}</li>{% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

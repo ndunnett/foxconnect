@@ -71,6 +71,9 @@ def generate_data() -> Data:
                 for block in data.compounds[compound].values():
                     block.cp = cp
 
+    # Sort blocks alphabetically by compound then block name
+    data.blocks.sort()
+
     return data
 
 
@@ -105,7 +108,7 @@ def parse_block(lock: Lock, block: Block, data: Data) -> ():
     """Parses config from Block object and adds Connection objects to connections list"""
     connections = [
         Connection(
-            data.find_block(match.group("compound") or block.compound, match.group("block")),
+            data.get_block(match.group("compound") or block.compound, match.group("block")),
             match.group("parameter"),
             block,
             parameter
@@ -116,3 +119,29 @@ def parse_block(lock: Lock, block: Block, data: Data) -> ():
 
     with lock:
         data.connections.extend(connections)
+
+
+def define_parameters() -> list[ParameterData]:
+    return [
+        # Calculated
+        ParameterData("CP", "Host CP", "CP which hosts the block", ParameterAccessibility.NONE),
+        ParameterData("COMPOUND", "Compound", "Compound which hosts the block", ParameterAccessibility.NONE),
+
+        # AIN
+        ParameterData("NAME", "Name", "block name", ParameterAccessibility.NONE),
+        ParameterData("TYPE", "Type", "block type", ParameterAccessibility.NONE),
+        ParameterData("DESCRP", "Descriptor", "descriptor", ParameterAccessibility.NONE),
+        ParameterData("PERIOD", "Period", "block sample time", ParameterAccessibility.NONE),
+        ParameterData("PHASE", "Phase", "block execute phase", ParameterAccessibility.NONE),
+        ParameterData("LOOPID", "Loop ID", "loop identifier", ParameterAccessibility.SET),
+        ParameterData("IOMOPT", "FBM Option", "FBM input option", ParameterAccessibility.NONE),
+        ParameterData("IOM_ID", "FBM ID", "FBM identifier", ParameterAccessibility.NONE),
+        ParameterData("PNT_NO", "FBM Point", "FBM point number", ParameterAccessibility.NONE),
+        ParameterData("SCI", "SCI", "signal condition index", ParameterAccessibility.NONE),
+        ParameterData("HSCO1", "High Scale (O1)", "high scale, output 1", ParameterAccessibility.NONE),
+        ParameterData("LSCO1", "Low Scale (O1)", "low scale, output 1", ParameterAccessibility.NONE),
+        ParameterData("DELTO1", "Delta (O1)", "change delta, output 1", ParameterAccessibility.NONE),
+        ParameterData("EO1", "Units (O1)", "eng units, output 1", ParameterAccessibility.NONE),
+        ParameterData("OSV", "Variance", "output span variance", ParameterAccessibility.NONE),
+        ParameterData("EXTBLK", "Extender", "extender block", ParameterAccessibility.CON | ParameterAccessibility.SET),
+    ]

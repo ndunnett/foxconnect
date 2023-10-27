@@ -1,0 +1,39 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}FoxConnect | {{ compound }}:{{ block }}{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+<link href="{{ url_for('static', filename='style/diagram.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container-fluid min-vh-100 d-flex flex-column">
+    {% include 'layout/header.html' %}
+    <div class="row flex-grow-1">
+      <div id="diagram-frame" class="col"></div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+  <script>
+    var diagram = L.map("diagram-frame", {
+      zoomSnap: 0.5,
+      zoomDelta: 0.5,
+      maxZoom: 20,
+      attributionControl: false,
+    });
+
+    L.imageOverlay("{{ diagram_url }}", [[-0.01, -0.01], [0.01, 0.01]]).addTo(diagram);
+
+    diagram.fitBounds([[-0.008, -0.0001], [0.008, 0.0001]], {
+      maxZoom: 16,
+    });
+  </script>
+</body>
+{% endblock %}

@@ -45,7 +45,7 @@ def create_diagram(root: Block, depth: int) -> bytes:
 def create_node(block: Block, origin: bool = False) -> pydot.Node:
     """Take Block object and return a PyDot node"""
     # Visual parameters
-    con_width = 80
+    con_width = 60
     mid_width = 60
     origin_colour = "#ffd84d"
     other_colour = "#cccccc"
@@ -55,7 +55,6 @@ def create_node(block: Block, origin: bool = False) -> pydot.Node:
     title = str(block)
     blank_cell = f'<td bgcolor="#ffffff00" width="{con_width}" fixedsize="true" href="" title="{title}"></td>'
     mid_cell = f'<td bgcolor="#ffffff00" width="{mid_width}" fixedsize="true" href="" title="{title}"></td>'
-    new_line = "\n"
 
     def parameter_cells(parameters: list[str]) -> list[str]:
         """Returns list of HTML table cells for given parameters"""
@@ -81,9 +80,11 @@ def create_node(block: Block, origin: bool = False) -> pydot.Node:
 
     # Build table
     label = f"""<<table border="0" cellpadding="2" cellspacing="6" width="{total_width}" fixedsize="true">
-    {title_row}{new_line + desc_row if block.descrp else ""}
-    {type_row}{''.join(parameter_rows)}
-</table>>"""
+        {title_row}
+        {desc_row if block.descrp else ""}
+        {type_row}
+        {''.join(parameter_rows)}
+    </table>>"""
 
     # Create node
     fillcolor = origin_colour if origin else other_colour

@@ -1,13 +1,15 @@
 from __future__ import annotations
 from itertools import count
+import re
+from enum import IntFlag
 
 
 class Data:
     """Object to hold all Block objects, compound structures, and CP structures"""
     blocks: list[Block]
     connections: list[Connection]
-    compounds = dict[str, dict[str, "Block"]]
-    cps = dict[str, list[str]]
+    compounds: dict[str, dict[str, "Block"]]
+    cps: dict[str, list[str]]
 
     def __init__(self):
         self.blocks = []
@@ -15,36 +17,52 @@ class Data:
         self.compounds = dict()
         self.cps = dict()
 
-    def find_block(self, compound, name) -> Block | None:
+    def get_block(self, compound: str, name: str) -> Block | None:
         """Find block that matches compound and name"""
         return self.compounds[compound][name] or None
 
-    def get_structure(self) -> dict[str, list[Block]]:
-        """Return dictionary of compounds, each key containing a list of block names"""
-        structure = dict()
+    def query_blocks(self, query: dict[str, str]) -> list[Block]:
+        """Return list of blocks that match regex patterns"""
+        def f(b):
+            return all(
+                (k in b or k in getattr(b, "__dict__")) and re.search(v, getattr(b, k), re.IGNORECASE)
+                for k, v in query.items()
+            )
 
-        for block in self.blocks:
-            structure.setdefault(block.compound, []).append(block.name)
-
-        return structure
+        return filter(f, self.blocks)
 
 
-class UniqueHashable:
-    """Base class for unique hashable objects"""
+class ParameterAccessibility(IntFlag):
+    NONE = 0
+    CON = 1
+    SET = 2
+
+
+class ParameterData:
+    """Holds metadata for parameter types"""
+    name: str
+    title: str
+    description: str
+    accessibility: ParameterAccessibility
+
+    def __init__(self, name, title, description, accessibility):
+        self.name = name
+        self.title = title
+        self.description = description
+        self.accessibility = accessibility
+
+    def dict(self) -> dict[str, str]:
+        return {
+            "title": self.title,
+            "description": self.description,
+            "accessibility": int(self.accessibility)
+        }
+
+
+class Block:
+    """Represents configured block within the DCS"""
     id_iter = count()
 
-    def __eq__(self, other):
-        return issubclass(type(other), UniqueHashable) and self.id == other.id
-
-    def __lt__(self, other):
-        return repr(self) < repr(other)
-
-    def __hash__(self):
-        return self.id
-
-
-class Block(UniqueHashable):
-    """Represents configured block within the DCS"""
     id: int
     config: dict[str, str]
     connections: set[Connection]
@@ -60,13 +78,22 @@ class Block(UniqueHashable):
         else:
             self.compound, self.name = config["NAME"].split(":")
 
-        self.id = next(UniqueHashable.id_iter)
+        self.id = next(Block.id_iter)
         self.config = config
         self.connections = set()
 
     def __repr__(self):
         """<compound>:<block>"""
         return f"{self.compound}:{self.name}"
+
+    def __eq__(self, other):
+        return issubclass(type(other), Block) and self.id == other.id
+
+    def __lt__(self, other):
+        return repr(self) < repr(other)
+
+    def __hash__(self):
+        return self.id
 
     def __contains__(self, name):
         """Tests if config contains name"""
@@ -84,8 +111,10 @@ class Block(UniqueHashable):
         return self.config.items()
 
 
-class Connection(UniqueHashable):
+class Connection:
     """Represents textual connection between two blocks"""
+    id_iter = count()
+
     id: int
     source_block: Block
     source_parameter: str
@@ -94,7 +123,7 @@ class Connection(UniqueHashable):
 
     def __init__(self, source_block: Block, source_parameter: str, sink_block: Block, sink_parameter: str):
         """Records source and sink for connection"""
-        self.id = next(UniqueHashable.id_iter)
+        self.id = next(Connection.id_iter)
         self.source_block = source_block
         self.source_parameter = source_parameter
         self.sink_block = sink_block
@@ -103,3 +132,12 @@ class Connection(UniqueHashable):
     def __repr__(self):
         """<compound>:<block>.<parameter> -> <compound>:<block>.<parameter>"""
         return f"{repr(self.source_block)}.{self.source_parameter} -> {repr(self.sink_block)}.{self.sink_parameter}"
+
+    def __eq__(self, other):
+        return issubclass(type(other), Connection) and self.id == other.id
+
+    def __lt__(self, other):
+        return repr(self) < repr(other)
+
+    def __hash__(self):
+        return self.id
