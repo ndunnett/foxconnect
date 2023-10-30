@@ -8,9 +8,9 @@ from os import cpu_count
 
 
 # Path definitions
-BASE_PATH = Path(__file__).resolve().parent.parent.parent
+BASE_PATH = Path(__file__).resolve().parent.parent
 ICC_GIT_PATH = BASE_PATH.parent / "icc_git_input"
-DATA_PATH = BASE_PATH / "app" / "backend" / "data"
+DATA_PATH = BASE_PATH / "data"
 PICKLE_PATH = DATA_PATH / "data.pickle"
 
 # Globs to find config files and compound order files

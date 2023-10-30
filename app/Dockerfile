@@ -49,3 +49,5 @@ RUN chmod +x entrypoint.sh
 ENTRYPOINT ["/home/dev/src/app/entrypoint.sh"]
 
 USER dev
+WORKDIR /home/dev/src
+CMD ["sleep", "infinity"]

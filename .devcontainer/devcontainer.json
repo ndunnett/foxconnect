@@ -1,12 +1,8 @@
 {
-  "dockerComposeFile": "../docker-compose.dev.yaml",
+  "dockerComposeFile": "../docker-compose.yaml",
+  "containerEnv": { "DEVCONTAINER": "1" },
   "service": "app",
   "workspaceFolder": "/home/dev/src",
-  "portsAttributes": {
-    "5000": {
-      "label": "app"
-    }
-  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -14,6 +10,5 @@
         "samuelcolvin.jinjahtml"
       ]
     }
-  },
-  "forwardPorts": [5000]
+  }
 }

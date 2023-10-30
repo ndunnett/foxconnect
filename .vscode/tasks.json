@@ -1,0 +1,27 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "FoxConnect: run debug server",
+            "type": "shell",
+            "command": "flask --debug --app $APP_OBJECT run --host=$APP_HOST",
+            "problemMatcher": [],
+            "presentation": {
+              "reveal": "always",
+              "panel": "new",
+              "clear": true
+            }
+        },
+        {
+            "label": "FoxConnect: run waitress server",
+            "type": "shell",
+            "command": "waitress-serve --host=$APP_HOST --port=$APP_PORT $APP_OBJECT",
+            "problemMatcher": [],
+            "presentation": {
+              "reveal": "always",
+              "panel": "new",
+              "clear": true
+            }
+        }
+    ]
+}

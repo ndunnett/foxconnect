@@ -1,9 +1,8 @@
 from io import BytesIO
 from flask import Flask, render_template, send_file, request, url_for, redirect, jsonify
-from backend.graphing import create_diagram
-from backend.utilities import is_number, to_number
-from backend.data import initialise_data, define_parameters
-from pprint import pprint
+from .graphing import create_diagram
+from .utilities import is_number, to_number
+from .data import initialise_data, define_parameters
 
 
 # Data object to contain block and connection objects
