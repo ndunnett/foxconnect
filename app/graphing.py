@@ -1,5 +1,5 @@
 import pydot
-from .models import *
+from app.models import *
 
 
 def create_graph(root: Block, depth: int) -> tuple[list[Block], list[Connection]]:

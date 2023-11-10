@@ -1,17 +1,17 @@
-{% extends 'layout/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}FoxConnect | {{ compound }}:{{ block }}{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
   integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
-<link href="{{ url_for('static', filename='style/diagram.css') }}" rel="stylesheet">
+<link href="{{ url_for('blocks.static', filename='diagram.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
 <body>
   <div class="container-fluid min-vh-100 d-flex flex-column">
-    {% include 'layout/header.html' %}
+    {% include 'header.html' %}
     <div class="row flex-grow-1">
       <div id="diagram-frame" class="col"></div>
     </div>

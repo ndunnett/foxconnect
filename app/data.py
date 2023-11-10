@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 import pickle
-from .models import *
+from app.models import *
 from concurrent.futures import ThreadPoolExecutor
 from threading import Lock
 from os import cpu_count
@@ -124,8 +124,7 @@ def parse_block(lock: Lock, block: Block, data: Data) -> ():
 def define_parameters() -> list[ParameterData]:
     return [
         # Calculated
-        ParameterData("CP", "Host CP", "CP which hosts the block", ParameterAccessibility.NONE),
-        ParameterData("COMPOUND", "Compound", "Compound which hosts the block", ParameterAccessibility.NONE),
+        ParameterData("CP", "CP", "CP which hosts the block", ParameterAccessibility.NONE),
 
         # AIN
         ParameterData("NAME", "Name", "block name", ParameterAccessibility.NONE),
@@ -134,9 +133,8 @@ def define_parameters() -> list[ParameterData]:
         ParameterData("PERIOD", "Period", "block sample time", ParameterAccessibility.NONE),
         ParameterData("PHASE", "Phase", "block execute phase", ParameterAccessibility.NONE),
         ParameterData("LOOPID", "Loop ID", "loop identifier", ParameterAccessibility.SET),
-        ParameterData("IOMOPT", "FBM Option", "FBM input option", ParameterAccessibility.NONE),
-        ParameterData("IOM_ID", "FBM ID", "FBM identifier", ParameterAccessibility.NONE),
-        ParameterData("PNT_NO", "FBM Point", "FBM point number", ParameterAccessibility.NONE),
+        ParameterData("IOM_ID", "FBM", "FBM identifier", ParameterAccessibility.NONE),
+        ParameterData("PNT_NO", "Point", "FBM point number", ParameterAccessibility.NONE),
         ParameterData("SCI", "SCI", "signal condition index", ParameterAccessibility.NONE),
         ParameterData("HSCO1", "High Scale (O1)", "high scale, output 1", ParameterAccessibility.NONE),
         ParameterData("LSCO1", "Low Scale (O1)", "low scale, output 1", ParameterAccessibility.NONE),

@@ -1,9 +1,9 @@
-{% extends 'layout/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}FoxConnect | Search{% endblock %}
 
 {% block head %}
-<link href="{{ url_for('static', filename='style/search.css') }}" rel="stylesheet">
+<link href="{{ url_for('blocks.static', filename='search.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -64,5 +64,5 @@
 
 {% block tail %}
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-<script src="{{ url_for('static', filename='script/search.js') }}"></script>
+<script src="{{ url_for('blocks.static', filename='search.js') }}"></script>
 {% endblock %}

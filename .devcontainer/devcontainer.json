@@ -7,6 +7,7 @@
     "vscode": {
       "extensions": [
         "ms-python.python",
+        "ms-python.autopep8",
         "samuelcolvin.jinjahtml"
       ]
     }
