@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}FoxConnect{% endblock %}
+
+{% block head %}
+<link href="{{ url_for('main.static', filename='home.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body_class %}"d-flex h-100 text-center"{% endblock %}
+
+{% block body %}
+<div class="dropdown position-fixed top-0 end-0 mt-3 me-3">
+  <button class="nav-link dropdown-toggle" id="bd-theme" type="button" data-bs-auto-close="outside"
+    data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">
+    <i class="bi-circle-half" id="bd-theme-text"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li class="dropdown-item" data-bs-theme-value="light" aria-pressed="false">Light</li>
+    <li class="dropdown-item" data-bs-theme-value="auto" aria-pressed="false">Auto</li>
+    <li class="dropdown-item" data-bs-theme-value="dark" aria-pressed="false">Dark</li>
+  </ul>
+</div>
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <div class="card mt-auto mb-auto bg-body-tertiary rounded-3" data-bs-theme="dark">
+    <div class="card-body">
+      <div class="navbar-brand mt-3 mb-2 disable-hover">
+        <span class="btn btn-light btn-lg fw-semibold">FoxConnect</span>
+      </div>
+      <nav class="navbar navbar-expand-lg justify-content-center">
+        <ul class="navbar-nav">
+          {% for page, title in navbar_links.items() %}
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{{ url_for(page) }}">
+              {{ title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock %}
