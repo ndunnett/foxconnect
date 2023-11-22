@@ -1,37 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %}FoxConnect | {{ compound }}:{{ block }}{% endblock %}
+{% block title %}FoxConnect | {{ obj.compound }}:{{ obj.name }}{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-  integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+<script src="{{ url_for('d3-graphviz.static', filename='d3.js') }}"></script>
+<script src="{{ url_for('d3-graphviz.static', filename='graphviz.umd.js') }}" type="javascript/worker"></script>
+<script src="{{ url_for('d3-graphviz.static', filename='d3-graphviz.js') }}"></script>
 <link href="{{ url_for('blocks.static', filename='diagram.css') }}" rel="stylesheet">
 {% endblock %}
 
+{% block body_class %}"d-flex h-100"{% endblock %}
+
 {% block body %}
-<div class="container-fluid min-vh-100 d-flex flex-column">
-  {% include 'header.html' %}
-  <div class="row flex-grow-1">
-    <div id="diagram-frame" class="col"></div>
+<input type="hidden" id="compound" name="compound" value="{{ obj.compound }}">
+<input type="hidden" id="block" name="block" value="{{ obj.name }}">
+<input type="hidden" id="depth" name="depth" value="{{ depth }}">
+<div class="vstack gap-0">
+  <div>{% include 'header.html' %}</div>
+  <div id="graph" class="h-100 text-center">
   </div>
 </div>
 {% endblock %}
 
 {% block tail %}
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-  integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-<script>
-  var diagram = L.map("diagram-frame", {
-    zoomSnap: 0.5,
-    zoomDelta: 0.5,
-    maxZoom: 20,
-    attributionControl: false,
-  });
-
-  L.imageOverlay("{{ diagram_url }}", [[-0.01, -0.01], [0.01, 0.01]]).addTo(diagram);
-
-  diagram.fitBounds([[-0.008, -0.0001], [0.008, 0.0001]], {
-    maxZoom: 16,
-  });
-</script>
+<script src="{{ url_for('blocks.static', filename='diagram.js') }}"></script>
 {% endblock %}

@@ -7,7 +7,7 @@ def create_app():
     app.data = initialise_data()
     context = {"navbar_links": {}}
 
-    for blueprint in ["main", "blocks", "api"]:
+    for blueprint in ["main", "blocks", "api", "d3-graphviz"]:
         pkg = __import__(f"app.{blueprint}", globals(), locals(), ["bp", "navbar"], 0)
         app.register_blueprint(pkg.bp)
 

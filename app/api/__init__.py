@@ -1,7 +1,8 @@
-from flask import Blueprint, request, url_for, jsonify, current_app
-from app.graphing import create_diagram
-from app.utilities import serve_svg, to_number
+from flask import Blueprint, request, url_for, jsonify, current_app, make_response
+from app.graphing import create_dot
+from app.utilities import to_number
 from app.data import define_parameters
+from app.models import *
 
 
 bp = Blueprint("api", __name__, url_prefix="/api")
@@ -26,7 +27,11 @@ def parameters():
     return jsonify({p.name: p.dict() for p in define_parameters()})
 
 
-@bp.route("/diagram/<compound>__<block>__depth-<depth>.svg", methods=("GET", "HEAD"))
-def make_diagram(compound: str, block: str, depth: str):
-    """Make diagram and render to SVG using GraphViz and PyDot"""
-    return serve_svg(create_diagram(current_app.data.get_block(compound, block), to_number(depth)))
+@bp.route("/dot/<compound>__<block>__depth-<depth>")
+def dot(compound: str, block: str, depth: str):
+    """Use PyDot to construct diagram in DOT format and serve as plain text"""
+    obj = current_app.data.get_block(compound, block)
+    depth = max(0, min(5, to_number(depth)))
+    response = make_response(create_dot(obj, depth), 200)
+    response.mimetype = "text/plain"
+    return response

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, url_for, current_app
+from flask import Blueprint, render_template, request, current_app
 
 
 bp = Blueprint("blocks", __name__, template_folder="templates", static_folder="static", url_prefix="/block")
@@ -23,9 +23,7 @@ def view_detail(compound: str, block: str):
 
 @bp.route("/<compound>/<block>/diagram")
 def view_diagram(compound: str, block: str):
-    """View diagram using leaflet"""
-    compound = compound.upper()
-    block = block.upper()
+    """View diagram using d3-graphviz to render .svg in WebAssembly"""
+    obj = current_app.data.get_block(compound, block)
     depth = max(0, min(5, request.args.get("depth", default=1, type=int)))
-    diagram_url = url_for("api.make_diagram", compound=compound, block=block, depth=depth)
-    return render_template("view_diagram.html", compound=compound, block=block, depth=depth, diagram_url=diagram_url)
+    return render_template("view_diagram.html", obj=obj, depth=depth)

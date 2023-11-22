@@ -1,6 +1,4 @@
 import sys
-from io import BytesIO
-from flask import send_file
 
 
 class RecursionDepth:
@@ -15,14 +13,6 @@ class RecursionDepth:
 
     def __exit__(self):
         sys.setrecursionlimit(self.original_limit)
-
-
-def serve_svg(content: bytes):
-    """Takes bytes and serves as SVG XML"""
-    svg_io = BytesIO()
-    svg_io.write(content)
-    svg_io.seek(0)
-    return send_file(svg_io, mimetype="image/svg+xml")
 
 
 def to_number(x):

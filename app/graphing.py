@@ -2,7 +2,7 @@ import pydot
 from app.models import *
 
 
-def create_graph(root: Block, depth: int) -> tuple[list[Block], list[Connection]]:
+def create_graph(root: Block, depth: int) -> tuple[set[Block], set[Connection]]:
     """Use breadth first search to graph out related Block and Connection objects to a specified depth"""
     queue = {root}
     blocks = set()
@@ -21,8 +21,8 @@ def create_graph(root: Block, depth: int) -> tuple[list[Block], list[Connection]
     return (blocks, connections)
 
 
-def create_diagram(root: Block, depth: int) -> bytes:
-    """Create a diagram in SVG format using Graphviz/PyDot based on a graph of Block objects"""
+def create_dot(root: Block, depth: int) -> str:
+    """Create a diagram in DOT format using PyDot based on a graph of Block objects"""
     (blocks, connections) = create_graph(root, depth)
     diagram = pydot.Dot("pydot", graph_type="graph", rankdir="LR", ranksep=3)
 
@@ -39,7 +39,7 @@ def create_diagram(root: Block, depth: int) -> bytes:
     for edge in edge:
         diagram.add_edge(edge)
 
-    return diagram.create_svg()
+    return diagram.to_string()
 
 
 def create_node(block: Block, origin: bool = False) -> pydot.Node:
