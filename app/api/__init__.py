@@ -29,7 +29,7 @@ def parameters():
 
 @bp.route("/dot/<compound>__<block>__depth-<depth>")
 def dot(compound: str, block: str, depth: str):
-    """Use PyDot to construct diagram in DOT format and serve as plain text"""
+    """Construct diagram in DOT format and serve as plain text"""
     obj = current_app.data.get_block(compound, block)
     depth = max(0, min(5, to_number(depth)))
     response = make_response(create_dot(obj, depth), 200)
