@@ -38,7 +38,7 @@ def create_dot(root: Block, depth: int) -> str:
     }
 
     (blocks, connections) = create_graph(root, depth)
-    diagram = DotGraph(rankdir="LR", ranksep=3, bgcolor="transparent")
+    diagram = DotGraph(f"{root.compound}__{root.name}__depth-{depth}", rankdir="LR", ranksep=3, bgcolor="transparent")
 
     for block in blocks:
         sourced_p = sorted(set(c.source_parameter for c in block.connections if c.source_block == block))
@@ -110,21 +110,18 @@ class DotGraph:
         self.edges.append(DotChild(f"{src} -- {dst}", **attrs))
 
     def to_string(self) -> str:
-        output = []
-
-        if self.strict:
-            output.append("strict ")
-
-        output.append(f"{self.graph_type} {self.name} " + "{\n")
+        output = [f'{"strict " if self.strict else ""}{self.graph_type} "{self.name}" ' + "{"]
 
         for k, v in sorted(self.attributes.items()):
-            output.append(f"{k}={quote_if_necessary(v)};\n")
+            output.append(f"    {k}={quote_if_necessary(v)};")
+
+        output.append("")
 
         for node in self.nodes:
-            output.append(node.to_string() + "\n")
+            output.append(f"    {node.to_string().replace("\n", "\n    ")}\n")
 
         for edge in self.edges:
-            output.append(edge.to_string() + "\n")
+            output.append(f"    {edge.to_string()}")
 
         output.append("}\n")
-        return "".join(output)
+        return "\n".join(output)

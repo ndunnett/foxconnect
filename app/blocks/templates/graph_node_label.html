@@ -1,31 +1,34 @@
 {%- macro parameter_cell(p) -%}
     <td bgcolor="{{ appearance.parameter_colour }}" border="1" width="{{ appearance.con_width }}" fixedsize="true" title="{{ block }}.{{ p }}" port="{{ p }}"><font point-size="{{ appearance.parameter_size }}">.{{ p }}</font></td>
 {%- endmacro -%}
+
 {%- macro blank_cell() -%}
     <td bgcolor="transparent" width="{{ appearance.con_width }}" fixedsize="true"></td>
 {%- endmacro -%}
+
 {%- macro mid_cell() -%}
     <td bgcolor="transparent" width="{{ appearance.mid_width }}" fixedsize="true"></td>
 {%- endmacro -%}
-<<table border="0" cellpadding="{{ appearance.cell_padding }}" cellspacing="{{ appearance.cell_spacing }}" width="{{ appearance.con_width * 2 + appearance.mid_width }}" fixedsize="true">
-    <tr><td cellpadding="0" colspan="3" title="{{ block }}"><font point-size="{{ appearance.title_size }}"><b>{{ block }}</b></font></td></tr>
-    {% if block.descrp -%}
+
+    <<table border="0" cellpadding="{{ appearance.cell_padding }}" cellspacing="{{ appearance.cell_spacing }}" width="{{ appearance.con_width * 2 + appearance.mid_width }}" fixedsize="true">
+        <tr><td cellpadding="0" colspan="3"><font point-size="{{ appearance.title_size }}"><b>{{ block }}</b></font></td></tr>
+        {%- if block.descrp %}
         <tr><td cellpadding="0" colspan="3"><font point-size="{{ appearance.descrp_size }}">{{ block.descrp }}</font></td></tr>
-    {%- endif %}
-    <tr><td cellpadding="0" colspan="3"><font point-size="{{ appearance.type_size }}"><i>TYPE = {{ block.type }}</i></font></td></tr>
-    {% for i in range(max(len(sinked_p), len(sourced_p))) -%}
-    <tr>
-        {% if i >= len(sinked_p) -%}
-            {{ blank_cell() }}
-        {%- else -%}
-            {{ parameter_cell(sinked_p[i]) }}
         {%- endif %}
-        {{ mid_cell() }}
-        {% if i >= len(sourced_p) -%}
-            {{ blank_cell() }}
-        {%- else -%}
-            {{ parameter_cell(sourced_p[i]) }}
-        {%- endif %}
-    </tr>
-    {%- endfor %}
-</table>>
+        <tr><td cellpadding="0" colspan="3"><font point-size="{{ appearance.type_size }}"><i>TYPE = {{ block.type }}</i></font></td></tr>
+        {%- for i in range(max(len(sinked_p), len(sourced_p))) %}
+        <tr>
+            {% if i >= len(sinked_p) -%}
+                {{ blank_cell() }}
+            {%- else -%}
+                {{ parameter_cell(sinked_p[i]) }}
+            {%- endif %}
+            {{ mid_cell() }}
+            {% if i >= len(sourced_p) -%}
+                {{ blank_cell() }}
+            {%- else -%}
+                {{ parameter_cell(sourced_p[i]) }}
+            {%- endif %}
+        </tr>
+        {%- endfor %}
+    </table>>
