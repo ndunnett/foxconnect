@@ -1,5 +1,5 @@
 from flask import Blueprint, request, url_for, jsonify, current_app, make_response
-from app.graphing import create_dot
+from app.blocks.graphing import create_dot
 from app.utilities import to_number
 from app.data import define_parameters
 from app.models import *
