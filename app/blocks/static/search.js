@@ -26,33 +26,40 @@
     let columns = [];
 
     document.addEventListener("DOMContentLoaded", () => {
-        // get settings locally stored in browser
         getLocalSettings();
-
-        // add event listeners
+        parameters = getParameterData();
         document.getElementById(addParameterId).addEventListener("click", addParameter);
-
-        // update columns will load all data
         updateColumns();
     }, false);
 
-    function getLocalSettings() {
-        const localSettings = JSON.parse(localStorage.getItem("columns"));
-        columns = localSettings ? localSettings : ["compound", "name", "type", "cp"];
+    async function getParameterData() {
+        return await fetch(paramEndpoint).then(r => r.json());
     }
 
-    function updateColumns() {
-        // fetch parameters from API, create columns and then call update data
-        fetch(paramEndpoint).then(r => r.json()).then(d => {
-            parameters = d;
-            columns.forEach(c => document.getElementById(filtersId).appendChild(createColumn(c)));
-            document.getElementById(filtersId).appendChild(createTableButtons());
-            document.getElementById(settingsApplyId).addEventListener("click", applySettings);
-            document.getElementById(settingsCancelId).addEventListener("click", cancelSettings);
-        }).then(() => {
-            updateSettings();
-            updateData();
-        });
+    function getSearchArgs() {
+        const columnsLS = JSON.parse(localStorage.getItem("columns"));
+        const columnsArg = document.getElementById("columns").value.split(',');
+
+        if (columnsArg.length > 0) {
+            columns = columnsArg;
+        } else if (columnsLS.length > 0) {
+            columns = columnsLS;
+        } else {
+            columns = ["type", "cp"];
+        }
+    }
+
+    function getLocalSettings() {
+        const localSettings = JSON.parse(localStorage.getItem("columns"));
+        columns = localSettings ? localSettings : ["type", "cp"];
+    }
+
+    async function updateColumns() {
+        document.getElementById(filtersId).replaceChildren(createFilterRow());
+        document.getElementById(settingsApplyId).addEventListener("click", applySettings);
+        document.getElementById(settingsCancelId).addEventListener("click", cancelSettings);
+        updateSettings();
+        updateData();
     }
 
     function updateSettings() {
@@ -127,29 +134,110 @@
         return p.toUpperCase() in parameters ? parameters[p.toUpperCase()].description : "";
     }
 
-    function updateData() {
-        // fetch data from API, then call update page
-        const query = Object.fromEntries(columns.map(c => [c, document.getElementById("block_" + c).value]));
+    async function getData() {
+        const query = Object.fromEntries(["compound", "name", ...columns].map(c => {
+            return [c, document.getElementById("block_" + c).value];
+        }));
 
-        fetch(queryEndpoint, {
+        return fetch(queryEndpoint, {
             method: "POST",
             cache: "no-cache",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(query)
-        }).then(r => r.json()).then(d => {
-            data = d;
-            document.getElementById(pageNumberId).value = 1;
-            updatePage();
-            document.getElementById(spinnerId).style.display = "none";
-        });
+        }).then(r => r.json());
     }
 
-    function updatePage() {
+    async function updateData() {
+        data = await getData();
+        document.getElementById(pageNumberId).value = 1;
+        updateResults();
+        document.getElementById(spinnerId).style.display = "none";
+    }
+
+    function createFilterRow() {
+        let row = document.createElement("tr");
+        let compoundInput = createFloatingLabelInput("block_compound", getParameterTitle("compound"));
+        let nameInput = createFloatingLabelInput("block_name", getParameterTitle("name"));
+        let span = document.createElement("span");
+        span.className = "input-group-text";
+        span.textContent = ":";
+
+        let cnDiv = document.createElement("div");
+        cnDiv.className = "input-group";
+        cnDiv.appendChild(compoundInput);
+        cnDiv.appendChild(span);
+        cnDiv.appendChild(nameInput);
+
+        let cnColumn = document.createElement("td");
+        cnColumn.setAttribute("style", "max-width: 200px;");
+        cnColumn.appendChild(cnDiv);
+        row.appendChild(cnColumn);
+
+        columns.forEach(c => {
+            let column = document.createElement("td");
+            column.appendChild(createFloatingLabelInput("block_" + c, getParameterTitle(c)));
+            row.appendChild(column);
+        });
+
+        row.childNodes.forEach(n => n.addEventListener("keyup", () => {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(updateData, typingTime);
+        }));
+
+        row.appendChild(createTableButtons());
+        return row;
+    }
+
+    function createFloatingLabelInput(id, title, placeholder="") {
+        let inputComp = document.createElement("input");
+        inputComp.setAttribute("id", id);
+        inputComp.setAttribute("type", "text");
+        inputComp.setAttribute("class", "form-control");
+        inputComp.setAttribute("placeholder", placeholder);
+
+        let label = document.createElement("label");
+        label.setAttribute("for", id);
+        label.textContent = title;
+
+        let div = document.createElement("div");
+        div.setAttribute("class", "form-floating");
+        div.appendChild(inputComp);
+        div.appendChild(label);
+        return div;
+    }
+
+    function createTableButtons() {
+        let link_button = document.createElement("button");
+        link_button.setAttribute("class", "btn btn-dark btn-lg");
+        link_button.setAttribute("type", "button");
+
+        let link_icon = document.createElement("i");
+        link_icon.setAttribute("class", "bi bi-link");
+        link_button.appendChild(link_icon);
+
+        let cog_button = document.createElement("button");
+        cog_button.setAttribute("class", "btn btn-dark btn-lg");
+        cog_button.setAttribute("type", "button");
+        cog_button.setAttribute("data-bs-toggle", "modal");
+        cog_button.setAttribute("data-bs-target", "#" + settingsId);
+
+        let cog_icon = document.createElement("i");
+        cog_icon.setAttribute("class", "bi bi-gear-fill");
+        cog_button.appendChild(cog_icon);
+
+        let column = document.createElement("td");
+        column.setAttribute("class", "align-middle text-end");
+        column.appendChild(link_button);
+        column.appendChild(cog_button);
+        return column;
+    }
+
+    async function updateResults() {
         const pageNumber = document.getElementById(pageNumberId).value * 1;
         const linesPerPage = document.getElementById(pageLinesId).value * 1;
         const pageStartIndex = (pageNumber - 1) * linesPerPage;
         const pageData = data.slice(pageStartIndex, pageStartIndex + linesPerPage + 1)
-        const pages = Math.ceil(data.length / linesPerPage);
+        const totalPages = Math.ceil(data.length / linesPerPage);
 
         // update results
         let resultsElement = document.getElementById(resultsId);
@@ -160,82 +248,16 @@
         });
 
         // update total
-        let totalElement = document.getElementById(totalId);
-        totalElement.textContent = data.length == 1 ? "1 result" : data.length.toLocaleString() + " results";
+        document.getElementById(totalId).textContent = data.length == 1 ? "1 result" : data.length.toLocaleString() + " results";
 
         // update pagination
-        let paginationElement = document.getElementById(paginationId);
-        paginationElement.innerHTML = "";
-
-        // set indices; include first and last page, then current page +/- 2
-        let paginationIndices = new Set([
-            1, pageNumber, pages,
-            pageNumber - 1, pageNumber + 1,
-            pageNumber - 2, pageNumber + 2
-        ]);
-
-        // sort and filter indices
-        paginationIndices = [...paginationIndices].filter((i) => {
-            return i > 0 && i <= pages;
-        }).sort((a, b) => {
-            return (a * 1) > (b * 1) ? 1 : (a == b ? 0 : -1);
-        });
-
-        // add back button
-        paginationElement.appendChild(createPaginationItem(pageNumber - 1, false, pageNumber == 1, "←"));
-
-        for (let i = 0; i < paginationIndices.length; i++) {
-            // add disabled ... button if there are gaps in page numbers
-            if (paginationIndices[i] - paginationIndices[i - 1] > 1) {
-                paginationElement.appendChild(createPaginationItem(0, false, true, "..."));
-            }
-
-            // add page number button
-            paginationElement.appendChild(createPaginationItem(paginationIndices[i], pageNumber == paginationIndices[i], false));
-        }
-
-        // add forward button
-        paginationElement.appendChild(createPaginationItem(pageNumber + 1, false, pageNumber >= pages, "→"));
-    }
-
-    function createColumn(c) {
-        // create column header for given parameter and add event listener to update data
-        // <td>
-        //   <div class="form-floating">
-        //     <input id="block_{parameter}" type="text" class="form-control" placeholder="">
-        //     <label for="block_{parameter}">{title}</label>
-        //   </div>
-        // </td>
-
-        let input = document.createElement("input");
-        input.setAttribute("id", "block_" + c);
-        input.setAttribute("type", "text");
-        input.setAttribute("class", "form-control");
-        input.setAttribute("placeholder", "");
-
-        let label = document.createElement("label");
-        label.setAttribute("for", "block_" + c);
-        label.textContent = getParameterTitle(c);
-
-        let div = document.createElement("div");
-        div.setAttribute("class", "form-floating");
-        div.appendChild(input);
-        div.appendChild(label);
-
-        let column = document.createElement("td");
-        column.appendChild(div);
-        column.addEventListener("keyup", () => {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(updateData, typingTime);
-        });
-
-        return column;
+        document.getElementById(paginationId).replaceChildren(createPaginationList(pageNumber, totalPages));
     }
 
     function createResultRow(result) {
         // create row for given data point and add button links to diagram/detail
         // <tr>
-        //   {for each data point}<td>{data}</td>{endfor}
+        //   {data columns}
         //   <td>
         //     <div class="btn-group btn-group-sm float-end" role="group" aria-label="Links">
         //       <a href="{diagram_url}" role="button" class="btn btn-outline-secondary btn-results">Diagram</a>
@@ -246,9 +268,13 @@
 
         let row = document.createElement("tr");
 
+        let nameColumn = document.createElement("td");
+        nameColumn.textContent = result["compound"] + ":" + result["name"];
+        row.appendChild(nameColumn);
+
         columns.forEach((c) => {
             let column = document.createElement("td");
-            column.textContent = result[c]
+            column.textContent = result[c];
             row.appendChild(column);
         });
 
@@ -278,6 +304,48 @@
         return row;
     }
 
+    function createPaginationList(pageNumber, totalPages) {
+        // create pagination list for given current page number and total number of pages
+        // <ul class="pagination pagination-sm justify-content-center">
+        //   {list items}
+        // </ul>
+
+        let list = document.createElement("ul");
+        list.className = "pagination pagination-sm justify-content-center";
+
+        // set indices; include first and last page, then current page +/- 2
+        let paginationIndices = new Set([
+            1, pageNumber, totalPages,
+            pageNumber - 1, pageNumber + 1,
+            pageNumber - 2, pageNumber + 2
+        ]);
+
+        // sort and filter indices
+        paginationIndices = [...paginationIndices].filter((i) => {
+            return i > 0 && i <= totalPages;
+        }).sort((a, b) => {
+            return (a * 1) > (b * 1) ? 1 : (a == b ? 0 : -1);
+        });
+
+        // add back button
+        list.appendChild(createPaginationItem(pageNumber - 1, false, pageNumber == 1, "←"));
+
+        // add page number buttons
+        for (let i = 0; i < paginationIndices.length; i++) {
+            // add disabled ... button if there are gaps in page numbers
+            if (paginationIndices[i] - paginationIndices[i - 1] > 1) {
+                list.appendChild(createPaginationItem(0, false, true, "..."));
+            }
+
+            list.appendChild(createPaginationItem(paginationIndices[i], pageNumber == paginationIndices[i], false));
+        }
+
+        // add forward button
+        list.appendChild(createPaginationItem(pageNumber + 1, false, pageNumber >= totalPages, "→"));
+
+        return list;
+    }
+
     function createPaginationItem(number, active = false, disabled = false, label = "") {
         // create pagination item for given page number (optional title) and add event listener to update page
         // <li class="page-item {active/disabled}">
@@ -298,36 +366,10 @@
         if (!disabled && !active) {
             item.addEventListener("click", () => {
                 document.getElementById(pageNumberId).value = number;
-                updatePage();
+                updateResults();
             });
         }
 
         return item;
-    }
-
-    function createTableButtons() {
-        let link_button = document.createElement("button");
-        link_button.setAttribute("class", "btn btn-dark btn-lg");
-        link_button.setAttribute("type", "button");
-
-        let link_icon = document.createElement("i");
-        link_icon.setAttribute("class", "bi bi-link");
-        link_button.appendChild(link_icon);
-
-        let cog_button = document.createElement("button");
-        cog_button.setAttribute("class", "btn btn-dark btn-lg");
-        cog_button.setAttribute("type", "button");
-        cog_button.setAttribute("data-bs-toggle", "modal");
-        cog_button.setAttribute("data-bs-target", "#" + settingsId);
-
-        let cog_icon = document.createElement("i");
-        cog_icon.setAttribute("class", "bi bi-gear-fill");
-        cog_button.appendChild(cog_icon);
-
-        let column = document.createElement("td");
-        column.setAttribute("class", "align-middle text-end");
-        column.appendChild(link_button);
-        column.appendChild(cog_button);
-        return column;
     }
 })()

@@ -4,11 +4,21 @@
     const compound = document.getElementById("compound").value;
     const block = document.getElementById("block").value;
     const depth = document.getElementById("depth").value;
-    const graph = d3.select("#graph");
-    const width = graph.node().clientWidth;
-    const height = graph.node().clientHeight;
+    const navbarHeight = document.getElementById("navbar").clientHeight;
+    const container = d3.select("#diagram-container");
     const scale = 0.95;
     const px2pt = 3 / 4;
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const endpoint = "/api/dot/" + compound + "__" + block + "__depth-" + depth;
+        await fetch(endpoint).then(r => r.text()).then(dot => render(dot));
+    }, false);
+
+    window.addEventListener("resize", () => {
+        const svg = document.getElementById("diagram-svg");
+        svg.style.width = document.body.clientWidth;
+        svg.style.height = document.body.clientHeight - navbarHeight;
+    });
 
     function calculateViewBox(viewBox) {
         const [vx, vy, vw, vh] = viewBox.split(' ').map(Number);
@@ -21,35 +31,22 @@
         return [x * px2pt, y * px2pt, w * px2pt, h * px2pt].join(' ');
     }
 
-    function handleSvgAttributes(datum) {
-        if (datum.tag === "svg") {
-            const viewBox = calculateViewBox(datum.attributes.viewBox);
-            graph.attr('viewBox', viewBox);
-            datum.attributes.viewBox = viewBox;
-            datum.attributes = {
-                ...datum.attributes,
-                width: width,
-                height: height,
-            };
-        }
+    async function render(dot) {
+        container.graphviz()
+            .tweenShapes(false)
+            .tweenPaths(false)
+            .zoomScaleExtent([0.1, 100])
+            .attributer(datum => {
+                if (datum.tag === "svg") {
+                    datum.attributes = {
+                        ...datum.attributes,
+                        viewBox: calculateViewBox(datum.attributes.viewBox),
+                        width: document.body.clientWidth,
+                        height: document.body.clientHeight - navbarHeight,
+                        id: "diagram-svg",
+                    };
+                }
+            })
+            .renderDot(dot);
     }
-
-    fetch("/api/dot/" + compound + "__" + block + "__depth-" + depth)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.text();
-        })
-        .then((dot) => {
-            graph.graphviz()
-                .tweenShapes(false)
-                .tweenPaths(false)
-                .zoomScaleExtent([0.1, 100])
-                .attributer(handleSvgAttributes)
-                .renderDot(dot);
-        })
-        .catch((error) => {
-            console.error("Error fetching DOT data:", error);
-        });
 })();

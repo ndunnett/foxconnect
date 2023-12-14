@@ -7,8 +7,20 @@
 {% endblock %}
 
 {% block content %}
-<input type="hidden" id="page" name="page" value="1">
-<input type="hidden" id="lines" name="lines" value="20">
+
+<div id="search-args" class="visually-hidden">
+  <input type="hidden" id="page" name="page" value="{{ page }}">
+  <input type="hidden" id="lines" name="lines" value="{{ lines }}">
+  {% if columns -%}
+    <input type="hidden" id="columns" name="columns" value="{{ columns }}">
+  {%- endif %}
+</div>
+
+<div id="search-filters" class="visually-hidden">
+{%- for arg, val in filters.items() %}
+  <input type="hidden" id="{{ arg }}" name="{{ arg }}" value="{{ val }}">
+{%- endfor %}
+</div>
 
 <div class="modal fade" id="settings" tabindex="-1" aria-labelledby="settings-label" aria-hidden="true">
   <div class="modal-dialog">
@@ -36,18 +48,17 @@
 <div class="row">
   <div class="col table-responsive">
     <table class="table table-sm table-hover align-middle">
-      <thead>
-        <tr id="filters"></tr>
-      </thead>
+      <thead id="filters"></thead>
       <tbody id="results" class="table-group-divider"></tbody>
     </table>
   </div>
 </div>
+
 <div class="row align-middle">
   <div class="col text-start">
   </div>
-  <div class="col text-center">
-    <ul id="pagination" class="pagination pagination-sm justify-content-center"></ul>
+  <div id="pagination" class="col text-center">
+    <ul class="pagination pagination-sm justify-content-center"></ul>
   </div>
   <div class="col text-end">
     <small id="result-total" class="text-body-secondary"></small>

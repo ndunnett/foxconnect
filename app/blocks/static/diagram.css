@@ -1,3 +1,8 @@
-[data-bs-theme=dark] #graph {
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+[data-bs-theme=dark] #diagram-container {
   filter: invert(100%) contrast(95%) brightness(115%) saturate(60%);
 }

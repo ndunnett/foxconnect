@@ -9,16 +9,13 @@
 <link href="{{ url_for('blocks.static', filename='diagram.css') }}" rel="stylesheet">
 {% endblock %}
 
-{% block body_class %}"d-flex h-100"{% endblock %}
-
 {% block body %}
 <input type="hidden" id="compound" name="compound" value="{{ obj.compound }}">
 <input type="hidden" id="block" name="block" value="{{ obj.name }}">
 <input type="hidden" id="depth" name="depth" value="{{ depth }}">
 <div class="vstack gap-0">
   <div>{% include 'header.html' %}</div>
-  <div id="graph" class="h-100 text-center">
-  </div>
+  <div id="diagram-container"></div>
 </div>
 {% endblock %}
 
