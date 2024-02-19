@@ -240,18 +240,15 @@
         const totalPages = Math.ceil(data.length / linesPerPage);
 
         // update results
-        let resultsElement = document.getElementById(resultsId);
-        resultsElement.innerHTML = "";
-
-        pageData.forEach((result) => {
-            resultsElement.appendChild(createResultRow(result, columns));
-        });
+        let resultRows = pageData.map(result => createResultRow(result, columns));
+        document.getElementById(resultsId).replaceChildren(...resultRows);
 
         // update total
         document.getElementById(totalId).textContent = data.length == 1 ? "1 result" : data.length.toLocaleString() + " results";
 
         // update pagination
-        document.getElementById(paginationId).replaceChildren(createPaginationList(pageNumber, totalPages));
+        let paginationList = createPaginationList(pageNumber, totalPages);
+        document.getElementById(paginationId).replaceChildren(paginationList);
     }
 
     function createResultRow(result) {

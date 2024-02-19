@@ -1,65 +1,42 @@
-FROM ubuntu:22.04
+FROM ndunnett/python:latest
 
-# set noninteractive environment variable to prevent user prompts during build
-ENV DEBIAN_FRONTEND="noninteractive"
-
-# prevent buffering of stdout and stderr
-ENV PYTHONUNBUFFERED=1
-
-# configure apt to never install additional recommended or suggested packages
-RUN apt-config dump | grep -we Recommends -e Suggests | sed s/1/0/ | tee /etc/apt/apt.conf.d/999-no-install-recommends
-
-# replace mirror URLs with Australian servers to prevent horrifically slow builds
-RUN sed --in-place --regexp-extended "s#(//)(archive\.ubuntu)#\1au.\2#" /etc/apt/sources.list
-
-# update and install packages
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install software-properties-common gnupg wget git zsh -y
+# update and install dev tools
+RUN set -eux; \
+    DEBIAN_FRONTEND="noninteractive"; \
+    apt-get update; \
+    apt-get install -y wget zsh git
 
 # install node using nvm
-RUN mkdir /usr/local/nvm
-ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 20.9.0
-RUN wget -q -O - https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash && \
-    . $NVM_DIR/nvm.sh && \
-    nvm install $NODE_VERSION && \
-    nvm alias default $NODE_VERSION && \
-    nvm use default
-ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
-ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
-RUN npm install -g npm
-
-# add deadsnakes repository for newer releases of Python
-RUN add-apt-repository ppa:deadsnakes/ppa -y && apt-get update
-
-# install Python 3.12 and latest version of pip
-RUN apt-get purge .*python.* -y && \
-    apt-get install python3.12 -y && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python3.12 1 && \
-    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1 && \
-    wget -q -O - https://bootstrap.pypa.io/get-pip.py | python
-
-# remove unneeded packages and clean apt cache
-RUN apt-get purge software-properties-common -y && \
-    apt-get clean -y && \
-    apt-get autoclean -y && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
+ARG NODE_VERSION=20.11.1
+ENV NODE_VERSION="$NODE_VERSION"
+ENV NVM_DIR=/usr/local/nvm
+ENV NODE_PATH="$NVM_DIR/v$NODE_VERSION/lib/node_modules"
+ENV PATH="$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH"
+RUN set -ex; \
+    NVM_GH_API="https://api.github.com/repos/nvm-sh/nvm/releases/latest"; \
+    NVM_VERSION="$(wget -qO - "$NVM_GH_API" | grep tag_name | cut -d\" -f4)"; \
+    NVM_INSTALL_URL="https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh"; \
+    mkdir "$NVM_DIR"; \
+    wget -qO - "$NVM_INSTALL_URL" | bash; \
+    . "$NVM_DIR/nvm.sh"; \
+    nvm install "$NODE_VERSION"; \
+    nvm alias default "$NODE_VERSION"; \
+    nvm use default; \
+    npm install -g npm
 
 # create new user and home directory
-RUN useradd --create-home dev && mkdir /home/dev/src && chown -R dev:dev /home/dev
+RUN set -eux; \
+    useradd --create-home dev; \
+    mkdir /home/dev/src; \
+    chown -R dev:dev /home/dev
+USER dev
 
 # install Python packages
-WORKDIR /home/dev/src/app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY --chown=dev:dev requirements.txt /opt/requirements.txt
+RUN pip install --no-cache-dir -r /opt/requirements.txt
 
 # replace default entrypoint
-COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
-ENTRYPOINT ["/home/dev/src/app/entrypoint.sh"]
-
-USER dev
+COPY --chown=dev:dev --chmod=755 entrypoint.sh /opt/entrypoint.sh
+ENTRYPOINT ["/opt/entrypoint.sh"]
 WORKDIR /home/dev/src
 CMD ["sleep", "infinity"]
