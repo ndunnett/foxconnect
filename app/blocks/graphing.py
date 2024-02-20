@@ -44,7 +44,7 @@ def create_dot(root: Block, depth: int) -> str:
         sourced_p = sorted(set(c.source_parameter for c in block.connections if c.source_block == block))
         sinked_p = sorted(set(c.sink_parameter for c in block.connections if c.sink_block == block))
         fillcolor = origin_colour if block == root else other_colour
-        label = render_template("graph_node_label.html", len=len, max=max, block=block, sourced_p=sourced_p, sinked_p=sinked_p, appearance=appearance)
+        label = render_template("graph_node_label.html.j2", len=len, max=max, block=block, sourced_p=sourced_p, sinked_p=sinked_p, appearance=appearance)
         diagram.add_node(block.id, tooltip=str(block), label=label, fontname="Arial", shape="plain", style="filled", fillcolor=fillcolor)
 
     for connection in connections:

@@ -15,4 +15,4 @@ def index():
     filters = {k: v for k, v in columns.items() if v}
     page = request.args.get("page", default=1, type=int)
     lines = request.args.get("lines", default=19, type=int)
-    return render_template("index.html", page_name="search.index", page=page, lines=lines, columns=columns.keys(), filters=filters)
+    return render_template("index.html.j2", page_name="search.index", page=page, lines=lines, columns=columns.keys(), filters=filters)

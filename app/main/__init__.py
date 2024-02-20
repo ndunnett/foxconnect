@@ -11,4 +11,4 @@ navbar = {
 @bp.route("/")
 def home():
     """Home page"""
-    return render_template("home.html", page_name="main.home")
+    return render_template("home.html.j2", page_name="main.home")

@@ -25,7 +25,7 @@
 
 <body class={% block body_class %}""{% endblock %}>
   {% block body %}
-  {% include "header.html" %}
+  {% include "header.html.j2" %}
   <div class="container my-2">
     {% block content %}<p>Main Content</p>{% endblock %}
   </div>
