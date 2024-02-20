@@ -1,4 +1,4 @@
-from flask import render_template
+from quart import render_template
 from app.models import *
 
 
@@ -21,7 +21,7 @@ def create_graph(root: Block, depth: int) -> tuple[set[Block], set[Connection]]:
     return (blocks, connections)
 
 
-def create_dot(root: Block, depth: int) -> str:
+async def create_dot(root: Block, depth: int) -> str:
     """Create a diagram in DOT format based on a graph of Block objects"""
     origin_colour = "#ffd84d"
     other_colour = "#d4cfca"
@@ -44,7 +44,7 @@ def create_dot(root: Block, depth: int) -> str:
         sourced_p = sorted(set(c.source_parameter for c in block.connections if c.source_block == block))
         sinked_p = sorted(set(c.sink_parameter for c in block.connections if c.sink_block == block))
         fillcolor = origin_colour if block == root else other_colour
-        label = render_template("graph_node_label.html.j2", len=len, max=max, block=block, sourced_p=sourced_p, sinked_p=sinked_p, appearance=appearance)
+        label = await render_template("graph_node_label.html.j2", len=len, max=max, block=block, sourced_p=sourced_p, sinked_p=sinked_p, appearance=appearance)
         diagram.add_node(block.id, tooltip=str(block), label=label, fontname="Arial", shape="plain", style="filled", fillcolor=fillcolor)
 
     for connection in connections:

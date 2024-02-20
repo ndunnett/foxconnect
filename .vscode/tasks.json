@@ -4,7 +4,7 @@
         {
             "label": "FoxConnect: run debug server",
             "type": "shell",
-            "command": "flask --debug --app $APP_OBJECT run --host=$APP_HOST",
+            "command": "quart --debug --app \"$APP_OBJECT\" run --host=\"$APP_HOST\"",
             "problemMatcher": [],
             "presentation": {
               "reveal": "always",
@@ -13,9 +13,9 @@
             }
         },
         {
-            "label": "FoxConnect: run waitress server",
+            "label": "FoxConnect: run production server",
             "type": "shell",
-            "command": "waitress-serve --host=$APP_HOST --port=$APP_PORT --call $APP_OBJECT",
+            "command": "hypercorn \"$APP_OBJECT()\" --bind \"$APP_HOST:$APP_PORT\"",
             "problemMatcher": [],
             "presentation": {
               "reveal": "always",

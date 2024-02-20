@@ -1,4 +1,4 @@
-from flask import Flask
+from quart import Quart
 from app.data import initialise_data
 
 
@@ -12,7 +12,7 @@ blueprints = [
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Quart(__name__)
     app.data = initialise_data()
     context = {"navbar_links": {}}
 

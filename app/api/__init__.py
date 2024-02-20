@@ -1,4 +1,4 @@
-from flask import Blueprint, request, url_for, jsonify, current_app, make_response
+from quart import Blueprint, request, url_for, jsonify, current_app, make_response
 from app.blocks.graphing import create_dot
 from app.utilities import to_number
 from app.data import define_parameters
@@ -9,9 +9,9 @@ bp = Blueprint("api", __name__, url_prefix="/api")
 
 
 @bp.route("/query", methods=["POST"])
-def query():
+async def query():
     """Serve structure object as JSON"""
-    query = request.get_json()
+    query = await request.get_json()
     result = list(map(lambda b: {k: getattr(b, k) for k in query.keys()}, current_app.data.query_blocks(query)))
 
     for r in result:
@@ -22,16 +22,16 @@ def query():
 
 
 @bp.route("/parameters", methods=["GET"])
-def parameters():
+async def parameters():
     """Serve parameter data as JSON"""
     return jsonify({p.name: p.dict() for p in define_parameters()})
 
 
 @bp.route("/dot/<compound>__<block>__depth-<depth>")
-def dot(compound: str, block: str, depth: str):
+async def dot(compound: str, block: str, depth: str):
     """Construct diagram in DOT format and serve as plain text"""
     obj = current_app.data.get_block(compound, block)
     depth = max(0, min(5, to_number(depth)))
-    response = make_response(create_dot(obj, depth), 200)
+    response = await make_response(await create_dot(obj, depth), 200)
     response.mimetype = "text/plain"
     return response

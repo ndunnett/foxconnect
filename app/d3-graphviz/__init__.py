@@ -1,4 +1,4 @@
-from flask import Blueprint
+from quart import Blueprint
 
 
 bp = Blueprint("d3-graphviz", __name__, static_folder="static", url_prefix="/d3-graphviz")
