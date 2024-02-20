@@ -1,4 +1,5 @@
-from quart import Blueprint, render_template, request, current_app
+from quart import Blueprint, render_template, request, current_app, make_response
+from app.blocks.graphing import create_dot
 
 
 bp = Blueprint("blocks", __name__, template_folder="templates", static_folder="static", url_prefix="/blocks")
@@ -19,3 +20,13 @@ async def view_diagram(compound: str, block: str):
     obj = current_app.data.get_block(compound, block)
     depth = max(0, min(5, request.args.get("depth", default=1, type=int)))
     return await render_template("view_diagram.html.j2", obj=obj, depth=depth)
+
+
+@bp.route("/<compound>/<block>/dot")
+async def dot(compound: str, block: str):
+    """Construct diagram in DOT format and serve as plain text"""
+    obj = current_app.data.get_block(compound, block)
+    depth = max(0, min(5, request.args.get("depth", default=1, type=int)))
+    response = await make_response(await create_dot(obj, depth), 200)
+    response.mimetype = "text/plain"
+    return response

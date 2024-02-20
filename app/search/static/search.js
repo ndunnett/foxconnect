@@ -17,8 +17,8 @@
     const parameterInputId = "parameter-input";
     const columnListId = "columnList";
     const typingTime = 1000;
-    const queryEndpoint = "/api/query";
-    const paramEndpoint = "/api/parameters";
+    const queryEndpoint = "/search/query";
+    const paramEndpoint = "/search/parameters";
 
     let data = {};
     let parameters = {};

@@ -6,7 +6,6 @@ blueprints = [
     "main",
     "blocks",
     "search",
-    "api",
     "d3-graphviz",
 ]
 

@@ -10,7 +10,7 @@
     const px2pt = 3 / 4;
 
     document.addEventListener("DOMContentLoaded", async () => {
-        const endpoint = "/api/dot/" + compound + "__" + block + "__depth-" + depth;
+        const endpoint = "/blocks/" + compound + "/" + block + "/dot?depth=" + depth;
         await fetch(endpoint).then(r => r.text()).then(dot => render(dot));
     }, false);
 
