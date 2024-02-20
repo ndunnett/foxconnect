@@ -2,12 +2,21 @@ from flask import Flask
 from app.data import initialise_data
 
 
+blueprints = [
+    "main",
+    "blocks",
+    "search",
+    "api",
+    "d3-graphviz",
+]
+
+
 def create_app():
     app = Flask(__name__)
     app.data = initialise_data()
     context = {"navbar_links": {}}
 
-    for blueprint in ["main", "blocks", "api", "d3-graphviz"]:
+    for blueprint in blueprints:
         pkg = __import__(f"app.{blueprint}", globals(), locals(), ["bp", "navbar"], 0)
         app.register_blueprint(pkg.bp)
 
@@ -17,7 +26,7 @@ def create_app():
             pass
 
     @app.context_processor
-    def app_context():
+    def _app_context():
         return context
 
     return app
