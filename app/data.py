@@ -77,7 +77,7 @@ def generate_data() -> Data:
     return data
 
 
-def parse_config_file(lock: Lock, path: Path, data: Data) -> ():
+def parse_config_file(lock: Lock, path: Path, data: Data) -> None:
     """Parses config file at path and adds Block object to blocks list"""
     with open(path, mode="r", encoding="utf-8") as file:
         if (first_line := file.readline()).startswith("NAME"):
@@ -92,7 +92,7 @@ def parse_config_file(lock: Lock, path: Path, data: Data) -> ():
                 data.compounds.setdefault(block.compound, dict())[block.name] = block
 
 
-def parse_order_file(lock: Lock, path: Path, data: Data) -> ():
+def parse_order_file(lock: Lock, path: Path, data: Data) -> None:
     """Parses compound order file at path and populates CPs dict with compound names"""
     with open(path, mode="r", encoding="utf-8") as file:
         file = file.read()
@@ -104,7 +104,7 @@ def parse_order_file(lock: Lock, path: Path, data: Data) -> ():
         data.cps.setdefault(cp, []).extend(compounds)
 
 
-def parse_block(lock: Lock, block: Block, data: Data) -> ():
+def parse_block(lock: Lock, block: Block, data: Data) -> None:
     """Parses config from Block object and adds Connection objects to connections list"""
     connections = [
         Connection(

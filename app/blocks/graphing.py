@@ -103,10 +103,10 @@ class DotGraph:
         self.nodes = []
         self.edges = []
 
-    def add_node(self, name: str, **attrs) -> ():
+    def add_node(self, name: str, **attrs) -> None:
         self.nodes.append(DotChild(name, **attrs))
 
-    def add_edge(self, src: str, dst: str, **attrs) -> ():
+    def add_edge(self, src: str, dst: str, **attrs) -> None:
         self.edges.append(DotChild(f"{src} -- {dst}", **attrs))
 
     def to_string(self) -> str:
