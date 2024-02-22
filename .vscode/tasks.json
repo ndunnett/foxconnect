@@ -4,24 +4,14 @@
         {
             "label": "FoxConnect: run debug server",
             "type": "shell",
-            "command": "quart --debug --app \"$APP_OBJECT\" run --host=\"$APP_HOST\"",
-            "problemMatcher": [],
-            "presentation": {
-              "reveal": "always",
-              "panel": "new",
-              "clear": true
-            }
+            "command": "quart --debug --app \"$APP_FACTORY\" run --host=\"$APP_HOST\"",
+            "problemMatcher": []
         },
         {
             "label": "FoxConnect: run production server",
             "type": "shell",
-            "command": "hypercorn \"$APP_OBJECT()\" --bind \"$APP_HOST:$APP_PORT\"",
-            "problemMatcher": [],
-            "presentation": {
-              "reveal": "always",
-              "panel": "new",
-              "clear": true
-            }
+            "command": "hypercorn \"$APP_FACTORY()\" --bind \"$APP_HOST:$APP_PORT\"",
+            "problemMatcher": []
         }
     ]
 }
