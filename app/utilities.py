@@ -1,4 +1,5 @@
 import sys
+from quart import make_response
 
 
 class RecursionDepth:
@@ -15,15 +16,22 @@ class RecursionDepth:
         sys.setrecursionlimit(self.original_limit)
 
 
-def to_number(x):
+def to_number(x) -> int | float:
     """Cast any type to a number"""
     return float(x) if float(x) % 1 != 0 else int(float(x))
 
 
-def is_number(x):
+def is_number(x) -> bool:
     """Test any type to see if it can be cast to a number"""
     try:
         to_number(x)
         return True
     except ValueError:
         return False
+
+
+async def serve_plain_text(content: str):
+    """Serve content as plain text"""
+    response = await make_response(content, 200)
+    response.mimetype = "text/plain"
+    return response

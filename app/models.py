@@ -19,7 +19,10 @@ class Data:
 
     def get_block(self, compound: str, name: str) -> Block | None:
         """Find block that matches compound and name"""
-        return self.compounds[compound][name] or None
+        try:
+            return self.compounds[compound][name]
+        except:
+            return None
 
     def query_blocks(self, query: dict[str, str]) -> list[Block]:
         """Return list of blocks that match regex patterns"""
