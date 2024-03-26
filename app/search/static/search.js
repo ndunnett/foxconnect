@@ -216,7 +216,7 @@
     // add page number buttons
     for (let i = 0; i < paginationIndices.length; i++) {
       // add disabled ... button if there are gaps in page numbers
-      if (paginationIndices[i] - paginationIndices[i - 1] > 1) {
+      if (i > 0 && paginationIndices[i] - paginationIndices[i - 1] > 1) {
         list.appendChild(createPaginationItem(0, false, true, '...'))
       }
 
