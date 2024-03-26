@@ -1,0 +1,27 @@
+{%- macro floating_label_input(key, value) -%}
+<div class="form-floating">
+  <input id="{{ key }}" type="text" class="form-control" placeholder="" value="{{ value }}"/>
+  <label for="{{ key }}">{{ parameters[key.upper()].title if key.upper() in parameters else key | title }}</label>
+</div>
+{%- endmacro -%}
+
+<tr id="filter-row">
+  <td style="max-width: 200px">
+    <div class="input-group">
+      {{ floating_label_input("compound", ld.query["compound"]) }}
+      <span class="input-group-text">:</span>
+      {{ floating_label_input("name", ld.query["name"]) }}
+    </div>
+  </td>
+  {% for k, v in ld.query.items() if k not in ["compound", "name"] -%}
+  <td>{{ floating_label_input(k, v) }}</td>
+  {%- endfor %}
+  <td class="align-middle text-end">
+    <button type="button" class="btn btn-dark btn-lg">
+      <i class="bi bi-link"></i>
+    </button>
+    <button type="button" class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#settings">
+      <i class="bi bi-gear-fill"></i>
+    </button>
+  </td>
+</tr>

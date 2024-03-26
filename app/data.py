@@ -121,8 +121,8 @@ def parse_block(lock: Lock, block: Block, data: Data) -> None:
         data.connections.extend(connections)
 
 
-def define_parameters() -> list[ParameterData]:
-    return [
+def define_parameters() -> dict[str, ParameterData]:
+    parameters = [
         # Calculated
         ParameterData("CP", "CP", "CP which hosts the block", ParameterAccessibility.NONE),
 
@@ -143,3 +143,5 @@ def define_parameters() -> list[ParameterData]:
         ParameterData("OSV", "Variance", "output span variance", ParameterAccessibility.NONE),
         ParameterData("EXTBLK", "Extender", "extender block", ParameterAccessibility.CON | ParameterAccessibility.SET),
     ]
+
+    return {p.name: p for p in parameters}

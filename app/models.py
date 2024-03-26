@@ -1,5 +1,6 @@
 from __future__ import annotations
 from itertools import count
+from functools import lru_cache
 import re
 from enum import IntFlag
 
@@ -24,15 +25,18 @@ class Data:
         except:
             return None
 
-    def query_blocks(self, query: dict[str, str]) -> list[Block]:
+    @lru_cache
+    def query_blocks(self, query: tuple[tuple[str, str]]) -> list[Block]:
         """Return list of blocks that match regex patterns"""
-        def f(b):
-            return all(
-                (k in b or k in getattr(b, "__dict__")) and re.search(v, getattr(b, k), re.IGNORECASE)
-                for k, v in query.items()
-            )
+        def _gen():
+            for b in self.blocks:
+                if all(
+                    (k in b or k in getattr(b, "__dict__")) and re.search(v, getattr(b, k), re.IGNORECASE)
+                    for k, v in query
+                ):
+                    yield {k: getattr(b, k) for k, _ in query}
 
-        return filter(f, self.blocks)
+        return list(_gen())
 
 
 class ParameterAccessibility(IntFlag):
