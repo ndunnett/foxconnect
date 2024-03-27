@@ -24,7 +24,7 @@ CONNECTION_RE = re.compile(r"^(?P<compound>\w*):(?P<block>\w+)\.(?P<parameter>\w
 CP_ECB_RE = re.compile(r"([1-6KPT][FJ]{2}\d{3})(?:_ECB\b)", re.ASCII)
 
 # Max worker threads for multithreading
-MAX_WORKERS = cpu_count()
+MAX_WORKERS = cpu_count() * 5
 
 
 def initialise_data() -> Data:
@@ -106,16 +106,17 @@ def parse_order_file(lock: Lock, path: Path, data: Data) -> None:
 
 def parse_block(lock: Lock, block: Block, data: Data) -> None:
     """Parses config from Block object and adds Connection objects to connections list"""
-    connections = [
-        Connection(
-            data.get_block(match.group("compound") or block.compound, match.group("block")),
-            match.group("parameter"),
-            block,
-            parameter
-        )
-        for parameter, value in block.items()
-        if ":" in value and (match := CONNECTION_RE.match(value))
-    ]
+    connections = []
+
+    for parameter, value in block.items():
+        if ":" in value and (match := CONNECTION_RE.match(value)):
+            if source_block := data.get_block(match.group("compound") or block.compound, match.group("block")):
+                connections.append(Connection(
+                    source_block,
+                    match.group("parameter"),
+                    block,
+                    parameter
+                ))
 
     with lock:
         data.connections.extend(connections)
