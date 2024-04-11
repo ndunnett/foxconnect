@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     volumes:
       - .:/home/dev/src:cached
-      - icc_git_input:/home/dev/icc_git_input:ro
+      - icc_dumps:/home/dev/icc_dumps:ro
     environment:
       - APP_FACTORY=app:create_app
       - APP_HOST=0.0.0.0
@@ -15,5 +15,5 @@ services:
       - 5000:5000
 
 volumes:
-  icc_git_input:
+  icc_dumps:
     external: true

@@ -2,8 +2,8 @@ from quart import render_template
 from app.models import *
 
 
-def create_graph(root: Block, depth: int) -> tuple[set[Block], set[Connection]]:
-    """Use breadth first search to graph out related Block and Connection objects to a specified depth"""
+def create_graph(data: Data, root: Block, depth: int) -> tuple[set[Block], set[Connection]]:
+    """Use breadth first search to graph out related Block and Connection objects to a specified depth."""
     queue = {root}
     blocks = {root}
     connections = set()
@@ -13,7 +13,10 @@ def create_graph(root: Block, depth: int) -> tuple[set[Block], set[Connection]]:
 
         for block in queue:
             connections |= block.connections
-            seen |= set(c.sink_block if c.source_block == block else c.source_block for c in block.connections)
+            seen |= set(
+                data.get_block_from_ref(c.sink) if c.source.matches_block(block) else data.get_block_from_ref(c.source)
+                for c in block.connections
+            )
 
         blocks |= seen
         queue = seen
@@ -21,8 +24,8 @@ def create_graph(root: Block, depth: int) -> tuple[set[Block], set[Connection]]:
     return (blocks, connections)
 
 
-async def create_dot(root: Block, depth: int) -> str:
-    """Create a diagram in DOT format based on a graph of Block objects"""
+async def create_dot(data: Data, root: Block, depth: int) -> str:
+    """Create a diagram in DOT format based on a graph of Block objects."""
     origin_colour = "#ffd84d"
     other_colour = "#d4cfca"
     appearance = {
@@ -37,20 +40,21 @@ async def create_dot(root: Block, depth: int) -> str:
         "cell_spacing": 6,
     }
 
-    (blocks, connections) = create_graph(root, depth)
+    (blocks, connections) = create_graph(data, root, depth)
     diagram = DotGraph(f"{root.compound}__{root.name}__depth-{depth}", rankdir="LR", ranksep=3, bgcolor="transparent")
 
     for block in blocks:
-        sourced_p = sorted(set(c.source_parameter for c in block.connections if c.source_block == block))
-        sinked_p = sorted(set(c.sink_parameter for c in block.connections if c.sink_block == block))
+        sourced_p = sorted(set(c.source.parameter for c in block.connections if c.source.matches_block(block)))
+        sinked_p = sorted(set(c.sink.parameter for c in block.connections if c.sink.matches_block(block)))
         fillcolor = origin_colour if block == root else other_colour
         label = await render_template("graph_node_label.html.j2", len=len, max=max, block=block, sourced_p=sourced_p, sinked_p=sinked_p, appearance=appearance)
-        diagram.add_node(block.id, tooltip=str(block), label=label, fontname="Arial", shape="plain", style="filled", fillcolor=fillcolor)
+        diagram.add_node(hash(block), tooltip=str(block), label=label, fontname="Arial",
+                         shape="plain", style="filled", fillcolor=fillcolor)
 
     for connection in connections:
-        source = f"{connection.source_block.id}:{connection.source_parameter}"
-        sink = f"{connection.sink_block.id}:{connection.sink_parameter}"
-        tooltip = f"{connection.source_block}.{connection.source_parameter} --> {connection.sink_block}.{connection.sink_parameter}"
+        source = f"{connection.source.block_hash}:{connection.source.parameter}"
+        sink = f"{connection.sink.block_hash}:{connection.sink.parameter}"
+        tooltip = str(connection)
         diagram.add_edge(source, sink, dir="forward", tooltip=tooltip)
 
     return diagram.to_string()
@@ -80,6 +84,7 @@ def quote_if_necessary(p: any) -> str:
 
 class DotChild:
     """Represents a child of a DOT graph, ie. node/edge"""
+
     def __init__(self, name: str, **attrs):
         self.name = name
         self.attributes = dict(attrs)
@@ -95,6 +100,8 @@ class DotChild:
 
 class DotGraph:
     """Represents a DOT graph and children"""
+    INDENT = " " * 4
+
     def __init__(self, name="diagram", graph_type="graph", strict=False, **attrs):
         self.name = name
         self.graph_type = graph_type
@@ -113,15 +120,15 @@ class DotGraph:
         output = [f'{"strict " if self.strict else ""}{self.graph_type} "{self.name}" ' + "{"]
 
         for k, v in sorted(self.attributes.items()):
-            output.append(f"    {k}={quote_if_necessary(v)};")
+            output.append(f"{DotGraph.INDENT}{k}={quote_if_necessary(v)};")
 
         output.append("")
 
         for node in self.nodes:
-            output.append(f"    {node.to_string().replace("\n", "\n    ")}\n")
+            output.append(f"{DotGraph.INDENT}{node.to_string().replace("\n", "\n" + DotGraph.INDENT)}\n")
 
         for edge in self.edges:
-            output.append(f"    {edge.to_string()}")
+            output.append(f"{DotGraph.INDENT}{edge.to_string()}")
 
         output.append("}\n")
         return "\n".join(output)

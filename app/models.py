@@ -1,42 +1,145 @@
 from __future__ import annotations
-from itertools import count
 from functools import lru_cache
 import re
 from enum import IntFlag
+from typing import Optional, Iterable
 
 
 class Data:
-    """Object to hold all Block objects, compound structures, and CP structures"""
-    blocks: list[Block]
-    connections: list[Connection]
-    compounds: dict[str, dict[str, "Block"]]
-    cps: dict[str, list[str]]
+    """Container to hold all Block objects and handle queries."""
+    __slots__ = ("blocks", "index")
+    blocks: tuple[Block]
+    index: dict[int, Block]
 
-    def __init__(self):
-        self.blocks = []
-        self.connections = []
-        self.compounds = dict()
-        self.cps = dict()
+    def __init__(self, blocks: Iterable[Block]):
+        self.blocks = tuple(blocks)
+        self.index = {hash(block): block for block in self.blocks}
 
-    def get_block(self, compound: str, name: str) -> Block | None:
-        """Find block that matches compound and name"""
-        try:
-            return self.compounds[compound][name]
-        except:
+    def __getstate__(self) -> tuple[Block]:
+        return self.blocks
+
+    def __setstate__(self, blocks: Iterable[Block]):
+        self.__init__(blocks)
+
+    @staticmethod
+    def hasher(buffer: str) -> int:
+        return hash(buffer)
+
+    def get_block_from_name(self, compound: str, name: str) -> Optional[Block]:
+        """Search index for given compound and block name."""
+        return self.get_block_from_hash(Data.hasher(f"{compound}:{name}"))
+
+    def get_block_from_ref(self, parameter_reference: ParameterReference) -> Optional[Block]:
+        """Search index for block in given parameter reference."""
+        return self.get_block_from_hash(parameter_reference.block_hash)
+
+    def get_block_from_hash(self, block_hash: int) -> Optional[Block]:
+        """Search index for block in given block hash."""
+        if block_hash in self.index:
+            return self.index[block_hash]
+        else:
             return None
 
     @lru_cache
-    def query_blocks(self, query: tuple[tuple[str, str]]) -> list[Block]:
-        """Return list of blocks that match regex patterns"""
-        def _gen():
-            for b in self.blocks:
-                if all(
-                    (k in b or k in getattr(b, "__dict__")) and re.search(v, getattr(b, k), re.IGNORECASE)
-                    for k, v in query
-                ):
-                    yield {k: getattr(b, k) for k, _ in query}
+    def query_blocks(self, query: tuple[tuple[str, str]]) -> list[dict[str, str]]:
+        """Return list of block data dicts that match query."""
+        filters = tuple((key, re.compile(pattern, re.IGNORECASE | re.ASCII)) for key, pattern in query if pattern != "")
 
-        return list(_gen())
+        def _f(block: Block) -> bool:
+            return all(pattern.search(block[key]) for key, pattern in filters)
+
+        return [{key: block[key] for key, _ in query} for block in filter(_f, self.blocks)]
+
+
+class Block:
+    """Represents configured block within the DCS."""
+    __slots__ = ("config", "meta", "connections")
+    config: dict[str, str]
+    meta: dict[str, str]
+    connections: set[Connection]
+
+    def __init__(self, config: dict[str, str], meta: dict[str, str]):
+        """Parses config dictionary into block object."""
+        if "TYPE" in config and config["TYPE"] == "COMPND":
+            meta["compound"] = config["NAME"]
+            meta["name"] = config["NAME"]
+        else:
+            meta["compound"], meta["name"] = config["NAME"].split(":")
+
+        self.config = config
+        self.meta = meta
+        self.connections = set()
+
+    def __repr__(self) -> str:
+        """<compound>:<block>"""
+        return f"{self.compound}:{self.name}"
+
+    def __eq__(self, other: Block) -> bool:
+        return hash(self) == hash(other)
+
+    def __lt__(self, other: Block) -> bool:
+        return repr(self.compound) < repr(other.compound)
+
+    def __hash__(self) -> int:
+        return Data.hasher(repr(self))
+
+    def __getitem__(self, name: str) -> Optional[str]:
+        if (k := name.lower()) in self.meta:
+            return self.meta[k]
+        elif (k := name.upper()) in self.config:
+            return self.config[k]
+        else:
+            return None
+
+    @property
+    def name(self) -> str:
+        return self.meta["name"]
+
+    @property
+    def compound(self) -> str:
+        return self.meta["compound"]
+
+
+class ParameterReference:
+    """Gives a reference to a block parameter."""
+    __slots__ = ("compound", "name", "parameter")
+    compound: str
+    name: str
+    parameter: str
+
+    def __init__(self, block: Block, parameter: str):
+        self.compound = block.compound
+        self.name = block.name
+        self.parameter = parameter
+
+    def __repr__(self) -> str:
+        """<compound>:<block>.<parameter>"""
+        return f"{self.compound}:{self.name}.{self.parameter}"
+
+    @property
+    def block_hash(self) -> int:
+        return Data.hasher(f"{self.compound}:{self.name}")
+
+    def matches_block(self, block: Block) -> bool:
+        return self.compound == block.compound and self.name == block.name
+
+
+class Connection:
+    """Represents textual connection between two block parameters."""
+    __slots__ = ("source", "sink")
+    source: ParameterReference
+    sink: ParameterReference
+
+    def __init__(self, source: ParameterReference, sink: ParameterReference):
+        self.source = source
+        self.sink = sink
+
+    def __repr__(self) -> str:
+        """<source> --> <sink>"""
+        return f"{repr(self.source)} --> {repr(self.sink)}"
+
+    def __lt__(self, other: Connection) -> bool:
+        return repr(self) < repr(other)
 
 
 class ParameterAccessibility(IntFlag):
@@ -46,7 +149,7 @@ class ParameterAccessibility(IntFlag):
 
 
 class ParameterData:
-    """Holds metadata for parameter types"""
+    """Holds metadata for parameter types."""
     name: str
     title: str
     description: str
@@ -64,87 +167,3 @@ class ParameterData:
             "description": self.description,
             "accessibility": int(self.accessibility)
         }
-
-
-class Block:
-    """Represents configured block within the DCS"""
-    id_iter = count()
-
-    id: int
-    config: dict[str, str]
-    connections: set[Connection]
-    compound: str
-    cp: str
-    name: str
-
-    def __init__(self, config: dict[str, str]):
-        """Parses config dictionary into block object"""
-        if "TYPE" in config and config["TYPE"] == "COMPND":
-            self.compound = config["NAME"]
-            self.name = config["NAME"]
-        else:
-            self.compound, self.name = config["NAME"].split(":")
-
-        self.id = next(Block.id_iter)
-        self.config = config
-        self.connections = set()
-
-    def __repr__(self):
-        """<compound>:<block>"""
-        return f"{self.compound}:{self.name}"
-
-    def __eq__(self, other):
-        return issubclass(type(other), Block) and self.id == other.id
-
-    def __lt__(self, other):
-        return repr(self) < repr(other)
-
-    def __hash__(self):
-        return self.id
-
-    def __contains__(self, name):
-        """Tests if config contains name"""
-        return name.upper() in super().__getattribute__("config")
-
-    def __getattribute__(self, name):
-        """Tries to get config attribute if it exists"""
-        if name not in (d := super().__getattribute__("__dict__")) and "config" in d and (k := name.upper()) in (c := super().__getattribute__("config")):
-            return c[k]
-        else:
-            return super().__getattribute__(name)
-
-    def items(self) -> dict[str, str]:
-        """Returns dict items of config"""
-        return self.config.items()
-
-
-class Connection:
-    """Represents textual connection between two blocks"""
-    id_iter = count()
-
-    id: int
-    source_block: Block
-    source_parameter: str
-    sink_block: Block
-    sink_parameter: str
-
-    def __init__(self, source_block: Block, source_parameter: str, sink_block: Block, sink_parameter: str):
-        """Records source and sink for connection"""
-        self.id = next(Connection.id_iter)
-        self.source_block = source_block
-        self.source_parameter = source_parameter
-        self.sink_block = sink_block
-        self.sink_parameter = sink_parameter
-
-    def __repr__(self):
-        """<compound>:<block>.<parameter> -> <compound>:<block>.<parameter>"""
-        return f"{repr(self.source_block)}.{self.source_parameter} -> {repr(self.sink_block)}.{self.sink_parameter}"
-
-    def __eq__(self, other):
-        return issubclass(type(other), Connection) and self.id == other.id
-
-    def __lt__(self, other):
-        return repr(self) < repr(other)
-
-    def __hash__(self):
-        return self.id
