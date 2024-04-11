@@ -12,7 +12,7 @@ navbar = {}
 
 def get_obj(compound: str, block: str) -> Block:
     """Retrieve block object from application state."""
-    if (obj := current_app.data.get_block(compound, block)):
+    if (obj := current_app.data.get_block_from_name(compound, block)):
         return obj
     else:
         raise NotFound(f"Block \"{compound}:{block}\" not found.")
