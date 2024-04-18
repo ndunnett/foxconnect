@@ -5,7 +5,7 @@ D3_DIR="/home/dev/src/app/d3-graphviz"
 cd "$D3_DIR" || exit
 
 # install and build packages and dependencies for d3-graphviz
-npm install
+yes | yarn install
 
 # make static directory
 STATIC_DIR="$D3_DIR/static"
