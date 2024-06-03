@@ -6,7 +6,7 @@
 <tr>
   <td>{{ r["compound"] }}:{{ r["name"] }}</td>
   {% for key in ld.query if key not in ["compound", "name"] -%}
-  <td>{{ r[key] }}</td>
+  <td>{{ r[key] | default("", true) }}</td>
   {%- endfor %}
   <td>
     <div role="group" class="btn-group btn-group-sm float-end" aria-label="Links">

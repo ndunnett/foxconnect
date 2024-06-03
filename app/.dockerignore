@@ -1,0 +1,8 @@
+**/__pycache__
+**/*.so
+*.egg-info
+.git
+Dockerfile
+pickle
+d3-graphviz/static
+d3-graphviz/node_modules

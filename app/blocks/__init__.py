@@ -1,7 +1,7 @@
 from quart import Blueprint, render_template, Request, request, current_app
 from werkzeug.exceptions import NotFound
 from app.blocks.graphing import create_dot
-from app.models import *
+from app.data.models import *
 from app.utilities import serve_plain_text
 
 

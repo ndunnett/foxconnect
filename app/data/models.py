@@ -2,7 +2,8 @@ from __future__ import annotations
 from functools import lru_cache
 import re
 from enum import IntFlag
-from typing import Optional, Iterable
+from typing import Optional, Any
+from app.utilities import is_stringable, hashing
 
 
 class Data:
@@ -11,19 +12,13 @@ class Data:
     blocks: tuple[Block]
     index: dict[int, Block]
 
-    def __init__(self, blocks: Iterable[Block]):
-        self.blocks = tuple(blocks)
-        self.index = {hash(block): block for block in self.blocks}
-
-    def __getstate__(self) -> tuple[Block]:
-        return self.blocks
-
-    def __setstate__(self, blocks: Iterable[Block]):
-        self.__init__(blocks)
+    def __init__(self, blocks: tuple[Block]):
+        self.blocks = blocks
+        self.index = {hash(block): block for block in blocks}
 
     @staticmethod
-    def hasher(buffer: str) -> int:
-        return hash(buffer)
+    def hasher(text: str) -> int:
+        return hashing.djb2_hash(text)
 
     def get_block_from_name(self, compound: str, name: str) -> Optional[Block]:
         """Search index for given compound and block name."""
@@ -43,10 +38,10 @@ class Data:
     @lru_cache
     def query_blocks(self, query: tuple[tuple[str, str]]) -> list[dict[str, str]]:
         """Return list of block data dicts that match query."""
-        filters = tuple((key, re.compile(pattern, re.IGNORECASE | re.ASCII)) for key, pattern in query if pattern != "")
+        filters = tuple((key, re.compile(pattern, re.IGNORECASE | re.ASCII)) for key, pattern in query if pattern)
 
         def _f(block: Block) -> bool:
-            return all(pattern.search(block[key]) for key, pattern in filters)
+            return all(is_stringable(block[key]) and pattern.search(str(block[key])) for key, pattern in filters)
 
         return [{key: block[key] for key, _ in query} for block in filter(_f, self.blocks)]
 
@@ -55,19 +50,18 @@ class Block:
     """Represents configured block within the DCS."""
     __slots__ = ("config", "meta", "connections")
     config: dict[str, str]
-    meta: dict[str, str]
+    meta: dict[str, Any]
     connections: set[Connection]
 
-    def __init__(self, config: dict[str, str], meta: dict[str, str]):
+    def __init__(self, config: dict[str, str], **meta: dict[str, Any]):
         """Parses config dictionary into block object."""
         if "TYPE" in config and config["TYPE"] == "COMPND":
-            meta["compound"] = config["NAME"]
-            meta["name"] = config["NAME"]
+            compound, name = config["NAME"], config["NAME"]
         else:
-            meta["compound"], meta["name"] = config["NAME"].split(":")
+            compound, name = config["NAME"].split(":")
 
         self.config = config
-        self.meta = meta
+        self.meta = {"compound": compound, "name": name} | meta
         self.connections = set()
 
     def __repr__(self) -> str:
@@ -83,7 +77,7 @@ class Block:
     def __hash__(self) -> int:
         return Data.hasher(repr(self))
 
-    def __getitem__(self, name: str) -> Optional[str]:
+    def __getitem__(self, name: str) -> Optional[Any]:
         if (k := name.lower()) in self.meta:
             return self.meta[k]
         elif (k := name.upper()) in self.config:

@@ -1,6 +1,6 @@
 from quart import Blueprint, render_template, request, Request, jsonify, current_app
 from app.data import define_parameters
-from app.models import *
+from app.data.models import *
 
 
 bp = Blueprint("search", __name__, template_folder="templates", static_folder="static", url_prefix="/search")

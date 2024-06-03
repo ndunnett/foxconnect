@@ -1,15 +1,20 @@
 {
-  "dockerComposeFile": "../docker-compose.yaml",
-  "containerEnv": { "DEVCONTAINER": "1" },
-  "service": "app",
-  "workspaceFolder": "/home/dev/src",
+  "dockerComposeFile": "./docker-compose.dev.yaml",
+  "service": "app-dev",
+  "workspaceFolder": "/foxconnect/src",
+  "postCreateCommand": ". ${containerEnv:VENV_DIR}/bin/activate; uv pip install --editable ${containerEnv:PROJECT_DIR}/src/app",
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
         "ms-python.autopep8",
+        "tamasfe.even-better-toml",
         "samuelcolvin.jinjahtml"
-      ]
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "${containerEnv:VENV_DIR}/bin/python",
+        "python.terminal.activateEnvironment": true
+      }
     }
   }
 }

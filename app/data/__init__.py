@@ -1,47 +1,44 @@
 import re
 from pathlib import Path
 import pickle
-from multiprocessing import Pool
+from billiard import Pool
 from typing import Generator
-from app.models import *
+from app.data.models import *
+from app.utilities import gc_disabled
 
-
-# Path definitions
-BASE_PATH = Path(__file__).resolve().parent.parent
-ICC_DUMPS_PATH = BASE_PATH.parent / "icc_dumps"
-DATA_PATH = BASE_PATH / "data"
-PICKLE_PATH = DATA_PATH / "data.pickle"
-
-# Globs to find CP dump files
-DUMP_FILE_GLOB = ICC_DUMPS_PATH.glob("*/*.d")
 
 # Regex pattern to match "<compound>:<block>.<parameter>" within config files
 CONNECTION_RE = re.compile(r"^(?P<compound>\w*):(?P<block>\w+)\.(?P<parameter>.+)$", re.IGNORECASE | re.ASCII)
 
 
-def initialise_data() -> Data:
-    """Generate/load data."""
-    # Load pickled data if it exists otherwise generate and pickle data
-    if PICKLE_PATH.is_file():
-        with open(PICKLE_PATH, mode="rb") as file:
-            data = pickle.load(file)
-    else:
-        data = generate_data(DUMP_FILE_GLOB)
-        DATA_PATH.resolve().mkdir(parents=True, exist_ok=True)
-        with open(PICKLE_PATH, mode="wb") as file:
-            pickle.dump(data, file, protocol=pickle.HIGHEST_PROTOCOL)
+def initialise_data(data_pickle_path: Path, dump_file_glob: Generator[Path, None, None]) -> Data:
+    """Load pickled data if it exists otherwise generate and pickle data."""
+    with gc_disabled():
+        if data_pickle_path.is_file():
+            with open(data_pickle_path, mode="rb") as file:
+                data = pickle.load(file)
+
+        else:
+            data = generate_data(dump_file_glob)
+            data_pickle_path.parent.resolve().mkdir(parents=True, exist_ok=True)
+
+            with open(data_pickle_path, mode="wb") as file:
+                pickle.dump(data, file, protocol=pickle.HIGHEST_PROTOCOL)
 
     return data
 
 
-def generate_data(dump_file_glob: Generator[Path, None, None]) -> Data:
-    """Generate all pickleable data from config and order files."""
+def generate_data(dump_file_glob: Generator[Path, None, None]) -> list[Block]:
+    """Parse all CP dump files to create a Data object containing parsed blocks."""
     # Use process pool to concurrently parse blocks from dump files
     with Pool() as pool:
-        futures = [pool.apply_async(parse_dump_file, [path]) for path in dump_file_glob]
-        blocks = [block for future in futures for block in future.get()]
+        blocks = [
+            block
+            for result in pool.map(parse_dump_file, dump_file_glob)
+            for block in result
+        ]
 
-    data = Data(sorted(blocks))
+    data = Data(tuple(sorted(blocks)))
 
     # Parse out connections between blocks
     for sink_block in data.blocks:
@@ -59,19 +56,20 @@ def generate_data(dump_file_glob: Generator[Path, None, None]) -> Data:
     return data
 
 
-def parse_dump_file(path: Path) -> list[Block]:
-    """Parses dump file at path and adds Block object to blocks list."""
+def parse_dump_file(path: Path) -> tuple[Block]:
+    """Parses dump file at path and returns tuple of Block objects."""
     with open(path, mode="r", encoding="utf-8") as file:
-        return [
-            Block(config={
-                split[0].strip(): split[1].strip()
-                for line in chunk.splitlines()
-                if len(split := line.split("=", 1)) == 2
-            }, meta={
-                "cp": path.stem,
-            })
+        return tuple(
+            Block(
+                config={
+                    split[0].strip(): split[1].strip()
+                    for line in chunk.splitlines()
+                    if len(split := line.split("=", 1)) == 2
+                },
+                cp=path.stem,
+            )
             for chunk in file.read().strip().split("\nEND\n")
-        ]
+        )
 
 
 def define_parameters() -> dict[str, ParameterData]:

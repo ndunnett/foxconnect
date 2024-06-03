@@ -1,5 +1,5 @@
 from quart import render_template
-from app.models import *
+from app.data.models import *
 
 
 def create_graph(data: Data, root: Block, depth: int) -> tuple[set[Block], set[Connection]]:

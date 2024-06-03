@@ -1,17 +1,41 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "FoxConnect: run debug server",
-            "type": "shell",
-            "command": "quart --debug --app \"$APP_FACTORY\" run --host=\"$APP_HOST\"",
-            "problemMatcher": []
-        },
-        {
-            "label": "FoxConnect: run production server",
-            "type": "shell",
-            "command": "hypercorn \"$APP_FACTORY()\" --bind \"$APP_HOST:$APP_PORT\"",
-            "problemMatcher": []
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "FoxConnect: run debug server",
+      "type": "shell",
+      "command": ". ${env:VENV_DIR}/bin/activate; quart --debug --app ${env:APP_FACTORY} run --host=${env:APP_HOST} --port=${env:APP_PORT}",
+      "problemMatcher": []
+    },
+    {
+      "label": "FoxConnect: run production server",
+      "type": "shell",
+      "command": ". ${env:VENV_DIR}/bin/activate; hypercorn \"${env:APP_FACTORY}()\" --bind ${env:APP_HOST}:${env:APP_PORT}",
+      "problemMatcher": []
+    },
+    {
+      "label": "FoxConnect: build project",
+      "type": "shell",
+      "command": ". ${env:VENV_DIR}/bin/activate; uv pip install --editable .",
+      "options": {
+        "cwd": "${env:PROJECT_DIR}/src/app"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "FoxConnect: clean project",
+      "type": "shell",
+      "command": ". ${env:VENV_DIR}/bin/activate; python setup.py clean",
+      "options": {
+        "cwd": "${env:PROJECT_DIR}/src/app"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "FoxConnect: reset virtual environment",
+      "type": "shell",
+      "command": "rm -rf ${env:VENV_DIR}; uv venv ${env:VENV_DIR}",
+      "problemMatcher": []
+    }
+  ]
 }

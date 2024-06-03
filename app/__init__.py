@@ -1,5 +1,15 @@
 from quart import Quart
+from pathlib import Path
 from app.data import initialise_data
+
+
+# Path definitions
+ICC_DUMPS_PATH = Path(__file__).resolve().parent.parent.parent / "icc_dumps"
+PICKLE_PATH = Path(__file__).resolve().parent / "pickle"
+DATA_PICKLE_PATH = PICKLE_PATH / "data.pickle"
+
+# Glob to find CP dump files
+DUMP_FILE_GLOB = ICC_DUMPS_PATH.glob("*/*.d")
 
 
 blueprints = [
@@ -12,7 +22,7 @@ blueprints = [
 
 def create_app():
     app = Quart(__name__)
-    app.data = initialise_data()
+    app.data = initialise_data(DATA_PICKLE_PATH, DUMP_FILE_GLOB)
     context = {"navbar_links": {}}
 
     for blueprint in blueprints:
