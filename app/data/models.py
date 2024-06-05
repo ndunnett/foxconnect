@@ -93,6 +93,15 @@ class Block:
     def compound(self) -> str:
         return self.meta["compound"]
 
+    def list_connections(self) -> list[tuple[bool, str, ParameterReference]]:
+        def f(c: Connection) -> tuple[Connection, bool]:
+            if c.sink.name == self.name and c.sink.compound == self.compound:
+                return (False, c.sink.parameter, c.source)
+            else:
+                return (True, c.source.parameter, c.sink)
+
+        return sorted(map(f, self.connections))
+
 
 class ParameterReference:
     """Gives a reference to a block parameter."""
@@ -109,6 +118,9 @@ class ParameterReference:
     def __repr__(self) -> str:
         """<compound>:<block>.<parameter>"""
         return f"{self.compound}:{self.name}.{self.parameter}"
+
+    def __lt__(self, other: ParameterReference) -> bool:
+        return repr(self) < repr(other)
 
     @property
     def block_hash(self) -> int:

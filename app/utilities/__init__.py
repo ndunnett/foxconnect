@@ -1,8 +1,9 @@
-from typing import Any
+from typing import Any, Callable, Generator
+from collections.abc import Iterable
 import sys
 import gc
 from quart import make_response
-from contextlib import contextmanager, AbstractContextManager
+from contextlib import contextmanager
 
 
 @contextmanager
@@ -14,16 +15,14 @@ def gc_disabled():
         gc.enable()
 
 
-class RecursionDepth(AbstractContextManager):
+@contextmanager
+def recursion_depth(limit: int):
     """Context manager to temporarily change max recursion depth."""
-    original_limit: int
-
-    def __init__(self, limit: int):
-        self.original_limit = sys.getrecursionlimit()
-        sys.setrecursionlimit(limit)
-
-    def __exit__(self, *_exc_info):
-        sys.setrecursionlimit(self.original_limit)
+    try:
+        original_limit = sys.getrecursionlimit()
+        yield sys.setrecursionlimit(limit)
+    finally:
+        sys.setrecursionlimit(original_limit)
 
 
 def to_number(x: Any) -> int | float:
@@ -54,3 +53,10 @@ async def serve_plain_text(content: str):
     response = await make_response(content, 200)
     response.mimetype = "text/plain"
     return response
+
+
+def filter_map[T, U](func: Callable[[T], U | None], it: Iterable[T]) -> Generator[U, None, None]:
+    """Maps function over iterator and yields results that are not None."""
+    for element in it:
+        if (result := func(element)) is not None:
+            yield result

@@ -5,10 +5,86 @@
 {% block content %}
 <div class="row">
   <div class="col">
-    <h5>{{ obj }}</h5>
-    <ul>
-      {% for parameter, value in obj.config.items() %}<li>{{ parameter }} = {{ value }}</li>{% endfor %}
-    </ul>
+    <div class="float-start"><h3>Block Detail</h3></div>
+    <div role="group" class="btn-group btn-group-sm float-end" aria-label="Links">
+      <a role="button" class="btn btn-outline-secondary btn-results"
+        href='{{url_for("blocks.view_diagram", compound=obj.compound, block=obj.name)}}'>Diagram</a>
+    </div>
+    <table class="table table-sm table-hover">
+      <tr>
+        <td>Compound</td>
+        <td>{{ obj.compound }}</td>
+      </tr>
+      <tr>
+        <td>Name</td>
+        <td>{{ obj.name }}</td>
+      </tr>
+      <tr>
+        <td>CP</td>
+        <td>{{ obj.cp }}</td>
+      </tr>
+      <tr>
+        <td>Type</td>
+        <td>{{ obj.type }}</td>
+      </tr>
+      {% if obj.iom_id %}
+      <tr>
+        <td>FBM</td>
+        <td>{{ obj.iom_id }}</td>
+      </tr>
+      {% endif %}
+    </table>
+  </div>
+</div>
+{% if obj.connections %}
+<div class="row">
+  <div class="col">
+    <h3>Connections</h3>
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Parameter</th>
+          <th scope="col"></th>
+          <th scope="col">Connection</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for (sourced, self_param, other) in obj.list_connections() %}
+        <tr>
+          <td>{{ self_param }}</td>
+          {% if sourced %}
+          <td><span class="text-danger"><i class="bi bi-box-arrow-right"></i></span></td>
+          {% else %}
+          <td><span class="text-success"><i class="bi bi-box-arrow-in-left"></i></span></td>
+          {% endif %}
+          <td><a href='{{ url_for("blocks.view_detail", compound=other.compound, block=other.name) }}'>{{ other }}</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+<div class="row">
+  <div class="col">
+    <h3>Configuration</h3>
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Parameter</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for parameter, value in obj.config.items() %}
+        <tr>
+          <td>{{ parameter }}</td>
+          <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 {% endblock %}
