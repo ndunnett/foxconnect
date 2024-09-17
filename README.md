@@ -8,7 +8,7 @@ Web based tool to automatically generate logic flow diagrams for Foxboro I/A ser
 ## Structure
 
 - `src/app` is the main web application built on [`Quart`](https://github.com/pallets/quart), broken up into blueprints:
-    - `blocks` has the detail/diagram views and graphic logic
+    - `blocks` has the detail/diagram views and graphing logic
     - `main` has the main page templates, navigation, error handling, etc.
     - `search` has the search/index view
 - `src/pyfastmurmur3` is a thin wrapper around the Rust crate [`fastmurmur3`](https://crates.io/crates/fastmurmur3), used for fast non-cryptographic string hashing
