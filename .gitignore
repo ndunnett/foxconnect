@@ -1,0 +1,8 @@
+/src/app/pickle
+/src/quart_d3graphviz/quart_d3graphviz/.yarn
+/src/quart_d3graphviz/quart_d3graphviz/node_modules
+/src/quart_d3graphviz/quart_d3graphviz/files
+*.egg-info
+build
+target
+__pycache__

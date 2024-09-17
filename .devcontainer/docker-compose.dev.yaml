@@ -5,12 +5,13 @@ services:
     build:
       args:
         - APP_PORT=5001
-      context: ../app
+      context: ..
       target: dev
+    user: foxconnect
     restart: unless-stopped
     volumes:
-      - ..:/foxconnect/src
-      - icc_dumps:/foxconnect/icc_dumps:ro
+      - ..:/fc/repo
+      - icc_dumps:/fc/icc_dumps:ro
     ports:
       - 5001:5001
 

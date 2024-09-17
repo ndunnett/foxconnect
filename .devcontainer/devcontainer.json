@@ -1,19 +1,29 @@
 {
   "dockerComposeFile": "./docker-compose.dev.yaml",
   "service": "app-dev",
-  "workspaceFolder": "/foxconnect/src",
-  "postCreateCommand": ". ${containerEnv:VENV_DIR}/bin/activate; uv pip install --editable ${containerEnv:PROJECT_DIR}/src/app",
+  "workspaceFolder": "/fc/repo",
+  "remoteUser": "foxconnect",
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
-        "ms-python.autopep8",
+        "charliermarsh.ruff",
         "tamasfe.even-better-toml",
+        "rust-lang.rust-analyzer",
+        "redhat.vscode-yaml",
+        "fill-labs.dependi",
         "samuelcolvin.jinjahtml"
       ],
       "settings": {
-        "python.defaultInterpreterPath": "${containerEnv:VENV_DIR}/bin/python",
-        "python.terminal.activateEnvironment": true
+        "python.defaultInterpreterPath": "/fc/.venv/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "ruff.nativeServer": true,
+        "rust-analyzer.linkedProjects": [
+          "/fc/repo/src/pyfastmurmur3/Cargo.toml"
+        ],
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        }
       }
     }
   }

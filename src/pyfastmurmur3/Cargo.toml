@@ -1,0 +1,17 @@
+[package]
+name = "pyfastmurmur3"
+version = "0.2.0"
+edition = "2021"
+
+[lib]
+name = "fastmurmur3"
+crate-type = ["cdylib"]
+
+[dependencies]
+fastmurmur3 = "0.2.0"
+pyo3 = { version = "0.22.3", features = ["extension-module"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+opt-level = 2

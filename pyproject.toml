@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "FoxConnect"
+version = "0.0.1"
+requires-python = ">=3.10"
+dependencies = [
+    "pyfastmurmur3 @ file:///${REPO_DIR}/src/pyfastmurmur3",
+    "quart_d3graphviz @ file:///${REPO_DIR}/src/quart_d3graphviz",
+    "Quart == 0.19.6",
+    "Hypercorn == 0.17.3",
+    "billiard == 4.2.0",
+]
+
+[project.optional-dependencies]
+dev = ["setuptools"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"

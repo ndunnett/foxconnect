@@ -14,28 +14,49 @@
       "problemMatcher": []
     },
     {
-      "label": "FoxConnect: build project",
-      "type": "shell",
-      "command": ". ${env:VENV_DIR}/bin/activate; uv pip install --editable .",
-      "options": {
-        "cwd": "${env:PROJECT_DIR}/src/app"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "FoxConnect: clean project",
-      "type": "shell",
-      "command": ". ${env:VENV_DIR}/bin/activate; python setup.py clean",
-      "options": {
-        "cwd": "${env:PROJECT_DIR}/src/app"
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "FoxConnect: reset virtual environment",
       "type": "shell",
       "command": "rm -rf ${env:VENV_DIR}; uv venv ${env:VENV_DIR}",
       "problemMatcher": []
+    },
+    {
+      "label": "FoxConnect: build/install project",
+      "type": "shell",
+      "command": ". ${env:VENV_DIR}/bin/activate; uv pip install --editable '.[dev]'",
+      "options": {
+        "cwd": "${env:REPO_DIR}"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "FoxConnect: build/install quart_d3graphviz",
+      "type": "shell",
+      "command": ". ${env:VENV_DIR}/bin/activate; uv pip install .",
+      "options": {
+        "cwd": "${env:REPO_DIR}/src/quart_d3graphviz"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "FoxConnect: build/install pyfastmurmur3",
+      "type": "shell",
+      "command": ". ${env:VENV_DIR}/bin/activate; uv pip install .",
+      "options": {
+        "cwd": "${env:REPO_DIR}/src/pyfastmurmur3"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
     }
   ]
 }
