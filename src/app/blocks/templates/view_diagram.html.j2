@@ -3,9 +3,6 @@
 {% block title %}FoxConnect | {{ obj.compound }}:{{ obj.name }}{% endblock %}
 
 {% block head %}
-{# <script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js"></script> #}
-{# <script src="https://unpkg.com/@hpcc-js/wasm@2.16.2/dist/graphviz.umd.js" type="javascript/worker"></script> #}
-{# <script src="https://unpkg.com/d3-graphviz@5.4.0/build/d3-graphviz.min.js"></script> #}
 <script src="{{ url_for('d3graphviz.static', filename='d3/dist/d3.js') }}"></script>
 <script src="{{ url_for('d3graphviz.static', filename='@hpcc-js/wasm/dist/graphviz.umd.js') }}" type="javascript/worker"></script>
 <script src="{{ url_for('d3graphviz.static', filename='d3-graphviz/build/d3-graphviz.js') }}"></script>
