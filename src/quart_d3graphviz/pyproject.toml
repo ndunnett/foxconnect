@@ -15,6 +15,9 @@ quart_d3graphviz = "quart_d3graphviz"
 [tool.setuptools.package-data]
 quart_d3graphviz = [
     "node_modules/d3/dist/*",
+    "node_modules/d3/LICENSE",
     "node_modules/d3-graphviz/build/*",
+    "node_modules/d3-graphviz/LICENSE",
     "node_modules/@hpcc-js/wasm/dist/*",
+    "node_modules/@hpcc-js/wasm/LICENSE",
 ]
