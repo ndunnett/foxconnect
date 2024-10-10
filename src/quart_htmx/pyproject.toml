@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quart_htmx"
+version = "2.0.2"
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.setuptools.package-dir]
+quart_htmx = "quart_htmx"
+
+[tool.setuptools.package-data]
+quart_htmx = [
+    "node_modules/htmx.org/dist/*",
+    "node_modules/htmx.org/LICENSE",
+]

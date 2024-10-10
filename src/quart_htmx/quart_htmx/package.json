@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "htmx.org": "2.0.2"
+  },
+  "packageManager": "yarn@4.3.1"
+}
