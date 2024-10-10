@@ -14,6 +14,7 @@ Web based tool to automatically generate logic flow diagrams for Foxboro I/A ser
 - `src/pyfastmurmur3` is a thin wrapper around the Rust crate [`fastmurmur3`](https://crates.io/crates/fastmurmur3), used for fast non-cryptographic string hashing
 - `src/quart_d3graphviz` is a Quart extension to serve the node modules required for [`d3-graphviz`](https://github.com/magjac/d3-graphviz) as static files
 - `src/quart_foxdata` is a Quart extension that encapsulates the data side of the application, i.e. parsing, data models, access/querying, etc.
+- `src/quart_htmx` is a Quart extension to serve the node modules required for [`HTMX`](https://htmx.org/) as static files and provide helper functionality
 
 ## Setup
 
