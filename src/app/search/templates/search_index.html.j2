@@ -1,0 +1,25 @@
+{% extends "base.html.j2" %}
+
+{% block title %}FoxConnect | Search{% endblock %}
+
+{% block head %}
+<link href="{{ url_for('search.static', filename='search.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col table-responsive">
+    <table class="table table-sm table-hover align-middle" hx-include="this">
+      <thead id="table-head">
+        {% include "search_table_head.html.j2" %}
+      </thead>
+      {% include "search_table_body.html.j2" %}
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block tail %}
+<script src="{{ url_for('htmx.static', filename='htmx.org/dist/htmx.min.js') }}"></script>
+<script src="{{ url_for('search.static', filename='search.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{%- macro button_link(title, url) -%}
+<a role="button" class="btn btn-outline-secondary btn-results" href="{{ url }}">{{ title }}</a>
+{%- endmacro -%}
+
+<tbody id="table-body" class="table-group-divider">
+  {% for result in results -%}
+  <tr>
+    <td>{{ result["compound"] }}:{{ result["name"] }}</td>
+    {% for field in fields if field not in ["compound", "name"] -%}
+    <td>{{ result[field] | default("", true) }}</td>
+    {%- endfor %}
+    <td>
+      <div role="group" class="btn-group btn-group-sm float-end" aria-label="Links">
+        {{ button_link("Diagram", url_for("blocks.view_diagram", compound=result["compound"], block=result["name"])) }}
+        {{ button_link("Detail", url_for("blocks.view_detail", compound=result["compound"], block=result["name"])) }}
+      </div>
+    </td>
+  </tr>
+  {%- endfor %}
+</tbody>
+
+<caption id="table-foot" hx-swap-oob="true">
+  <div class="row align-middle mt-3">
+    <div class="col text-start">
+    </div>
+    <div class="col text-center">
+      <ul class="pagination pagination-sm justify-content-center">
+        {% for item in pagination %}
+        <li class="page-item">{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col text-end">
+      <small class="text-body-secondary">
+        {{ "{:,}".format(total_results) }} result{% if total_results != 1 %}s{% endif %}
+      </small>
+    </div>
+  </div>
+</caption>

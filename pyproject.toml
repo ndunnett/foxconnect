@@ -9,6 +9,7 @@ requires-python = ">=3.10"
 dependencies = [
     "pyfastmurmur3 @ file:///${REPO_DIR}/src/pyfastmurmur3",
     "quart_d3graphviz @ file:///${REPO_DIR}/src/quart_d3graphviz",
+    "quart_htmx @ file:///${REPO_DIR}/src/quart_htmx",
     "Quart == 0.19.6",
     "Hypercorn == 0.17.3",
     "billiard == 4.2.0",

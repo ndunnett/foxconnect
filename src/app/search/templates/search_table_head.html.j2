@@ -1,0 +1,20 @@
+<tr>
+  <td style="max-width: 275px">
+    <div class="input-group">
+      {{ search_inputs["compound"] }}
+      <span class="input-group-text">:</span>
+      {{ search_inputs["name"] }}
+    </div>
+  </td>
+  {% for field in fields if field not in ["compound", "name"] -%}
+  <td>{{ search_inputs[field] }}</td>
+  {%- endfor %}
+  <td class="align-middle text-end">
+    <button type="button" class="btn btn-dark btn-lg">
+      <i class="bi bi-link"></i>
+    </button>
+    <button type="button" class="btn btn-dark btn-lg">
+      <i class="bi bi-gear-fill"></i>
+    </button>
+  </td>
+</tr>
