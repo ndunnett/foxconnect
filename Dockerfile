@@ -5,7 +5,7 @@ ARG USERNAME=foxconnect
 ARG PROJECT_DIR=/fc
 
 
-FROM ndunnett/python:noble-3.12 as base
+FROM ndunnett/python:noble-3.13 as base
 ARG APP_FACTORY
 ARG APP_HOST
 ARG APP_PORT

@@ -5,10 +5,10 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"htmx.org@npm:2.0.2":
-  version: 2.0.2
-  resolution: "htmx.org@npm:2.0.2"
-  checksum: 10c0/ce7f969a47a7b2ce07e06b9beaaba83b60491e3500503c9e6d6183dd95fe7e1cd0d2b2efe4c79400ec5e40d9d70c51d9c283a4ebb47423ad5b12b7bfd8238eb8
+"htmx.org@npm:2.0.3":
+  version: 2.0.3
+  resolution: "htmx.org@npm:2.0.3"
+  checksum: 10c0/81d2b7394811cf6b0ba739a22080f943f18432e40e185181266978606c5e1b26814137b34df0d2fb26ee30199026068669f21ff68c17945e1659c45e6271ccec
   languageName: node
   linkType: hard
 
@@ -16,6 +16,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    htmx.org: "npm:2.0.2"
+    htmx.org: "npm:2.0.3"
   languageName: unknown
   linkType: soft

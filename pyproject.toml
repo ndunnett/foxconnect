@@ -12,7 +12,7 @@ dependencies = [
     "quart_htmx @ file:///${REPO_DIR}/src/quart_htmx",
     "Quart == 0.19.6",
     "Hypercorn == 0.17.3",
-    "billiard == 4.2.0",
+    "billiard == 4.2.1",
 ]
 
 [project.optional-dependencies]
