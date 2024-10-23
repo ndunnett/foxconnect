@@ -1,22 +1,29 @@
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "FoxConnect"
 version = "0.0.1"
+description = "Web based tool to automatically generate logic flow diagrams for Foxboro I/A series DCS based on configuration files dumped from the ICC."
+readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "pyfastmurmur3 @ file:///${REPO_DIR}/src/pyfastmurmur3",
-    "quart_d3graphviz @ file:///${REPO_DIR}/src/quart_d3graphviz",
-    "quart_htmx @ file:///${REPO_DIR}/src/quart_htmx",
+    "app",
+    "pyfastmurmur3",
+    "quart_d3graphviz",
+    "quart_foxdata",
+    "quart_htmx",
     "Quart == 0.19.6",
     "Hypercorn == 0.17.3",
     "billiard == 4.2.1",
 ]
 
-[project.optional-dependencies]
-dev = ["setuptools"]
+[tool.uv.sources]
+app = { workspace = true }
+pyfastmurmur3 = { workspace = true }
+quart_d3graphviz = { workspace = true }
+quart_foxdata = { workspace = true }
+quart_htmx = { workspace = true }
+
+[tool.uv.workspace]
+members = ["packages/*"]
 
 [tool.ruff]
 line-length = 120

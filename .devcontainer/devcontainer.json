@@ -1,7 +1,7 @@
 {
   "dockerComposeFile": "./docker-compose.dev.yaml",
   "service": "app-dev",
-  "workspaceFolder": "/fc/repo",
+  "workspaceFolder": "/home/foxconnect/repo",
   "remoteUser": "foxconnect",
   "customizations": {
     "vscode": {
@@ -15,11 +15,11 @@
         "samuelcolvin.jinjahtml"
       ],
       "settings": {
-        "python.defaultInterpreterPath": "/fc/.venv/bin/python",
+        "python.defaultInterpreterPath": "/home/foxconnect/repo/.venv/bin/python",
         "python.terminal.activateEnvironment": true,
         "ruff.nativeServer": true,
         "rust-analyzer.linkedProjects": [
-          "/fc/repo/src/pyfastmurmur3/Cargo.toml"
+          "/home/foxconnect/repo/packages/pyfastmurmur3/Cargo.toml"
         ],
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff"

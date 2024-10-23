@@ -10,8 +10,8 @@ services:
     user: foxconnect
     restart: unless-stopped
     volumes:
-      - ..:/fc/repo
-      - icc_dumps:/fc/icc_dumps:ro
+      - ..:/home/foxconnect/repo
+      - icc_dumps:/home/foxconnect/icc_dumps:ro
     ports:
       - 5001:5001
 

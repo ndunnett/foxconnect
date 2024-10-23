@@ -2,60 +2,50 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "FoxConnect: run debug server",
+      "label": "FoxConnect: run Quart debug server",
       "type": "shell",
-      "command": ". ${env:VENV_DIR}/bin/activate; quart --debug --app ${env:APP_FACTORY} run --host=${env:APP_HOST} --port=${env:APP_PORT}",
+      "command": ". ${env:FC_REPO_PATH}/.venv/bin/activate; quart --debug --app ${env:FC_APP_FACTORY} run --host=${env:FC_APP_HOST} --port=${env:FC_APP_PORT}",
       "problemMatcher": []
     },
     {
-      "label": "FoxConnect: run production server",
+      "label": "FoxConnect: run hypercorn server",
       "type": "shell",
-      "command": ". ${env:VENV_DIR}/bin/activate; hypercorn \"${env:APP_FACTORY}()\" --bind ${env:APP_HOST}:${env:APP_PORT}",
+      "command": ". ${env:FC_REPO_PATH}/.venv/bin/activate; hypercorn \"${env:FC_APP_FACTORY}()\" --bind ${env:FC_APP_HOST}:${env:FC_APP_PORT}",
       "problemMatcher": []
     },
     {
-      "label": "FoxConnect: reset virtual environment",
+      "label": "FoxConnect: clean repo",
       "type": "shell",
-      "command": "rm -rf ${env:VENV_DIR}; uv venv ${env:VENV_DIR}",
-      "problemMatcher": []
-    },
-    {
-      "label": "FoxConnect: build/install project",
-      "type": "shell",
-      "command": ". ${env:VENV_DIR}/bin/activate; uv pip install --editable '.[dev]'",
+      "command": "git clean -Xdf",
       "options": {
-        "cwd": "${env:REPO_DIR}"
+        "cwd": "${env:FC_REPO_PATH}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "FoxConnect: uv sync --refresh",
+      "type": "shell",
+      "command": "uv sync --refresh",
+      "options": {
+        "cwd": "${env:FC_REPO_PATH}"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "FoxConnect: uv sync --reinstall",
+      "type": "shell",
+      "command": "uv sync --reinstall",
+      "options": {
+        "cwd": "${env:FC_REPO_PATH}"
       },
       "problemMatcher": [],
       "group": {
         "kind": "build",
         "isDefault": true
-      }
-    },
-    {
-      "label": "FoxConnect: build/install quart_d3graphviz",
-      "type": "shell",
-      "command": ". ${env:VENV_DIR}/bin/activate; uv pip install .",
-      "options": {
-        "cwd": "${env:REPO_DIR}/src/quart_d3graphviz"
-      },
-      "problemMatcher": [],
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      }
-    },
-    {
-      "label": "FoxConnect: build/install pyfastmurmur3",
-      "type": "shell",
-      "command": ". ${env:VENV_DIR}/bin/activate; uv pip install .",
-      "options": {
-        "cwd": "${env:REPO_DIR}/src/pyfastmurmur3"
-      },
-      "problemMatcher": [],
-      "group": {
-        "kind": "build",
-        "isDefault": false
       }
     }
   ]

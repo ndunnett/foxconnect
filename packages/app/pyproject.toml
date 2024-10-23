@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "app"
+version = "0.0.1"
+dependencies = [
+    "quart_d3graphviz",
+    "quart_foxdata",
+    "quart_htmx",
+    "Quart",
+]

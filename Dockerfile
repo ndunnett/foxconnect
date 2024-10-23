@@ -2,7 +2,6 @@ ARG APP_FACTORY=app:create_app
 ARG APP_HOST=0.0.0.0
 ARG APP_PORT=5000
 ARG USERNAME=foxconnect
-ARG PROJECT_DIR=/fc
 
 
 FROM ndunnett/python:noble-3.13 as base
@@ -10,23 +9,21 @@ ARG APP_FACTORY
 ARG APP_HOST
 ARG APP_PORT
 ARG USERNAME
-ARG PROJECT_DIR
-ENV APP_FACTORY="$APP_FACTORY" APP_HOST="$APP_HOST" APP_PORT="$APP_PORT"
-ENV PROJECT_DIR="$PROJECT_DIR" VENV_DIR="$PROJECT_DIR/.venv" REPO_DIR="$PROJECT_DIR/repo"
-ENV QUART_FOXDATA_ICC_DUMPS_PATH="$PROJECT_DIR/icc_dumps"
-ENV QUART_FOXDATA_DATA_PICKLE_PATH="$PROJECT_DIR/data.pickle"
+ENV FC_APP_FACTORY="$APP_FACTORY" FC_APP_HOST="$APP_HOST" FC_APP_PORT="$APP_PORT"
+ENV FC_USERNAME="$USERNAME" FC_HOME="/home/$USERNAME"
+ENV FC_REPO_PATH="$FC_HOME/repo"
+ENV QUART_FOXDATA_ICC_DUMPS_PATH="$FC_HOME/icc_dumps"
+ENV QUART_FOXDATA_DATA_PICKLE_PATH="$FC_HOME/data.pickle"
 
 # create new user and project directories
 RUN set -eux; \
-    useradd --create-home --user-group --no-log-init "$USERNAME"; \
-    mkdir -p "/home/$USERNAME" "$REPO_DIR" "$VENV_DIR"; \
-    chown -R "$USERNAME:$USERNAME" "/home/$USERNAME" "$PROJECT_DIR"
-WORKDIR "$REPO_DIR"
+    useradd --create-home --user-group --no-log-init "$FC_USERNAME"; \
+    mkdir -p "$FC_HOME" "$FC_REPO_PATH"; \
+    chown -R "$FC_USERNAME:$FC_USERNAME" "$FC_HOME"
+WORKDIR "$FC_REPO_PATH"
 
 
 FROM base AS dev
-ARG USERNAME
-ARG PROJECT_DIR
 ARG DEBIAN_FRONTEND=noninteractive
 
 # update and install dev tools
@@ -37,13 +34,11 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
 
 # change user
-USER "$USERNAME"
+USER "$FC_USERNAME"
 
-# install uv and set up venv
+# install uv
 RUN set -eux; \
-    wget -qO - https://astral.sh/uv/install.sh | sh; \
-    . "/home/$USERNAME/.cargo/env"; \
-    uv venv "$VENV_DIR"
+    wget -qO - https://astral.sh/uv/install.sh | sh
 
 # install rust
 RUN set -eux; \
@@ -51,7 +46,7 @@ RUN set -eux; \
 
 # install nvm, node, yarn
 ARG NVM_GH_API=https://api.github.com/repos/nvm-sh/nvm/releases/latest
-ARG NVM_DIR="/home/$USERNAME/.nvm"
+ARG NVM_DIR="$FC_HOME/.nvm"
 ARG NODE_ENV=production
 ENV NVM_DIR="$NVM_DIR" NODE_ENV="$NODE_ENV"
 RUN set -ex; \
@@ -67,26 +62,20 @@ CMD sleep infinity
 
 
 FROM dev AS builder
-ARG USERNAME
-ARG PROJECT_DIR
 
 # build project
-COPY --chown="$USERNAME:$USERNAME" . "$REPO_DIR"
+COPY --chown="$FC_USERNAME:$FC_USERNAME" . "$FC_REPO_PATH"
 RUN set -ex; \
-    . "/home/$USERNAME/.cargo/env"; \
-    . "$VENV_DIR/bin/activate"; \
-    cd "$REPO_DIR" && \
-    uv pip install --editable .
+    . "$FC_HOME/.cargo/env"; \
+    uv sync
 
 
 FROM base AS production
-ARG USERNAME
-ARG PROJECT_DIR
 
 # copy built project and set user
-USER "$USERNAME"
-COPY --from=builder --chown="$USERNAME:$USERNAME" "$PROJECT_DIR" "$PROJECT_DIR"
+USER "$FC_USERNAME"
+COPY --from=builder --chown="$FC_USERNAME:$FC_USERNAME" "$FC_REPO_PATH" "$FC_REPO_PATH"
 
 # replace entrypoint
-CMD . "$VENV_DIR/bin/activate"; \
-    hypercorn "$APP_FACTORY()" --bind "$APP_HOST:$APP_PORT"
+CMD . "$FC_REPO_PATH/.venv/bin/activate"; \
+    hypercorn "$FC_APP_FACTORY()" --bind "$FC_APP_HOST:$FC_APP_PORT"

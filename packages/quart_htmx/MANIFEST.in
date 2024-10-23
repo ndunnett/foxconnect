@@ -1,0 +1,2 @@
+include src/quart_htmx/node_modules/htmx.org/dist/*
+include src/quart_htmx/node_modules/htmx.org/LICENSE

@@ -2,14 +2,14 @@ import subprocess
 from pathlib import Path
 
 from setuptools import setup
-from setuptools.command.build import build as orig_build
+from setuptools.command.build_py import build_py
 
 
-class build(orig_build):
+class Build(build_py):
     def run(self) -> None:
         """Install node packages using yarn."""
 
-        cwd = Path(__file__).parent.resolve() / "quart_htmx"
+        cwd = Path(__file__).parent.resolve() / "src" / "quart_d3graphviz"
         cmd = '. "$NVM_DIR/nvm.sh"; yes | yarn install'
         subprocess.run(cmd, cwd=cwd, shell=True)
         super().run()
@@ -17,6 +17,6 @@ class build(orig_build):
 
 setup(
     cmdclass={
-        "build": build,
+        "build_py": Build,
     },
 )

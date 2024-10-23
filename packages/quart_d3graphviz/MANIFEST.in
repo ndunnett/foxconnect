@@ -1,0 +1,6 @@
+include src/quart_d3graphviz/node_modules/d3/dist/*
+include src/quart_d3graphviz/node_modules/d3/LICENSE
+include src/quart_d3graphviz/node_modules/d3-graphviz/build/*
+include src/quart_d3graphviz/node_modules/d3-graphviz/LICENSE
+include src/quart_d3graphviz/node_modules/@hpcc-js/wasm/dist/*
+include src/quart_d3graphviz/node_modules/@hpcc-js/wasm/LICENSE
