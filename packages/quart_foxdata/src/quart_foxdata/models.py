@@ -89,11 +89,17 @@ class Block:
         """<compound>:<block>"""
         return f"{self.compound}:{self.name}"
 
-    def __eq__(self, other: Block) -> bool:
-        return hash(self) == hash(other)
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, Block):
+            return hash(self) == hash(other)
+        else:
+            return NotImplemented
 
-    def __lt__(self, other: Block) -> bool:
-        return repr(self.compound) < repr(other.compound)
+    def __lt__(self, other: object) -> bool:
+        if isinstance(other, Block):
+            return repr(self.compound) < repr(other.compound)
+        else:
+            return NotImplemented
 
     def __hash__(self) -> int:
         return Data.hasher(repr(self))
@@ -115,7 +121,7 @@ class Block:
         return self.meta["compound"]
 
     def list_connections(self) -> list[tuple[bool, str, ParameterReference]]:
-        def f(c: Connection) -> tuple[Connection, bool]:
+        def f(c: Connection) -> tuple[bool, str, ParameterReference]:
             if c.sink.name == self.name and c.sink.compound == self.compound:
                 return (False, c.sink.parameter, c.source)
             else:
