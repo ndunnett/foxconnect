@@ -12,7 +12,8 @@
         "rust-lang.rust-analyzer",
         "redhat.vscode-yaml",
         "fill-labs.dependi",
-        "samuelcolvin.jinjahtml"
+        "samuelcolvin.jinjahtml",
+        "ms-python.mypy-type-checker"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/home/foxconnect/repo/.venv/bin/python",
@@ -23,7 +24,8 @@
         ],
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff"
-        }
+        },
+        "mypy-type-checker.args": ["--enable-incomplete-feature=NewGenericSyntax"]
       }
     }
   }
