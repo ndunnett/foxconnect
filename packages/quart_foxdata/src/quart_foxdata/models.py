@@ -59,7 +59,7 @@ class Data:
 
         def _f(block: Block) -> Optional[dict[str, str]]:
             if all(is_stringable(block[key]) and pattern.search(str(block[key])) for key, pattern in filters):
-                return {key: block[key] for key, _ in query}
+                return {key: str(block[key]) for key, _ in query}
             else:
                 return None
 
@@ -74,7 +74,7 @@ class Block:
     meta: dict[str, Any]
     connections: set[Connection]
 
-    def __init__(self, config: dict[str, str], **meta: dict[str, Any]):
+    def __init__(self, config: dict[str, str], **meta: Any):
         """Parses config dictionary into block object."""
         if "TYPE" in config and config["TYPE"] == "COMPND":
             compound, name = config["NAME"], config["NAME"]
@@ -197,5 +197,5 @@ class ParameterData:
         self.description = description
         self.accessibility = accessibility
 
-    def dict(self) -> dict[str, str]:
+    def dict(self) -> dict[str, str | int]:
         return {"title": self.title, "description": self.description, "accessibility": int(self.accessibility)}

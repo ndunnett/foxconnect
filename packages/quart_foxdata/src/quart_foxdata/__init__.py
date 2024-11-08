@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator, Optional
 
-from billiard import Pool
+from billiard import Pool  # type: ignore
 from quart import Quart
 
 from quart_foxdata.models import Block, Connection, Data, ParameterAccessibility, ParameterData, ParameterReference
@@ -29,7 +29,7 @@ class FoxData:
 
         icc_dumps_path = Path(app.config["FOXDATA_ICC_DUMPS_PATH"])
         data_pickle_path = Path(app.config["FOXDATA_DATA_PICKLE_PATH"])
-        app.data = initialise_data(data_pickle_path, icc_dumps_path.glob("*/*.d"))
+        app.data = initialise_data(data_pickle_path, icc_dumps_path.glob("*/*.d"))  # type: ignore
 
 
 @contextmanager
@@ -58,7 +58,7 @@ def initialise_data(data_pickle_path: Path, dump_file_glob: Generator[Path, None
     return data
 
 
-def generate_data(dump_file_glob: Generator[Path, None, None]) -> list[Block]:
+def generate_data(dump_file_glob: Generator[Path, None, None]) -> Data:
     """Parse all CP dump files to create a Data object containing parsed blocks."""
     # Use process pool to concurrently parse blocks from dump files
     with Pool() as pool:
@@ -84,7 +84,7 @@ def generate_data(dump_file_glob: Generator[Path, None, None]) -> list[Block]:
     return data
 
 
-def parse_dump_file(path: Path) -> tuple[Block]:
+def parse_dump_file(path: Path) -> tuple[Block, ...]:
     """Parses dump file at path and returns tuple of Block objects."""
     with open(path, mode="r", encoding="utf-8") as file:
         return tuple(

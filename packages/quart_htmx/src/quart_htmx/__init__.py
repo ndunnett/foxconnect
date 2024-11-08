@@ -3,7 +3,7 @@ from __future__ import annotations
 import importlib.resources
 import json
 from enum import StrEnum
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from quart import Blueprint, Quart
 from quart import make_response as base_make_response
@@ -126,13 +126,13 @@ class Response(BaseResponse):
         Uses [HX-Location](https://htmx.org/headers/hx-location/) response header.
         """
 
-        if len(kwargs) == 0:
+        if len(kwargs) == 0 and path is not None:
             self.headers.set("HX-Location", path)
         else:
             self.headers.set("HX-Location", json.dumps({"path": path} | kwargs))
         return self
 
-    def hx_push_url(self, url: str | False) -> Response:
+    def hx_push_url(self, url: str | Literal[False]) -> Response:
         """Pushes a new url into the history stack.
 
         Uses [HX-Push-Url](https://htmx.org/headers/hx-push-url/) response header.
@@ -162,7 +162,7 @@ class Response(BaseResponse):
         self.headers.set("HX-Refresh", HTMX_TRUE if refresh else HTMX_FALSE)
         return self
 
-    def hx_replace_url(self, url: str | False) -> Response:
+    def hx_replace_url(self, url: str | Literal[False]) -> Response:
         """Replaces the current URL in the location bar.
 
         Uses [HX-Replace-Url](https://htmx.org/headers/hx-replace-url/) response header.
@@ -239,7 +239,7 @@ class Response(BaseResponse):
 
 
 # reannotations to add HTMX type hints
-async def make_response(*args: Any) -> Response:
+async def make_response(*args: Any) -> Response:  # type: ignore
     """Create a response, a simple wrapper function.
 
     This is most useful when you want to alter a Response before
@@ -254,4 +254,4 @@ async def make_response(*args: Any) -> Response:
 
 
 make_response.__code__ = base_make_response.__code__
-request: Request = base_request
+request: Request = base_request  # type: ignore

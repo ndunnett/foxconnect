@@ -3,3 +3,4 @@ build
 target
 __pycache__
 .venv
+.mypy_cache

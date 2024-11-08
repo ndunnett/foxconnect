@@ -1,6 +1,7 @@
 /Dockerfile
 /.git
 /.venv
+/.mypy_cache
 **/*.egg-info
 **/build
 **/target
