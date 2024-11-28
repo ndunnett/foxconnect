@@ -1,3 +1,7 @@
+"""
+This module contains the HTMX Quart extension and associated functionality.
+"""
+
 from __future__ import annotations
 
 import importlib.resources
@@ -10,11 +14,21 @@ from quart import make_response as base_make_response
 from quart import request as base_request
 from quart.wrappers import Request as BaseRequest
 from quart.wrappers import Response as BaseResponse
+from werkzeug.exceptions import BadRequest
 
-__all__ = ["HTMX", "Request", "Response", "make_response", "request"]
+__all__ = ["BadHtmxRequest", "HTMX", "Request", "Response", "make_response", "request"]
 
 HTMX_TRUE = "true"
 HTMX_FALSE = "false"
+
+
+class BadHtmxRequest(BadRequest):
+    """*400* `Bad Request`
+
+    Raise if the browser sends something to an endpoint which is not meant to handle non-HTMX requests.
+    """
+
+    description = "Requests to this endpoint must be made via HTMX."
 
 
 class HTMX:

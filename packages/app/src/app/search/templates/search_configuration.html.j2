@@ -1,0 +1,25 @@
+<div class="offcanvas-header p-2">
+  <h4 class="offcanvas-title" id="configuration-label">Search Configuration</h4>
+  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+</div>
+<div class="offcanvas-body pt-2">
+  <div class="vstack gap-3">
+    <h5 class="modal-title">Queried parameters</h5>
+    <ul class="list-group" id="parameterList">
+      {% for item in current_params %}{{ item }}{% endfor %}
+    </ul>
+    <input class="form-control" type="search" name="search-parameters" placeholder="Begin typing to search parameters"
+      hx-post="{{ url_for('search.search_parameters') }}" hx-target="#addable-parameters"
+      hx-trigger="input changed delay:500ms" />
+    <ul class="list-group" id="addable-parameters"></ul>
+  </div>
+</div>
+<div class="bg-body border-top sticky-bottom p-2">
+  <div class="float-end">
+    <button class="btn btn-primary" type="button" data-bs-dismiss="offcanvas" aria-label="Apply"
+      hx-post="{{ url_for('search.table') }}" hx-trigger="click" hx-target="#table-container"
+      hx-swap="innerHTML transition:true">Apply</button>
+    <button class="btn btn-secondary" type="button" data-bs-dismiss="offcanvas" aria-label="Cancel"
+      hx-get="{{ url_for('search.configuration') }}" hx-target="#configuration" hx-trigger="click">Cancel</button>
+  </div>
+</div>

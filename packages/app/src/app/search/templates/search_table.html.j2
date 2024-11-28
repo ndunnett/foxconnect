@@ -1,0 +1,66 @@
+{%- macro button_link(title, url) -%}
+<a role="button" class="btn btn-outline-secondary btn-results" href="{{ url }}">{{ title }}</a>
+{%- endmacro -%}
+
+<table class="table table-sm table-hover align-middle">
+  <thead id="table-head">
+    <tr>
+      <td style="max-width: 275px">
+        <div class="input-group">
+          {{ search_inputs["COMPOUND"] }}
+          <span class="input-group-text">:</span>
+          {{ search_inputs["NAME"] }}
+        </div>
+      </td>
+      {% for field in fields if field not in ["COMPOUND", "NAME"] -%}
+      <td>{{ search_inputs[field] }}</td>
+      {%- endfor %}
+      <td class="align-middle text-end">
+        <button type="button" class="btn btn-dark btn-lg">
+          <i class="bi bi-link"></i>
+        </button>
+        <button class="btn btn-dark btn-lg" data-bs-toggle="offcanvas" data-bs-target="#configuration"
+          aria-controls="configuration">
+          <i class="bi bi-gear-fill"></i>
+        </button>
+      </td>
+    </tr>
+  </thead>
+
+  <tbody id="table-body" class="table-group-divider">
+    {% for result in results -%}
+    <tr>
+      <td>{{ result["COMPOUND"] }}:{{ result["NAME"] }}</td>
+      {% for field in fields if field not in ["COMPOUND", "NAME"] -%}
+      <td>{{ result[field] | default("", true) }}</td>
+      {%- endfor %}
+      <td>
+        <div role="group" class="btn-group btn-group-sm float-end" aria-label="Links">
+          {{ button_link("Diagram", url_for("blocks.view_diagram", compound=result["COMPOUND"], block=result["NAME"]))
+          }}
+          {{ button_link("Detail", url_for("blocks.view_detail", compound=result["COMPOUND"], block=result["NAME"])) }}
+        </div>
+      </td>
+    </tr>
+    {%- endfor %}
+  </tbody>
+
+  <caption id="table-foot">
+    <div class="row align-middle mt-3">
+      <div class="col text-start">
+      </div>
+      <div class="col text-center">
+        <ul class="pagination pagination-sm justify-content-center">
+          {% for item in pagination %}
+          <li class="page-item">{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col text-end">
+        <small class="text-body-secondary">
+          {{ "{:,}".format(total_results) }} result{% if total_results != 1 %}s{% endif %}
+        </small>
+      </div>
+    </div>
+  </caption>
+</table>

@@ -1,6 +1,7 @@
 import gc
 import pickle
 import re
+from collections.abc import Iterable
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator, Optional
@@ -8,7 +9,16 @@ from typing import Generator, Optional
 from billiard import Pool  # type: ignore
 from quart import Quart
 
-from quart_foxdata.models import Block, Connection, Data, ParameterAccessibility, ParameterData, ParameterReference
+from quart_foxdata.models import (
+    AccessFlag,
+    Block,
+    Config,
+    Connection,
+    Data,
+    Meta,
+    Parameter,
+    ParameterReference,
+)
 
 # Regex pattern to match "<compound>:<block>.<parameter>" within config files
 CONNECTION_RE = re.compile(r"^(?P<compound>\w*):(?P<block>\w+)\.(?P<parameter>.+)$", re.IGNORECASE | re.ASCII)
@@ -100,26 +110,47 @@ def parse_dump_file(path: Path) -> tuple[Block, ...]:
         )
 
 
-def define_parameters() -> dict[str, ParameterData]:
-    parameters = [
-        # Calculated
-        ParameterData("CP", "CP", "CP which hosts the block", ParameterAccessibility.NONE),
-        # AIN
-        ParameterData("NAME", "Name", "block name", ParameterAccessibility.NONE),
-        ParameterData("TYPE", "Type", "block type", ParameterAccessibility.NONE),
-        ParameterData("DESCRP", "Descriptor", "descriptor", ParameterAccessibility.NONE),
-        ParameterData("PERIOD", "Period", "block sample time", ParameterAccessibility.NONE),
-        ParameterData("PHASE", "Phase", "block execute phase", ParameterAccessibility.NONE),
-        ParameterData("LOOPID", "Loop ID", "loop identifier", ParameterAccessibility.SET),
-        ParameterData("IOM_ID", "FBM", "FBM identifier", ParameterAccessibility.NONE),
-        ParameterData("PNT_NO", "Point", "FBM point number", ParameterAccessibility.NONE),
-        ParameterData("SCI", "SCI", "signal condition index", ParameterAccessibility.NONE),
-        ParameterData("HSCO1", "High Scale (O1)", "high scale, output 1", ParameterAccessibility.NONE),
-        ParameterData("LSCO1", "Low Scale (O1)", "low scale, output 1", ParameterAccessibility.NONE),
-        ParameterData("DELTO1", "Delta (O1)", "change delta, output 1", ParameterAccessibility.NONE),
-        ParameterData("EO1", "Units (O1)", "eng units, output 1", ParameterAccessibility.NONE),
-        ParameterData("OSV", "Variance", "output span variance", ParameterAccessibility.NONE),
-        ParameterData("EXTBLK", "Extender", "extender block", ParameterAccessibility.CON | ParameterAccessibility.SET),
-    ]
+_PARAMS = [
+    # Meta
+    Parameter(Meta("COMPOUND"), "Compound", "compound in which the block is contained", AccessFlag.NONE),
+    Parameter(Meta("CP"), "CP", "CP which hosts the block", AccessFlag.NONE),
+    # AIN
+    Parameter(Config("NAME"), "Name", "block name", AccessFlag.NONE),
+    Parameter(Config("TYPE"), "Type", "block type", AccessFlag.NONE),
+    Parameter(Config("DESCRP"), "Descriptor", "descriptor", AccessFlag.NONE),
+    Parameter(Config("PERIOD"), "Period", "block sample time", AccessFlag.NONE),
+    Parameter(Config("PHASE"), "Phase", "block execute phase", AccessFlag.NONE),
+    Parameter(Config("LOOPID"), "Loop ID", "loop identifier", AccessFlag.SET),
+    Parameter(Config("IOM_ID"), "FBM", "FBM identifier", AccessFlag.NONE),
+    Parameter(Config("PNT_NO"), "Point", "FBM point number", AccessFlag.NONE),
+    Parameter(Config("SCI"), "SCI", "signal condition index", AccessFlag.NONE),
+    Parameter(Config("HSCO1"), "High Scale (O1)", "high scale, output 1", AccessFlag.NONE),
+    Parameter(Config("LSCO1"), "Low Scale (O1)", "low scale, output 1", AccessFlag.NONE),
+    Parameter(Config("DELTO1"), "Delta (O1)", "change delta, output 1", AccessFlag.NONE),
+    Parameter(Config("EO1"), "Units (O1)", "eng units, output 1", AccessFlag.NONE),
+    Parameter(Config("OSV"), "Variance", "output span variance", AccessFlag.NONE),
+    Parameter(Config("EXTBLK"), "Extender", "extender block", AccessFlag.CON | AccessFlag.SET),
+]
 
-    return {p.name: p for p in parameters}
+_PARAMS_DICT = {p.source.upper(): p for p in _PARAMS}
+
+_PARAMS_INDEX = tuple((f"{p.source.upper()} {p.name.upper()} {p.description.upper()}", p) for p in _PARAMS)
+
+
+def query_parameters(query: str, exclude: Iterable[Parameter] | None = None) -> list[Parameter]:
+    """Get list of parameters that contain the query string (case-insensitive) in the metadata."""
+
+    if not exclude:
+        exclude = (_PARAMS_DICT["COMPOUND"], _PARAMS_DICT["NAME"])
+
+    def _gen(q: str) -> Generator[Parameter, None, None]:
+        for k, p in _PARAMS_INDEX:
+            if q in k and p not in exclude:
+                yield p
+
+    return list(_gen(query.upper()))
+
+
+def get_parameter(name: str) -> Parameter | None:
+    """Get parameter by name (case-insensitive) if it exists."""
+    return _PARAMS_DICT.get(name.upper())

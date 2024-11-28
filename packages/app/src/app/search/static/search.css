@@ -2,3 +2,15 @@
   --bs-btn-font-size: 0.75rem !important;
   --bs-btn-padding-y: 0.15rem !important;
 }
+
+.handle {
+  cursor: grab !important;
+}
+
+.sortable-ghost {
+  opacity: 0;
+}
+
+.grabbing * {
+  cursor: grabbing !important;
+}

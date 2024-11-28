@@ -1,15 +1,22 @@
 import math
-from functools import cache, reduce
+from functools import reduce
 from typing import Optional
 
 from quart import Blueprint, Quart, current_app, render_template, session
-from werkzeug.exceptions import BadRequest
+from quart_foxdata import query_parameters
+from quart_htmx import BadHtmxRequest, request
 
-from app.search.components import PaginationButton, SearchInput
-from quart_foxdata import define_parameters
-from quart_htmx import request
+from app.search.components import AddableParameter, PaginationButton, RemovableParameter, SearchInput
 
 bp = Blueprint("search", __name__, template_folder="templates", static_folder="static", url_prefix="/search")
+
+
+DEFAULT_FIELDS = (
+    ("COMPOUND", ""),
+    ("NAME", ""),
+    ("TYPE", ""),
+    ("CP", ""),
+)
 
 
 def init_app(app: Quart) -> None:
@@ -20,38 +27,47 @@ def init_app(app: Quart) -> None:
 
 
 def generate_pagination(page: int, lines: int, total: int) -> list[PaginationButton]:
+    """Generate pagination components for given page, lines, and total results."""
+
     last_page = math.ceil(total / lines)
     indices = filter(lambda x: 0 < x <= last_page, (1, page - 2, page - 1, page, page + 1, page + 2, last_page))
 
     def fold_indices(acc: list[PaginationButton], i: int) -> list[PaginationButton]:
-        if len(acc) == 0 or (len(acc) > 0 and i > acc[-1].value):
-            if len(acc) > 0 and i - acc[-1].value > 1:
+        """Inserts a disabled button between page number gaps and filters out repeated indices."""
+        empty = len(acc) == 0
+        repeated = not empty and (last := acc[-1].value) is not None and i == last
+        discontinuous = not empty and (last := acc[-1].value) is not None and i - last != 1
+
+        if not repeated:
+            if discontinuous:
                 acc.append(PaginationButton(disabled=True))
             acc.append(PaginationButton(value=i, active=i == page))
+
         return acc
 
     prev = PaginationButton(label="←", value=page - 1, disabled=page == 1)
     next = PaginationButton(label="→", value=page + 1, disabled=page == last_page)
-    return [prev] + reduce(fold_indices, indices, list()) + [next]
+    initial: list[PaginationButton] = list()
+    return [prev] + reduce(fold_indices, indices, initial) + [next]
 
 
-@cache
-def get_parameter_title(parameter_id: str) -> Optional[str]:
-    if parameter := define_parameters().get(parameter_id.upper()):
-        return parameter.title
-    else:
-        return None
+def generate_search_inputs(fields: tuple[tuple[str, Optional[str]], ...]) -> dict[str, SearchInput]:
+    """Generate search input components for the table header."""
+    return {key: SearchInput(key, value=value) for key, value in fields}
 
 
-def generate_search_inputs(fields: tuple[str, Optional[str]]) -> dict[str, SearchInput]:
-    return {key: SearchInput(key, label=get_parameter_title(key), value=value) for key, value in fields}
+def fetch_data(query: dict) -> dict:
+    """Process query to fetch all data and components needed to render the table body and footer."""
 
-
-def fetch_data(query):
-    data = current_app.data.query_blocks(query["fields"])
+    data = current_app.data.query_blocks(query["fields"])  # type: ignore
     start = (query["page"] - 1) * query["lines"]
     end = start + query["lines"]
     total = len(data)
+
+    current_params = [
+        RemovableParameter(name, pinned=(name.upper() in ("COMPOUND", "NAME")))
+        for name, _ in session.get("fields", DEFAULT_FIELDS)
+    ]
 
     return {
         "fields": dict(query["fields"]),
@@ -59,24 +75,18 @@ def fetch_data(query):
         "page_number": query["page"],
         "total_results": total,
         "pagination": generate_pagination(query["page"], query["lines"], total),
+        "current_params": current_params,
     }
-
-
-def default_fields() -> tuple:
-    return (
-        ("compound", ""),
-        ("name", ""),
-        ("type", ""),
-        ("cp", ""),
-    )
 
 
 @bp.route("")
 async def index():
+    """Render the main search index page."""
+
     query = {
         "page": session.get("page", 1),
         "lines": session.get("lines", 18),
-        "fields": session.get("fields", default_fields()),
+        "fields": session.get("fields", DEFAULT_FIELDS),
     }
 
     return await render_template(
@@ -87,11 +97,19 @@ async def index():
     )
 
 
-@bp.route("/table_body", methods=["POST"])
-async def table_body():
+@bp.route("/table", methods=["POST"])
+async def table():
+    """Render the table body dynamic content via HTMX."""
+
     if request.hx_request:
         form = await request.form
-        fields = {key.split("query-")[-1]: val for key, val in form.items() if key.startswith("query-")}
+        parameters = [key.removeprefix("parameter-").upper() for key in form.keys() if key.startswith("parameter-")]
+
+        if len(parameters):
+            current_fields = {key.removeprefix("query-"): val for key, val in form.items() if key.startswith("query-")}
+            fields = {key: current_fields.get(key) or "" for key in parameters}
+        else:
+            fields = {key.removeprefix("query-"): val for key, val in form.items() if key.startswith("query-")}
 
         query = {
             "page": form.get("page", default=1, type=int),
@@ -103,6 +121,61 @@ async def table_body():
         session["lines"] = query["lines"]
         session["fields"] = query["fields"]
 
-        return await render_template("search_table_body.html.j2", **fetch_data(query))
+        return await render_template(
+            "search_table.html.j2",
+            search_inputs=generate_search_inputs(query["fields"]),
+            **fetch_data(query),
+        )
 
-    raise BadRequest()
+    raise BadHtmxRequest()
+
+
+@bp.route("/configuration", methods=["GET"])
+async def configuration():
+    """Render the configuration panel via HTMX."""
+
+    if request.hx_request:
+        current_params = [
+            RemovableParameter(name, pinned=(name.upper() in ("COMPOUND", "NAME")))
+            for name, _ in session.get("fields", DEFAULT_FIELDS)
+        ]
+
+        return await render_template("search_configuration.html.j2", current_params=current_params)
+
+    raise BadHtmxRequest()
+
+
+@bp.route("/delete", methods=["DELETE"])
+async def delete():
+    """Return an empty string for HTMX delete requests."""
+
+    return ""
+
+
+@bp.route("/add_parameter", methods=["GET"])
+async def add_parameter():
+    """Get a parameter to add to the queried parameters in the configuration panel."""
+
+    if request.hx_request:
+        if name := request.hx_trigger.removeprefix("add-").upper():
+            return str(RemovableParameter(name))
+
+    raise BadHtmxRequest()
+
+
+@bp.route("/search_parameters", methods=["POST"])
+async def search_parameters():
+    """Get a list of parameters that can be added in the configuration panel."""
+
+    if request.hx_request:
+        form = await request.form
+
+        if query := form.get("search-parameters"):
+            if parameters := query_parameters(query):
+                return "\n".join(str(AddableParameter(p.source)) for p in parameters)
+            else:
+                return str(AddableParameter(query))
+        else:
+            return ""
+
+    raise BadHtmxRequest()

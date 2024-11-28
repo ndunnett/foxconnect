@@ -4,7 +4,7 @@ import re
 from collections.abc import Iterable
 from enum import IntFlag
 from functools import lru_cache
-from typing import Any, Callable, Generator, Optional
+from typing import Any, Callable, Generator
 
 import fastmurmur3
 
@@ -18,7 +18,7 @@ def is_stringable(x: Any) -> bool:
         return False
 
 
-def filter_map[T, U](func: Callable[[T], Optional[U]], it: Iterable[T]) -> Generator[U, None, None]:
+def filter_map[X, Y](func: Callable[[X], Y | None], it: Iterable[X]) -> Generator[Y, None, None]:
     """Maps function over iterator and yields results that are not None."""
     for element in it:
         if (result := func(element)) is not None:
@@ -37,15 +37,15 @@ class Data:
         self.blocks = blocks
         self.index = {hash(block): block for block in blocks}
 
-    def get_block_from_name(self, compound: str, name: str) -> Optional[Block]:
+    def get_block_from_name(self, compound: str, name: str) -> Block | None:
         """Search index for given compound and block name."""
         return self.get_block_from_hash(Data.hasher(f"{compound}:{name}"))
 
-    def get_block_from_ref(self, parameter_reference: ParameterReference) -> Optional[Block]:
+    def get_block_from_ref(self, parameter_reference: ParameterReference) -> Block | None:
         """Search index for block in given parameter reference."""
         return self.get_block_from_hash(parameter_reference.block_hash)
 
-    def get_block_from_hash(self, block_hash: int) -> Optional[Block]:
+    def get_block_from_hash(self, block_hash: int) -> Block | None:
         """Search index for block in given block hash."""
         if block_hash in self.index:
             return self.index[block_hash]
@@ -57,7 +57,7 @@ class Data:
         """Return list of block data dicts that match query."""
         filters = tuple((key, re.compile(pattern, re.IGNORECASE | re.ASCII)) for key, pattern in query if pattern)
 
-        def _f(block: Block) -> Optional[dict[str, str]]:
+        def _f(block: Block) -> dict[str, str] | None:
             if all(is_stringable(block[key]) and pattern.search(str(block[key])) for key, pattern in filters):
                 return {key: str(block[key]) for key, _ in query}
             else:
@@ -104,7 +104,7 @@ class Block:
     def __hash__(self) -> int:
         return Data.hasher(repr(self))
 
-    def __getitem__(self, name: str) -> Optional[Any]:
+    def __getitem__(self, name: str) -> Any | None:
         if (k := name.lower()) in self.meta:
             return self.meta[k]
         elif (k := name.upper()) in self.config:
@@ -177,25 +177,46 @@ class Connection:
         return repr(self) < repr(other)
 
 
-class ParameterAccessibility(IntFlag):
+class AccessFlag(IntFlag):
+    """Represents permissible access to a block parameter."""
+
     NONE = 0
     CON = 1
     SET = 2
 
+    def __str__(self) -> str:
+        if AccessFlag.CON | AccessFlag.SET in self:
+            return "con/set"
+        elif AccessFlag.CON in self:
+            return "con/no-set"
+        elif AccessFlag.SET in self:
+            return "no-con/set"
+        else:
+            return "no-con/no-set"
 
-class ParameterData:
+
+class Meta(str): ...
+
+
+class Config(str): ...
+
+
+Source = Meta | Config
+
+
+class Parameter:
     """Holds metadata for parameter types."""
 
+    source: Source
     name: str
-    title: str
     description: str
-    accessibility: ParameterAccessibility
+    access: AccessFlag
 
-    def __init__(self, name, title, description, accessibility):
+    def __init__(self, source: Source, name: str, description: str, access: AccessFlag) -> None:
+        self.source = source
         self.name = name
-        self.title = title
         self.description = description
-        self.accessibility = accessibility
+        self.access = access
 
-    def dict(self) -> dict[str, str | int]:
-        return {"title": self.title, "description": self.description, "accessibility": int(self.accessibility)}
+    def search_line(self) -> str:
+        return f"{self.source}\t{self.name}\t{self.description}"
