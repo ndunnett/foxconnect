@@ -1,8 +1,8 @@
-/Dockerfile
 /.git
 /.venv
-/.mypy_cache
 **/*.egg-info
 **/build
 **/target
 **/__pycache__
+**/.yarn
+**/node_modules

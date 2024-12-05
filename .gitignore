@@ -1,6 +1,5 @@
-*.egg-info
-build
-target
-__pycache__
-.venv
-.mypy_cache
+/packages/*/src/**/*.egg-info
+/packages/*/src/**/build
+/packages/*/src/**/__pycache__
+/.venv
+/.env
