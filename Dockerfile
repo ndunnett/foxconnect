@@ -12,6 +12,8 @@ ARG USERNAME
 ENV FC_APP_FACTORY="$APP_FACTORY" FC_APP_HOST="$APP_HOST" FC_APP_PORT="$APP_PORT"
 ENV FC_USERNAME="$USERNAME" FC_HOME="/home/$USERNAME"
 ENV FC_REPO_PATH="$FC_HOME/repo"
+ENV PATH="$FC_HOME/.cargo/bin:$PATH"
+ENV PYO3_PYTHON="$FC_REPO_PATH/.venv/bin/python" UV_LINK_MODE=copy
 ENV QUART_FOXDATA_ICC_DUMPS_PATH="$FC_HOME/icc_dumps"
 ENV QUART_FOXDATA_DATA_PICKLE_PATH="$FC_HOME/data.pickle"
 
@@ -37,12 +39,10 @@ RUN set -eux; \
 USER "$FC_USERNAME"
 
 # install uv
-RUN set -eux; \
-    wget -qO - https://astral.sh/uv/install.sh | sh
+COPY --from=ghcr.io/astral-sh/uv:0.5 /uv /uvx /bin/
 
 # install rust
-RUN set -eux; \
-    wget -qO - https://sh.rustup.rs | sh -s -- -y
+RUN set -eux; wget -qO - https://sh.rustup.rs | sh -s -- -y
 
 # install nvm, node, yarn
 ARG NVM_GH_API=https://api.github.com/repos/nvm-sh/nvm/releases/latest
@@ -65,9 +65,7 @@ FROM dev AS builder
 
 # build project
 COPY --chown="$FC_USERNAME:$FC_USERNAME" . "$FC_REPO_PATH"
-RUN set -ex; \
-    . "$FC_HOME/.cargo/env"; \
-    uv sync
+RUN set -ex; uv sync
 
 
 FROM base AS production
