@@ -7,7 +7,7 @@ from __future__ import annotations
 import importlib.resources
 import json
 from enum import StrEnum
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from quart import Blueprint, Quart
 from quart import make_response as base_make_response
@@ -16,7 +16,7 @@ from quart.wrappers import Request as BaseRequest
 from quart.wrappers import Response as BaseResponse
 from werkzeug.exceptions import BadRequest
 
-__all__ = ["BadHtmxRequest", "HTMX", "Request", "Response", "make_response", "request"]
+__all__ = ("HTMX", "BadHtmxRequest", "Request", "Response", "make_response", "request")
 
 HTMX_TRUE = "true"
 HTMX_FALSE = "false"
@@ -39,7 +39,7 @@ class HTMX:
     wrapped to provide helper methods for HTMX functionality.
     """
 
-    def __init__(self, app: Optional[Quart] = None):
+    def __init__(self, app: Quart | None = None) -> None:
         if app is not None:
             self.init_app(app)
 
@@ -69,7 +69,7 @@ class Request(BaseRequest):
         return self.headers.get("HX-Boosted") == HTMX_TRUE
 
     @property
-    def hx_current_url(self) -> Optional[str]:
+    def hx_current_url(self) -> str | None:
         """Returns the current URL of the browser."""
         return self.headers.get("HX-Current-URL")
 
@@ -79,7 +79,7 @@ class Request(BaseRequest):
         return self.headers.get("HX-History-Restore-Request") == HTMX_TRUE
 
     @property
-    def hx_prompt(self) -> Optional[str]:
+    def hx_prompt(self) -> str | None:
         """Returns the user response to an hx-prompt."""
         return self.headers.get("HX-Prompt")
 
@@ -89,17 +89,17 @@ class Request(BaseRequest):
         return self.headers.get("HX-Request") == HTMX_TRUE
 
     @property
-    def hx_target(self) -> Optional[str]:
+    def hx_target(self) -> str | None:
         """Returns the id of the target element if it exists."""
         return self.headers.get("HX-Target")
 
     @property
-    def hx_trigger_name(self) -> Optional[str]:
+    def hx_trigger_name(self) -> str | None:
         """Returns the name of the triggered element if it exists."""
         return self.headers.get("HX-Trigger-Name")
 
     @property
-    def hx_trigger(self) -> Optional[str]:
+    def hx_trigger(self) -> str | None:
         """Returns the id of the triggered element if it exists."""
         return self.headers.get("HX-Trigger")
 
@@ -134,7 +134,7 @@ class SwapStyle(StrEnum):
 class Response(BaseResponse):
     """Allows setting [HTMX response headers](https://htmx.org/docs/#response-headers) easily via methods."""
 
-    def hx_location(self, path: Optional[str] = None, **kwargs: dict[str, str]) -> Response:
+    def hx_location(self, path: str | None = None, **kwargs: dict[str, str]) -> Response:
         """Allows you to do a client-side redirect that does not do a full page reload.
 
         Uses [HX-Location](https://htmx.org/headers/hx-location/) response header.
@@ -167,7 +167,7 @@ class Response(BaseResponse):
         self.headers.set("HX-Redirect", url)
         return self
 
-    def hx_refresh(self, refresh: bool = True) -> Response:
+    def hx_refresh(self, refresh: bool = True) -> Response:  # noqa: FBT001, FBT002
         """If true the client-side will do a full refresh of the page.
 
         Uses `HX-Refresh` response header.
@@ -260,9 +260,9 @@ async def make_response(*args: Any) -> Response:  # type: ignore
     returning it, for example:
 
     .. code-block:: python
-        response = await make_response(render_template('index.html'))
-        response.headers['X-Header'] = 'Something'
-        response.hx_trigger('event')
+        response = await make_response(render_template("index.html"))
+        response.headers["X-Header"] = "Something"
+        response.hx_trigger("event")
     """
     ...
 

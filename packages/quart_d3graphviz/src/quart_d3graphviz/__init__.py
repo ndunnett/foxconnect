@@ -1,11 +1,10 @@
 import importlib.resources
-from typing import Optional
 
 from quart import Blueprint, Quart
 
 
 class D3Graphviz:
-    def __init__(self, app: Optional[Quart] = None):
+    def __init__(self, app: Quart | None = None) -> None:
         if app is not None:
             self.init_app(app)
 

@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from functools import cache
-from typing import Optional
 
 from quart import url_for
 from quart_foxdata import get_parameter
@@ -14,12 +13,12 @@ def hx_attributes() -> str:
 
 @dataclass(frozen=True)
 class PaginationButton:
-    label: Optional[str] = None
-    value: Optional[int] = None
+    label: str | None = None
+    value: int | None = None
     active: bool = False
     disabled: bool = False
 
-    def __str__(self):
+    def __str__(self) -> str:
         label = self.label if self.label is not None else self.value if self.value is not None else "..."
         hx = f' {hx_attributes()} hx-vars="page:{self.value}"' if self.value is not None and not self.active else ""
         active = " active" if self.active else ""
@@ -30,20 +29,17 @@ class PaginationButton:
 @dataclass(frozen=True)
 class SearchInput:
     field: str
-    value: Optional[str] = None
+    value: str | None = None
 
-    def __str__(self):
-        if p := get_parameter(self.field.upper()):
-            label = p.name
-        else:
-            label = "." + self.field.upper()
-
+    def __str__(self) -> str:
+        label = p.name if (p := get_parameter(self.field.upper())) else "." + self.field.upper()
         value = f'value="{self.value}" ' if self.value is not None else ""
 
         return f"""
         <div class="form-floating">
             <input id="query-{self.field}" class="form-control" type="text" name="query-{self.field}"
-                {hx_attributes()} hx-trigger="input changed delay:2000ms, keyup[key=='Enter'] changed" placeholder="" {value}/>
+                {hx_attributes()} hx-trigger="input changed delay:2000ms, keyup[key=='Enter'] changed"
+                placeholder="" {value}/>
             <label for="query-{self.field}">{label}</label>
         </div>
         """
@@ -53,7 +49,7 @@ class SearchInput:
 class ParameterInfo:
     name: str
 
-    def __str__(self):
+    def __str__(self) -> str:
         if p := get_parameter(self.name):
             title = p.name
 
@@ -79,7 +75,7 @@ class ParameterInfo:
 class AddableParameter:
     name: str
 
-    def __str__(self):
+    def __str__(self) -> str:
         button = f"""
         <button id="add-{self.name}" type="button" class="btn btn-primary bi bi-plus-lg"
             hx-get="{url_for("search.add_parameter")}" hx-target="#parameterList" hx-swap="beforeend">
@@ -101,7 +97,7 @@ class RemovableParameter:
     name: str
     pinned: bool = False
 
-    def __str__(self):
+    def __str__(self) -> str:
         input_field = f"""<input type="hidden" id="parameter-{self.name}" name="parameter-{self.name}" value="" />"""
 
         if self.pinned:

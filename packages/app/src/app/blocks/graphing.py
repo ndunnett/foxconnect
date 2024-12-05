@@ -1,5 +1,6 @@
-from quart import render_template
+from typing import Any
 
+from quart import render_template
 from quart_foxdata.models import Block, Connection, Data
 
 
@@ -14,10 +15,10 @@ def create_graph(data: Data, root: Block, depth: int) -> tuple[set[Block], set[C
 
         for block in queue:
             connections |= block.connections
-            seen |= set(
+            seen |= {
                 data.get_block_from_ref(c.sink) if c.source.matches_block(block) else data.get_block_from_ref(c.source)
                 for c in block.connections
-            )
+            }
 
         blocks |= seen
         queue = seen
@@ -45,8 +46,8 @@ async def create_dot(data: Data, root: Block, depth: int) -> str:
     diagram = DotGraph(f"{root.compound}__{root.name}__depth-{depth}", rankdir="LR", ranksep=3, bgcolor="transparent")
 
     for block in blocks:
-        sourced_p = sorted(set(c.source.parameter for c in block.connections if c.source.matches_block(block)))
-        sinked_p = sorted(set(c.sink.parameter for c in block.connections if c.sink.matches_block(block)))
+        sourced_p = sorted({c.source.parameter for c in block.connections if c.source.matches_block(block)})
+        sinked_p = sorted({c.sink.parameter for c in block.connections if c.sink.matches_block(block)})
         fillcolor = origin_colour if block == root else other_colour
         label = await render_template(
             "graph_node_label.html.j2",
@@ -58,7 +59,7 @@ async def create_dot(data: Data, root: Block, depth: int) -> str:
             appearance=appearance,
         )
         diagram.add_node(
-            hash(block),
+            str(hash(block)),
             tooltip=str(block),
             label=label,
             fontname="Arial",
@@ -76,10 +77,13 @@ async def create_dot(data: Data, root: Block, depth: int) -> str:
     return diagram.to_string()
 
 
-def quote_if_necessary(p: any) -> str:
-    """If p is not wrapped in ', ", or <<>>, escape all double quote and new line characters and wrap p in double quotes"""
+def quote_if_necessary(p: Any) -> str:
+    """
+    If `p` is not wrapped in `'`, `"`, or `<<>>`, escape double quotes and new line characters
+    and wrap `p` in double quotes.
+    """
 
-    def is_wrapped(p: any, s: str, e=None) -> bool:
+    def is_wrapped(p: str, s: str, e: str | None = None) -> bool:
         return p.startswith(s) and p.endswith(s) if not e else p.startswith(s) and p.endswith(e)
 
     if isinstance(p, str):
@@ -102,7 +106,7 @@ def quote_if_necessary(p: any) -> str:
 class DotChild:
     """Represents a child of a DOT graph, ie. node/edge"""
 
-    def __init__(self, name: str, **attrs):
+    def __init__(self, name: str, **attrs: Any) -> None:
         self.name = name
         self.attributes = dict(attrs)
 
@@ -120,7 +124,7 @@ class DotGraph:
 
     INDENT = " " * 4
 
-    def __init__(self, name="diagram", graph_type="graph", strict=False, **attrs):
+    def __init__(self, name: str = "diagram", *, graph_type: str = "graph", strict: bool = False, **attrs: Any) -> None:
         self.name = name
         self.graph_type = graph_type
         self.strict = strict
@@ -128,10 +132,10 @@ class DotGraph:
         self.nodes = []
         self.edges = []
 
-    def add_node(self, name: str, **attrs) -> None:
+    def add_node(self, name: str, **attrs: Any) -> None:
         self.nodes.append(DotChild(name, **attrs))
 
-    def add_edge(self, src: str, dst: str, **attrs) -> None:
+    def add_edge(self, src: str, dst: str, **attrs: Any) -> None:
         self.edges.append(DotChild(f"{src} -- {dst}", **attrs))
 
     def to_string(self) -> str:
@@ -141,12 +145,10 @@ class DotGraph:
             output.append(f"{DotGraph.INDENT}{k}={quote_if_necessary(v)};")
 
         output.append("")
-
-        for node in self.nodes:
-            output.append(f"{DotGraph.INDENT}{node.to_string().replace("\n", "\n" + DotGraph.INDENT)}\n")
-
-        for edge in self.edges:
-            output.append(f"{DotGraph.INDENT}{edge.to_string()}")
-
+        output.extend(
+            [f"{DotGraph.INDENT}{node.to_string().replace("\n", "\n" + DotGraph.INDENT)}\n" for node in self.nodes],
+        )
+        output.extend([f"{DotGraph.INDENT}{edge.to_string()}" for edge in self.edges])
         output.append("}\n")
+
         return "\n".join(output)

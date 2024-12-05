@@ -10,10 +10,14 @@ dependencies = [
     "quart_d3graphviz",
     "quart_foxdata",
     "quart_htmx",
-    "Quart == 0.19.6",
+    "Quart == 0.19.9",
     "Hypercorn == 0.17.3",
     "billiard == 4.2.1",
+    "python-dotenv == 1.0.1"
 ]
+
+[tool.uv]
+dev-dependencies = ["setuptools"]
 
 [tool.uv.sources]
 app = { workspace = true }
@@ -28,8 +32,43 @@ members = ["packages/*"]
 [tool.ruff]
 line-length = 120
 
-[tool.ruff.lint]
-ignore = []
-
 [tool.ruff.format]
 quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.ruff.lint]
+ignore = ["ANN401", "B023", "PYI021", "PYI048", "RET505"]
+
+extend-select = [
+    "E",
+    "W",
+    "N",
+    "ANN",
+    "C90",
+    "UP",
+    "ASYNC",
+    "S",
+    "FBT",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "FA",
+    "ISC",
+    "ICN",
+    "INP",
+    "PYI",
+    "Q",
+    "RET",
+    "SLF",
+    "SLOT",
+    "SIM",
+    "TID",
+    "TC",
+    "INT",
+    "PL",
+    "FLY",
+    "PERF",
+    "RUF",
+]

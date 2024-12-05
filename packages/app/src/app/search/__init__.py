@@ -1,6 +1,5 @@
 import math
 from functools import reduce
-from typing import Optional
 
 from quart import Blueprint, Quart, current_app, render_template, session
 from quart_foxdata import query_parameters
@@ -45,13 +44,12 @@ def generate_pagination(page: int, lines: int, total: int) -> list[PaginationBut
 
         return acc
 
-    prev = PaginationButton(label="←", value=page - 1, disabled=page == 1)
-    next = PaginationButton(label="→", value=page + 1, disabled=page == last_page)
-    initial: list[PaginationButton] = list()
-    return [prev] + reduce(fold_indices, indices, initial) + [next]
+    prev_button = PaginationButton(label="←", value=page - 1, disabled=page == 1)
+    next_button = PaginationButton(label="→", value=page + 1, disabled=page == last_page)
+    return [prev_button, *reduce(fold_indices, indices, []), next_button]
 
 
-def generate_search_inputs(fields: tuple[tuple[str, Optional[str]], ...]) -> dict[str, SearchInput]:
+def generate_search_inputs(fields: tuple[tuple[str, str | None], ...]) -> dict[str, SearchInput]:
     """Generate search input components for the table header."""
     return {key: SearchInput(key, value=value) for key, value in fields}
 
@@ -80,7 +78,7 @@ def fetch_data(query: dict) -> dict:
 
 
 @bp.route("")
-async def index():
+async def index() -> str:
     """Render the main search index page."""
 
     query = {
@@ -98,12 +96,12 @@ async def index():
 
 
 @bp.route("/table", methods=["POST"])
-async def table():
+async def table() -> str:
     """Render the table body dynamic content via HTMX."""
 
     if request.hx_request:
         form = await request.form
-        parameters = [key.removeprefix("parameter-").upper() for key in form.keys() if key.startswith("parameter-")]
+        parameters = [key.removeprefix("parameter-").upper() for key in form if key.startswith("parameter-")]
 
         if len(parameters):
             current_fields = {key.removeprefix("query-"): val for key, val in form.items() if key.startswith("query-")}
@@ -131,7 +129,7 @@ async def table():
 
 
 @bp.route("/configuration", methods=["GET"])
-async def configuration():
+async def configuration() -> str:
     """Render the configuration panel via HTMX."""
 
     if request.hx_request:
@@ -146,25 +144,24 @@ async def configuration():
 
 
 @bp.route("/delete", methods=["DELETE"])
-async def delete():
+async def delete() -> str:
     """Return an empty string for HTMX delete requests."""
 
     return ""
 
 
 @bp.route("/add_parameter", methods=["GET"])
-async def add_parameter():
+async def add_parameter() -> str:
     """Get a parameter to add to the queried parameters in the configuration panel."""
 
-    if request.hx_request:
-        if name := request.hx_trigger.removeprefix("add-").upper():
-            return str(RemovableParameter(name))
+    if request.hx_request and (trigger := request.hx_trigger) and (name := trigger.removeprefix("add-").upper()):
+        return str(RemovableParameter(name))
 
     raise BadHtmxRequest()
 
 
 @bp.route("/search_parameters", methods=["POST"])
-async def search_parameters():
+async def search_parameters() -> str:
     """Get a list of parameters that can be added in the configuration panel."""
 
     if request.hx_request:

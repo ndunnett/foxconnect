@@ -10,4 +10,5 @@ dependencies = [
     "quart_foxdata",
     "quart_htmx",
     "Quart",
+    "python-dotenv",
 ]

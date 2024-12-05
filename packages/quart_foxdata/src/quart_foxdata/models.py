@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable
 from enum import IntFlag
 from functools import lru_cache
-from typing import Any, Callable, Generator
+from typing import TYPE_CHECKING, Any
 
 import fastmurmur3
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Generator, Iterable
 
 
 def is_stringable(x: Any) -> bool:
@@ -33,7 +35,7 @@ class Data:
     index: dict[int, Block]
     hasher: Callable[[str], int] = fastmurmur3.hash
 
-    def __init__(self, blocks: tuple[Block]):
+    def __init__(self, blocks: tuple[Block]) -> None:
         self.blocks = blocks
         self.index = {hash(block): block for block in blocks}
 
@@ -52,7 +54,7 @@ class Data:
         else:
             return None
 
-    @lru_cache
+    @lru_cache  # noqa: B019
     def query_blocks(self, query: tuple[tuple[str, str]]) -> list[dict[str, str]]:
         """Return list of block data dicts that match query."""
         filters = tuple((key, re.compile(pattern, re.IGNORECASE | re.ASCII)) for key, pattern in query if pattern)
@@ -69,12 +71,12 @@ class Data:
 class Block:
     """Represents configured block within the DCS."""
 
-    __slots__ = ("config", "meta", "connections")
+    __slots__ = ("config", "connections", "meta")
     config: dict[str, str]
     meta: dict[str, Any]
     connections: set[Connection]
 
-    def __init__(self, config: dict[str, str], **meta: Any):
+    def __init__(self, config: dict[str, str], **meta: Any) -> None:
         """Parses config dictionary into block object."""
         if "TYPE" in config and config["TYPE"] == "COMPND":
             compound, name = config["NAME"], config["NAME"]
@@ -138,7 +140,7 @@ class ParameterReference:
     name: str
     parameter: str
 
-    def __init__(self, block: Block, parameter: str):
+    def __init__(self, block: Block, parameter: str) -> None:
         self.compound = block.compound
         self.name = block.name
         self.parameter = parameter
@@ -161,17 +163,17 @@ class ParameterReference:
 class Connection:
     """Represents textual connection between two block parameters."""
 
-    __slots__ = ("source", "sink")
+    __slots__ = ("sink", "source")
     source: ParameterReference
     sink: ParameterReference
 
-    def __init__(self, source: ParameterReference, sink: ParameterReference):
+    def __init__(self, source: ParameterReference, sink: ParameterReference) -> None:
         self.source = source
         self.sink = sink
 
     def __repr__(self) -> str:
         """<source> --> <sink>"""
-        return f"{repr(self.source)} --> {repr(self.sink)}"
+        return f"{self.source!r} --> {self.sink!r}"
 
     def __lt__(self, other: Connection) -> bool:
         return repr(self) < repr(other)
@@ -195,10 +197,10 @@ class AccessFlag(IntFlag):
             return "no-con/no-set"
 
 
-class Meta(str): ...
+class Meta(str): ...  # noqa: SLOT000
 
 
-class Config(str): ...
+class Config(str): ...  # noqa: SLOT000
 
 
 Source = Meta | Config

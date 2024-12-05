@@ -1,10 +1,9 @@
 import gc
 import pickle
 import re
-from collections.abc import Iterable
+from collections.abc import Generator, Iterable
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Generator, Optional
 
 from billiard import Pool  # type: ignore
 from quart import Quart
@@ -25,17 +24,16 @@ CONNECTION_RE = re.compile(r"^(?P<compound>\w*):(?P<block>\w+)\.(?P<parameter>.+
 
 
 class FoxData:
-    def __init__(self, app: Optional[Quart] = None):
+    def __init__(self, app: Quart | None = None) -> None:
         if app is not None:
             self.init_app(app)
 
     def init_app(self, app: Quart) -> None:
         app.extensions["foxdata"] = self
 
-        assert "FOXDATA_ICC_DUMPS_PATH" in app.config
-        assert "FOXDATA_DATA_PICKLE_PATH" in app.config
-        assert app.config["FOXDATA_ICC_DUMPS_PATH"] is not None
-        assert app.config["FOXDATA_DATA_PICKLE_PATH"] is not None
+        for conf in ("FOXDATA_ICC_DUMPS_PATH", "FOXDATA_DATA_PICKLE_PATH"):
+            if conf not in app.config or app.config[conf] is None:
+                raise RuntimeError(f"Configuration key '{conf}' not set")
 
         icc_dumps_path = Path(app.config["FOXDATA_ICC_DUMPS_PATH"])
         data_pickle_path = Path(app.config["FOXDATA_DATA_PICKLE_PATH"])
@@ -43,7 +41,7 @@ class FoxData:
 
 
 @contextmanager
-def gc_disabled():
+def gc_disabled() -> Generator[None, None, None]:
     """Context manager to temporarily disable garbage collection."""
     try:
         yield gc.disable()
@@ -56,7 +54,7 @@ def initialise_data(data_pickle_path: Path, dump_file_glob: Generator[Path, None
     with gc_disabled():
         if data_pickle_path.is_file():
             with open(data_pickle_path, mode="rb") as file:
-                data = pickle.load(file)
+                data = pickle.load(file)  # noqa: S301
 
         else:
             data = generate_data(dump_file_glob)
@@ -79,30 +77,42 @@ def generate_data(dump_file_glob: Generator[Path, None, None]) -> Data:
     # Parse out connections between blocks
     for sink_block in data.blocks:
         for sink_parameter, sink_value in sink_block.config.items():
-            if "." in sink_value and ":" in sink_value and (match := CONNECTION_RE.match(sink_value)):
-                if source_block := data.get_block_from_name(
-                    match.group("compound") or sink_block.compound, match.group("block")
-                ):
-                    conn = Connection(
-                        ParameterReference(source_block, match.group("parameter")),
-                        ParameterReference(sink_block, sink_parameter),
-                    )
+            if "." not in sink_value or ":" not in sink_value:
+                continue
 
-                    source_block.connections.add(conn)
-                    sink_block.connections.add(conn)
+            match = CONNECTION_RE.match(sink_value)
+
+            if match is None:
+                continue
+
+            source_block = data.get_block_from_name(
+                match.group("compound") or sink_block.compound,
+                match.group("block"),
+            )
+
+            if source_block is None:
+                continue
+
+            conn = Connection(
+                ParameterReference(source_block, match.group("parameter")),
+                ParameterReference(sink_block, sink_parameter),
+            )
+
+            source_block.connections.add(conn)
+            sink_block.connections.add(conn)
 
     return data
 
 
 def parse_dump_file(path: Path) -> tuple[Block, ...]:
     """Parses dump file at path and returns tuple of Block objects."""
-    with open(path, mode="r", encoding="utf-8") as file:
+    with open(path, encoding="utf-8") as file:
         return tuple(
             Block(
                 config={
                     split[0].strip(): split[1].strip()
                     for line in chunk.splitlines()
-                    if len(split := line.split("=", 1)) == 2
+                    if len(split := line.split("=", 1)) == 2  # noqa: PLR2004
                 },
                 cp=path.stem,
             )

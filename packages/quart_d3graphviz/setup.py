@@ -1,4 +1,4 @@
-import subprocess
+import subprocess  # noqa: INP001
 from pathlib import Path
 
 from setuptools import setup
@@ -11,7 +11,7 @@ class Build(build_py):
 
         cwd = Path(__file__).parent.resolve() / "src" / "quart_d3graphviz"
         cmd = '. "$NVM_DIR/nvm.sh"; yes | yarn install'
-        subprocess.run(cmd, cwd=cwd, shell=True)
+        subprocess.run(cmd, cwd=cwd, shell=True, check=True)  # noqa: S602
         super().run()
 
 
