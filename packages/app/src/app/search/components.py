@@ -77,7 +77,7 @@ class AddableParameter:
 
     def __str__(self) -> str:
         button = f"""
-        <button id="add-{self.name}" type="button" class="btn btn-primary bi bi-plus-lg"
+        <button id="add-{self.name}" type="button" class="btn btn-sm btn-success bi bi-plus-lg"
             hx-get="{url_for("search.add_parameter")}" hx-target="#parameterList" hx-swap="beforeend">
         </button>
         """
@@ -105,10 +105,10 @@ class RemovableParameter:
             handle = ""
             button = ""
         else:
-            li_classes = ""
+            li_classes = " draggable"
             handle = """<button type="button" class="btn btn-lg p-0 m-0 me-2 bi bi-list handle"></button>"""
             button = f"""
-            <button type="button" class="btn btn-danger bi bi-x-lg"
+            <button type="button" class="btn btn-sm btn-danger bi bi-x-lg"
                 hx-delete="{url_for("search.delete")}" hx-target="closest li" hx-swap="delete">
             </button>
             """

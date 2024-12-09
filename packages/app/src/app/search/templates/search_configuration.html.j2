@@ -12,6 +12,7 @@
       hx-post="{{ url_for('search.search_parameters') }}" hx-target="#addable-parameters"
       hx-trigger="input changed delay:500ms" />
     <ul class="list-group" id="addable-parameters"></ul>
+    <script>initSortable();</script>
   </div>
 </div>
 <div class="bg-body border-top sticky-bottom p-2">
