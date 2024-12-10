@@ -15,15 +15,7 @@
       {% for field in fields if field not in ["COMPOUND", "NAME"] -%}
       <td>{{ search_inputs[field] }}</td>
       {%- endfor %}
-      <td class="align-middle text-end">
-        <button type="button" class="btn btn-dark btn-lg">
-          <i class="bi bi-link"></i>
-        </button>
-        <button class="btn btn-dark btn-lg" data-bs-toggle="offcanvas" data-bs-target="#configuration"
-          aria-controls="configuration">
-          <i class="bi bi-gear-fill"></i>
-        </button>
-      </td>
+      <td></td>
     </tr>
   </thead>
 
@@ -48,6 +40,9 @@
   <caption id="table-foot">
     <div class="row align-middle mt-3">
       <div class="col text-start">
+        <small class="text-body-secondary">
+          {{ "{:,}".format(total_results) }} result{% if total_results != 1 %}s{% endif %}
+        </small>
       </div>
       <div class="col text-center">
         <ul class="pagination pagination-sm justify-content-center">
@@ -57,9 +52,25 @@
         </ul>
       </div>
       <div class="col text-end">
-        <small class="text-body-secondary">
-          {{ "{:,}".format(total_results) }} result{% if total_results != 1 %}s{% endif %}
-        </small>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Toolbar">
+          {# <button type="button" class="btn btn-outline-secondary">
+            <i class="bi bi-link" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-title="Permalink"></i>
+          </button> #}
+          {# <button type="button" class="btn btn-outline-secondary">
+            <i class="bi bi-printer-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-title="Print"></i>
+          </button> #}
+          {# <button type="button" class="btn btn-outline-secondary">
+            <i class="bi bi-file-earmark-excel-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-title="Export to spreadsheet"></i>
+          </button> #}
+          <button type="button" class="btn btn-outline-secondary" data-bs-toggle="offcanvas"
+            data-bs-target="#configuration" aria-controls="configuration">
+            <i class="bi bi-gear-fill" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-title="Search configuration"></i>
+          </button>
+        </div>
       </div>
     </div>
   </caption>

@@ -1,3 +1,18 @@
+(() => {
+  "use strict";
+  document.addEventListener("DOMContentLoaded", main, false);
+
+  function main() {
+    const tooltipTriggerList = document.querySelectorAll(
+      '[data-bs-toggle="tooltip"]'
+    );
+
+    const tooltipList = [...tooltipTriggerList].map(
+      (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+    );
+  }
+})();
+
 function initSortable() {
   Sortable.create(document.getElementById("parameterList"), {
     handle: ".handle",
