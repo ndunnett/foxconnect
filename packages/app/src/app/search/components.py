@@ -19,8 +19,13 @@ class PaginationButton:
     disabled: bool = False
 
     def __str__(self) -> str:
+        hx = (
+            f""" {hx_attributes()} hx-vals='{{"page": {self.value}}}'"""
+            if self.value is not None and not self.active
+            else ""
+        )
+
         label = self.label if self.label is not None else self.value if self.value is not None else "..."
-        hx = f' {hx_attributes()} hx-vars="page:{self.value}"' if self.value is not None and not self.active else ""
         active = " active" if self.active else ""
         disabled = " disabled" if self.disabled else ""
         return f'<button class="page-link{active}{disabled}"{hx}>{label}</button>'
