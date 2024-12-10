@@ -11,16 +11,7 @@ if TYPE_CHECKING:
     from collections.abc import Callable, Generator, Iterable
 
 
-def is_stringable(x: Any) -> bool:
-    """Test any type to see if it can be cast to a string."""
-    try:
-        str(x)
-        return True
-    except TypeError:
-        return False
-
-
-def filter_map[X, Y](func: Callable[[X], Y | None], it: Iterable[X]) -> Generator[Y, None, None]:
+def filter_map[X, Y](func: Callable[[X], Y | None], it: Iterable[X]) -> Generator[Y]:
     """Maps function over iterator and yields results that are not None."""
     for element in it:
         if (result := func(element)) is not None:
@@ -31,17 +22,16 @@ class Data:
     """Container to hold all Block objects and handle queries."""
 
     __slots__ = ("blocks", "index")
-    blocks: tuple[Block]
+    blocks: tuple[Block, ...]
     index: dict[int, Block]
-    hasher: Callable[[str], int] = fastmurmur3.hash
 
-    def __init__(self, blocks: tuple[Block]) -> None:
+    def __init__(self, blocks: tuple[Block, ...]) -> None:
         self.blocks = blocks
         self.index = {hash(block): block for block in blocks}
 
     def get_block_from_name(self, compound: str, name: str) -> Block | None:
         """Search index for given compound and block name."""
-        return self.get_block_from_hash(Data.hasher(f"{compound}:{name}"))
+        return self.get_block_from_hash(fastmurmur3.hash(f"{compound}:{name}"))
 
     def get_block_from_ref(self, parameter_reference: ParameterReference) -> Block | None:
         """Search index for block in given parameter reference."""
@@ -55,13 +45,13 @@ class Data:
             return None
 
     @lru_cache  # noqa: B019
-    def query_blocks(self, query: tuple[tuple[str, str]]) -> list[dict[str, str]]:
+    def query_blocks(self, query: tuple[tuple[str, str], ...]) -> list[dict[str, str]]:
         """Return list of block data dicts that match query."""
         filters = tuple((key, re.compile(pattern, re.IGNORECASE | re.ASCII)) for key, pattern in query if pattern)
 
         def _f(block: Block) -> dict[str, str] | None:
-            if all(is_stringable(block[key]) and pattern.search(str(block[key])) for key, pattern in filters):
-                return {key: str(block[key]) for key, _ in query}
+            if all(pattern.search(str(block[key])) for key, pattern in filters):
+                return {key: str(block[key] or "") for key, _ in query}
             else:
                 return None
 
@@ -104,7 +94,7 @@ class Block:
             return NotImplemented
 
     def __hash__(self) -> int:
-        return Data.hasher(repr(self))
+        return fastmurmur3.hash(repr(self))
 
     def __getitem__(self, name: str) -> Any | None:
         if (k := name.lower()) in self.meta:
@@ -154,7 +144,7 @@ class ParameterReference:
 
     @property
     def block_hash(self) -> int:
-        return Data.hasher(f"{self.compound}:{self.name}")
+        return fastmurmur3.hash(f"{self.compound}:{self.name}")
 
     def matches_block(self, block: Block) -> bool:
         return self.compound == block.compound and self.name == block.name
