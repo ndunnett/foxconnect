@@ -47,8 +47,8 @@ def generate_pagination(page: int, lines: int, total: int) -> list[PaginationBut
 
         return acc
 
-    prev_button = PaginationButton(label="←", value=page - 1, disabled=page == 1)
-    next_button = PaginationButton(label="→", value=page + 1, disabled=page == last_page)
+    prev_button = PaginationButton(label="←", value=page - 1, disabled=page <= 1)
+    next_button = PaginationButton(label="→", value=page + 1, disabled=page >= last_page)
     return [prev_button, *reduce(fold_indices, indices, []), next_button]
 
 
