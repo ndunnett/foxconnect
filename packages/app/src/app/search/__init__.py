@@ -1,9 +1,12 @@
+import datetime
 import math
 from functools import reduce
+from io import BytesIO
 
-from quart import Blueprint, Quart, current_app, render_template, session
+from quart import Blueprint, Quart, Response, current_app, render_template, send_file, session
 from quart_foxdata import query_parameters
 from quart_htmx import BadHtmxRequest, request
+from xlsxwriter import Workbook
 
 from app.search.components import AddableParameter, PaginationButton, RemovableParameter, SearchInput
 
@@ -176,3 +179,39 @@ async def search_parameters() -> str:
             return ""
 
     raise BadHtmxRequest()
+
+
+def auto_type(s: str) -> str | float:
+    """Convert string to float if it is a number."""
+    try:
+        return float(s)
+    except ValueError:
+        return s
+
+
+@bp.route("/export_spreadsheet", methods=["GET"])
+async def export_spreadsheet() -> Response:
+    """Generate spreadsheet and serve file to download."""
+
+    fields = session["fields"]
+    data = current_app.data.query_blocks(fields)  # type: ignore
+    file = BytesIO()
+
+    options = {
+        "columns": [{"header": field} for field, _ in fields],
+        "data": [[auto_type(val) for val in result.values()] for result in data],
+        "style": "Table Style Light 1",
+    }
+
+    with Workbook(file) as workbook:
+        worksheet = workbook.add_worksheet()
+        worksheet.add_table(0, 0, len(data), len(fields) - 1, options)
+        worksheet.autofit()
+
+    timestamp = datetime.datetime.now(tz=datetime.timezone(datetime.timedelta(hours=10)))
+
+    return await send_file(
+        file,
+        as_attachment=True,
+        attachment_filename=f"{timestamp:%Y-%m-%d_%H%M}_foxconnect_search.xlsx",
+    )
