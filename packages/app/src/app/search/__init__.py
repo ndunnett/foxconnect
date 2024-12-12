@@ -3,7 +3,8 @@ import math
 from functools import reduce
 from io import BytesIO
 
-from quart import Blueprint, Quart, Response, current_app, render_template, send_file, session
+from quart import Blueprint, Quart, Response, render_template, send_file, session
+from quart_foxdata import query_blocks, query_parameters
 from quart_htmx import BadHtmxRequest, request
 from xlsxwriter import Workbook
 
@@ -59,7 +60,7 @@ def generate_search_inputs(fields: tuple[tuple[str, str | None], ...]) -> dict[s
 def fetch_data(query: dict) -> dict:
     """Process query to fetch all data and components needed to render the table body and footer."""
 
-    data = current_app.data.query_blocks(query["fields"])  # type: ignore
+    data = query_blocks(query["fields"])
     start = (query["page"] - 1) * query["lines"]
     end = start + query["lines"]
     total = len(data)
@@ -170,7 +171,7 @@ async def search_parameters() -> str:
         form = await request.form
 
         if query := form.get("search-parameters"):
-            if parameters := current_app.data.query_parameters(query):  # type: ignore
+            if parameters := query_parameters(query):
                 return "\n".join(str(AddableParameter(p.source)) for p in parameters)
             else:
                 return str(AddableParameter(query.strip(".").upper()))
@@ -193,7 +194,7 @@ async def export_spreadsheet() -> Response:
     """Generate spreadsheet and serve file to download."""
 
     fields = session["fields"]
-    data = current_app.data.query_blocks(fields)  # type: ignore
+    data = query_blocks(fields)
     file = BytesIO()
 
     options = {

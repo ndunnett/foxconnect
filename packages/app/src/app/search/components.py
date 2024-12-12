@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from functools import cache
 
-from quart import current_app, url_for
+from quart import url_for
+from quart_foxdata import get_parameter
 from quart_foxdata.models import Meta
 
 
@@ -36,7 +37,7 @@ class SearchInput:
     value: str | None = None
 
     def __str__(self) -> str:
-        label = p.name if (p := current_app.data.get_parameter(self.field.upper())) else "." + self.field.upper()  # type: ignore
+        label = p.name if (p := get_parameter(self.field.upper())) else "." + self.field.upper()
         value = f'value="{self.value}" ' if self.value is not None else ""
 
         return f"""
@@ -54,7 +55,7 @@ class ParameterInfo:
     name: str
 
     def __str__(self) -> str:
-        if p := current_app.data.get_parameter(self.name):  # type: ignore
+        if p := get_parameter(self.name):
             title = p.name
 
             src = (

@@ -1,10 +1,11 @@
 from typing import Any
 
 from quart import render_template
-from quart_foxdata.models import Block, Connection, Data
+from quart_foxdata import get_block_from_ref
+from quart_foxdata.models import Block, Connection
 
 
-def create_graph(data: Data, root: Block, depth: int) -> tuple[set[Block], set[Connection]]:
+def create_graph(root: Block, depth: int) -> tuple[set[Block], set[Connection]]:
     """Use breadth first search to graph out related Block and Connection objects to a specified depth."""
     queue = {root}
     blocks = {root}
@@ -16,7 +17,7 @@ def create_graph(data: Data, root: Block, depth: int) -> tuple[set[Block], set[C
         for block in queue:
             connections |= block.connections
             seen |= {
-                data.get_block_from_ref(c.sink) if c.source.matches_block(block) else data.get_block_from_ref(c.source)
+                get_block_from_ref(c.sink) if c.source.matches_block(block) else get_block_from_ref(c.source)
                 for c in block.connections
             }
 
@@ -26,7 +27,7 @@ def create_graph(data: Data, root: Block, depth: int) -> tuple[set[Block], set[C
     return (blocks, connections)
 
 
-async def create_dot(data: Data, root: Block, depth: int) -> str:
+async def create_dot(root: Block, depth: int) -> str:
     """Create a diagram in DOT format based on a graph of Block objects."""
     origin_colour = "#ffd84d"
     other_colour = "#d4cfca"
@@ -42,7 +43,7 @@ async def create_dot(data: Data, root: Block, depth: int) -> str:
         "cell_spacing": 6,
     }
 
-    (blocks, connections) = create_graph(data, root, depth)
+    (blocks, connections) = create_graph(root, depth)
     diagram = DotGraph(f"{root.compound}__{root.name}__depth-{depth}", rankdir="LR", ranksep=3, bgcolor="transparent")
 
     for block in blocks:

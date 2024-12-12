@@ -1,19 +1,14 @@
-import gc
-import importlib.resources
 import pickle
 import re
-from collections.abc import Generator
-from contextlib import contextmanager
+from collections.abc import Generator, Iterable
+from functools import lru_cache
 from pathlib import Path
 
-import yaml
-from billiard import Pool  # type: ignore
-from quart import Quart
+from quart import Quart, current_app
 
-from quart_foxdata.models import Block, Connection, Data, Parameter, ParameterReference
-
-# Regex pattern to match "<compound>:<block>.<parameter>" within config files
-CONNECTION_RE = re.compile(r"^(?P<compound>\w*):(?P<block>\w+)\.(?P<parameter>.+)$", re.IGNORECASE | re.ASCII)
+from quart_foxdata.models import Block, Data, Parameter, ParameterReference
+from quart_foxdata.parsing import generate_data
+from quart_foxdata.util import filter_map, gc_disabled
 
 
 class FoxData:
@@ -33,19 +28,10 @@ class FoxData:
         app.data = initialise_data(data_pickle_path, icc_dumps_path.glob("*/*.d"))  # type: ignore
 
 
-@contextmanager
-def gc_disabled() -> Generator[None, None, None]:
-    """Context manager to temporarily disable garbage collection."""
-    try:
-        yield gc.disable()
-    finally:
-        gc.enable()
-
-
 def initialise_data(data_pickle_path: Path, dump_file_glob: Generator[Path, None, None]) -> Data:
     """Load pickled data if it exists otherwise generate and pickle data."""
     with gc_disabled():
-        if data_pickle_path.is_file():
+        if data_pickle_path.is_file() and False:
             with open(data_pickle_path, mode="rb") as file:
                 data = pickle.load(file)  # noqa: S301
 
@@ -59,63 +45,52 @@ def initialise_data(data_pickle_path: Path, dump_file_glob: Generator[Path, None
     return data
 
 
-def generate_data(dump_file_glob: Generator[Path, None, None]) -> Data:
-    """Parse all CP dump files to create a Data object containing parsed blocks."""
-    # Use process pool to concurrently parse blocks from dump files
-    with Pool() as pool:
-        blocks = [block for result in pool.map(parse_dump_file, dump_file_glob) for block in result]
-
-    data = Data(tuple(sorted(blocks)), parse_parameters())
-
-    # Parse out connections between blocks
-    for sink_block in data.blocks:
-        for sink_parameter, sink_value in sink_block.config.items():
-            if "." not in sink_value or ":" not in sink_value:
-                continue
-
-            match = CONNECTION_RE.match(sink_value)
-
-            if match is None:
-                continue
-
-            source_block = data.get_block_from_name(
-                match.group("compound") or sink_block.compound,
-                match.group("block"),
-            )
-
-            if source_block is None:
-                continue
-
-            conn = Connection(
-                ParameterReference(source_block, match.group("parameter")),
-                ParameterReference(sink_block, sink_parameter),
-            )
-
-            source_block.connections.add(conn)
-            sink_block.connections.add(conn)
-
-    return data
+def get_data() -> Data:
+    return current_app.data  # type: ignore
 
 
-def parse_dump_file(path: Path) -> tuple[Block, ...]:
-    """Parses dump file at path and returns tuple of Block objects."""
-    with open(path, encoding="utf-8") as file:
-        return tuple(
-            Block(
-                config={
-                    split[0].strip(): split[1].strip()
-                    for line in chunk.splitlines()
-                    if len(split := line.split("=", 1)) == 2  # noqa: PLR2004
-                },
-                cp=path.stem,
-            )
-            for chunk in file.read().strip().split("\nEND\n")
-        )
+def get_parameter(name: str) -> Parameter | None:
+    """Get parameter by name (case-insensitive) if it exists."""
+    return get_data().parameters.get(name.upper())
 
 
-def parse_parameters() -> dict[str, Parameter]:
-    """Parses parameter metadata from YAML file."""
-    with (importlib.resources.files("quart_foxdata") / "parameters.yaml").open() as file:
-        data = yaml.safe_load(file)
+def get_block_from_name(compound: str, name: str) -> Block | None:
+    """Search index for given compound and block name."""
+    return get_data().get_block_from_name(compound, name)
 
-    return {p.source: p for k, v in data.items() if (p := Parameter.from_dict(k, v))}
+
+def get_block_from_ref(parameter_reference: ParameterReference) -> Block | None:
+    """Search index for block in given parameter reference."""
+    return get_data().get_block_from_ref(parameter_reference)
+
+
+def get_block_from_hash(block_hash: int) -> Block | None:
+    """Search index for block in given block hash."""
+    return get_data().get_block_from_hash(block_hash)
+
+
+@lru_cache
+def query_blocks(query: tuple[tuple[str, str], ...]) -> list[dict[str, str]]:
+    """Return list of block data dicts that match query."""
+    filters = tuple((key, re.compile(pattern, re.IGNORECASE | re.ASCII)) for key, pattern in query if pattern)
+
+    def _f(block: Block) -> dict[str, str] | None:
+        if all(pattern.search(str(block[key])) for key, pattern in filters):
+            return {key: str(block[key] or "") for key, _ in query}
+        else:
+            return None
+
+    return list(filter_map(_f, get_data().blocks))
+
+
+def query_parameters(query: str, exclude: Iterable[str] | None = None) -> list[Parameter]:
+    """Return list of parameters that contain the query string (case-insensitive) in the metadata."""
+
+    if not exclude:
+        exclude = ("COMPOUND", "NAME")
+
+    return [
+        p
+        for p in get_data().parameters.values()
+        if p.source not in exclude and query.upper() in f".{p.source.upper()} {p.name.upper()} {p.description.upper()}"
+    ]

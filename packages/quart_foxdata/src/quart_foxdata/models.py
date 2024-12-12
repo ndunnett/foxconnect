@@ -1,41 +1,19 @@
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
 from enum import IntFlag
-from functools import lru_cache
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 import fastmurmur3
 
-if TYPE_CHECKING:
-    from collections.abc import Callable, Generator, Iterable
 
-
-def filter_map[X, Y](func: Callable[[X], Y | None], it: Iterable[X]) -> Generator[Y]:
-    """Maps function over iterator and yields results that are not None."""
-    for element in it:
-        if (result := func(element)) is not None:
-            yield result
-
-
+@dataclass(frozen=True)
 class Data:
     """Container to hold all Block objects and handle queries."""
 
-    __slots__ = ("block_index", "blocks", "parameter_index", "parameters")
     blocks: tuple[Block, ...]
-    block_index: dict[int, Block]
+    index: dict[int, Block]
     parameters: dict[str, Parameter]
-    parameter_index: tuple[tuple[str, str], ...]
-
-    def __init__(self, blocks: tuple[Block, ...], parameters: dict[str, Parameter]) -> None:
-        self.blocks = blocks
-        self.block_index = {hash(block): block for block in blocks}
-        self.parameters = parameters
-        self.parameter_index = tuple(
-            (f"{p.source.upper()} {p.name.upper()} {p.description.upper()}", p.source.upper())
-            for p in parameters.values()
-        )
 
     def get_block_from_name(self, compound: str, name: str) -> Block | None:
         """Search index for given compound and block name."""
@@ -47,60 +25,19 @@ class Data:
 
     def get_block_from_hash(self, block_hash: int) -> Block | None:
         """Search index for block in given block hash."""
-        if block_hash in self.block_index:
-            return self.block_index[block_hash]
+        if block_hash in self.index:
+            return self.index[block_hash]
         else:
             return None
 
-    @lru_cache  # noqa: B019
-    def query_blocks(self, query: tuple[tuple[str, str], ...]) -> list[dict[str, str]]:
-        """Return list of block data dicts that match query."""
-        filters = tuple((key, re.compile(pattern, re.IGNORECASE | re.ASCII)) for key, pattern in query if pattern)
 
-        def _f(block: Block) -> dict[str, str] | None:
-            if all(pattern.search(str(block[key])) for key, pattern in filters):
-                return {key: str(block[key] or "") for key, _ in query}
-            else:
-                return None
-
-        return list(filter_map(_f, self.blocks))
-
-    def query_parameters(self, query: str, exclude: Iterable[str] | None = None) -> list[Parameter]:
-        """Return list of parameters that contain the query string (case-insensitive) in the metadata."""
-
-        if not exclude:
-            exclude = ("COMPOUND", "NAME")
-
-        return [
-            p
-            for p in self.parameters.values()
-            if p.source not in exclude
-            and query.upper() in f".{p.source.upper()} {p.name.upper()} {p.description.upper()}"
-        ]
-
-    def get_parameter(self, name: str) -> Parameter | None:
-        """Get parameter by name (case-insensitive) if it exists."""
-        return self.parameters.get(name.upper())
-
-
+@dataclass(frozen=True)
 class Block:
     """Represents configured block within the DCS."""
 
-    __slots__ = ("config", "connections", "meta")
     config: dict[str, str]
     meta: dict[str, Any]
     connections: set[Connection]
-
-    def __init__(self, config: dict[str, str], **meta: Any) -> None:
-        """Parses config dictionary into block object."""
-        if "TYPE" in config and config["TYPE"] == "COMPND":
-            compound, name = config["NAME"], config["NAME"]
-        else:
-            compound, name = config["NAME"].split(":")
-
-        self.config = config
-        self.meta = {"compound": compound, "name": name} | meta
-        self.connections = set()
 
     def __repr__(self) -> str:
         """<compound>:<block>"""
@@ -147,18 +84,13 @@ class Block:
         return sorted(map(f, self.connections))
 
 
+@dataclass(frozen=True)
 class ParameterReference:
     """Gives a reference to a block parameter."""
 
-    __slots__ = ("compound", "name", "parameter")
     compound: str
     name: str
     parameter: str
-
-    def __init__(self, block: Block, parameter: str) -> None:
-        self.compound = block.compound
-        self.name = block.name
-        self.parameter = parameter
 
     def __repr__(self) -> str:
         """<compound>:<block>.<parameter>"""
@@ -175,16 +107,12 @@ class ParameterReference:
         return self.compound == block.compound and self.name == block.name
 
 
+@dataclass(frozen=True)
 class Connection:
     """Represents textual connection between two block parameters."""
 
-    __slots__ = ("sink", "source")
     source: ParameterReference
     sink: ParameterReference
-
-    def __init__(self, source: ParameterReference, sink: ParameterReference) -> None:
-        self.source = source
-        self.sink = sink
 
     def __repr__(self) -> str:
         """<source> --> <sink>"""

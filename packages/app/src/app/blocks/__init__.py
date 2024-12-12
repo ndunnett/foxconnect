@@ -1,4 +1,5 @@
-from quart import Blueprint, Quart, Request, current_app, make_response, render_template, request
+from quart import Blueprint, Quart, Request, make_response, render_template, request
+from quart_foxdata import get_block_from_name
 from quart_foxdata.models import Block
 from quart_htmx import Response
 from werkzeug.exceptions import NotFound
@@ -14,7 +15,7 @@ def init_app(app: Quart) -> None:
 
 def get_obj(compound: str, block: str) -> Block:
     """Retrieve block object from application state."""
-    if obj := current_app.data.get_block_from_name(compound, block):  # type: ignore
+    if obj := get_block_from_name(compound, block):
         return obj
     else:
         raise NotFound(f'Block "{compound}:{block}" not found.')
@@ -47,4 +48,4 @@ async def view_diagram(compound: str, block: str) -> str:
 @bp.route("/<compound>/<block>/dot")
 async def dot(compound: str, block: str) -> Response:
     """Construct diagram in DOT format and serve as plain text."""
-    return await serve_plain_text(await create_dot(current_app.data, get_obj(compound, block), get_depth(request)))  # type: ignore
+    return await serve_plain_text(await create_dot(get_obj(compound, block), get_depth(request)))
