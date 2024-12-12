@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 from enum import IntFlag
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any
@@ -21,13 +22,20 @@ def filter_map[X, Y](func: Callable[[X], Y | None], it: Iterable[X]) -> Generato
 class Data:
     """Container to hold all Block objects and handle queries."""
 
-    __slots__ = ("blocks", "index")
+    __slots__ = ("block_index", "blocks", "parameter_index", "parameters")
     blocks: tuple[Block, ...]
-    index: dict[int, Block]
+    block_index: dict[int, Block]
+    parameters: dict[str, Parameter]
+    parameter_index: tuple[tuple[str, str], ...]
 
-    def __init__(self, blocks: tuple[Block, ...]) -> None:
+    def __init__(self, blocks: tuple[Block, ...], parameters: dict[str, Parameter]) -> None:
         self.blocks = blocks
-        self.index = {hash(block): block for block in blocks}
+        self.block_index = {hash(block): block for block in blocks}
+        self.parameters = parameters
+        self.parameter_index = tuple(
+            (f"{p.source.upper()} {p.name.upper()} {p.description.upper()}", p.source.upper())
+            for p in parameters.values()
+        )
 
     def get_block_from_name(self, compound: str, name: str) -> Block | None:
         """Search index for given compound and block name."""
@@ -39,8 +47,8 @@ class Data:
 
     def get_block_from_hash(self, block_hash: int) -> Block | None:
         """Search index for block in given block hash."""
-        if block_hash in self.index:
-            return self.index[block_hash]
+        if block_hash in self.block_index:
+            return self.block_index[block_hash]
         else:
             return None
 
@@ -56,6 +64,23 @@ class Data:
                 return None
 
         return list(filter_map(_f, self.blocks))
+
+    def query_parameters(self, query: str, exclude: Iterable[str] | None = None) -> list[Parameter]:
+        """Return list of parameters that contain the query string (case-insensitive) in the metadata."""
+
+        if not exclude:
+            exclude = ("COMPOUND", "NAME")
+
+        return [
+            p
+            for p in self.parameters.values()
+            if p.source not in exclude
+            and query.upper() in f".{p.source.upper()} {p.name.upper()} {p.description.upper()}"
+        ]
+
+    def get_parameter(self, name: str) -> Parameter | None:
+        """Get parameter by name (case-insensitive) if it exists."""
+        return self.parameters.get(name.upper())
 
 
 class Block:
@@ -176,6 +201,18 @@ class AccessFlag(IntFlag):
     CON = 1
     SET = 2
 
+    @staticmethod
+    def from_str(s: str) -> AccessFlag:
+        match s:
+            case "con/set":
+                return AccessFlag.CON | AccessFlag.SET
+            case "con/no-set":
+                return AccessFlag.CON
+            case "no-con/set":
+                return AccessFlag.SET
+            case _:
+                return AccessFlag.NONE
+
     def __str__(self) -> str:
         if AccessFlag.CON | AccessFlag.SET in self:
             return "con/set"
@@ -196,6 +233,7 @@ class Config(str): ...  # noqa: SLOT000
 Source = Meta | Config
 
 
+@dataclass(frozen=True)
 class Parameter:
     """Holds metadata for parameter types."""
 
@@ -204,11 +242,14 @@ class Parameter:
     description: str
     access: AccessFlag
 
-    def __init__(self, source: Source, name: str, description: str, access: AccessFlag) -> None:
-        self.source = source
-        self.name = name
-        self.description = description
-        self.access = access
+    @staticmethod
+    def from_dict(source: str, attrs: dict[str, str]) -> Parameter:
+        return Parameter(
+            source=Config(source) if "meta" not in attrs else Meta(source),
+            name=attrs["name"],
+            description=attrs["description"],
+            access=AccessFlag.from_str(attrs["access"]),
+        )
 
-    def search_line(self) -> str:
-        return f"{self.source}\t{self.name}\t{self.description}"
+    def __lt__(self, other: Parameter) -> bool:
+        return self.name < other.name

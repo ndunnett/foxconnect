@@ -4,7 +4,6 @@ from functools import reduce
 from io import BytesIO
 
 from quart import Blueprint, Quart, Response, current_app, render_template, send_file, session
-from quart_foxdata import query_parameters
 from quart_htmx import BadHtmxRequest, request
 from xlsxwriter import Workbook
 
@@ -171,10 +170,10 @@ async def search_parameters() -> str:
         form = await request.form
 
         if query := form.get("search-parameters"):
-            if parameters := query_parameters(query):
+            if parameters := current_app.data.query_parameters(query):  # type: ignore
                 return "\n".join(str(AddableParameter(p.source)) for p in parameters)
             else:
-                return str(AddableParameter(query))
+                return str(AddableParameter(query.strip(".").upper()))
         else:
             return ""
 

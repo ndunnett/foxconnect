@@ -1,0 +1,5731 @@
+---
+# meta parameters (determined when parsing config)
+
+COMPOUND:
+  meta:
+  name: Compound
+  description: "compound in which the block is contained"
+  access: no-con/no-set
+
+CP:
+  meta:
+  name: CP
+  description: "CP which hosts the block"
+  access: no-con/no-set
+
+# config parameters (taken directly from config files)
+
+ABSDB:
+  name: ABSDB
+  description: ""
+  access: no-con/no-set
+
+ABSGRP:
+  name: ABSGRP
+  description: ""
+  access: no-con/no-set
+
+ABSINC:
+  name: ABSINC
+  description: ""
+  access: no-con/no-set
+
+ABSPRI:
+  name: ABSPRI
+  description: ""
+  access: no-con/no-set
+
+ABSRAL:
+  name: ABSRAL
+  description: ""
+  access: no-con/no-set
+
+ACTIVE:
+  name: ACTIVE
+  description: ""
+  access: no-con/no-set
+
+AMRTIN:
+  name: AMRTIN
+  description: ""
+  access: no-con/no-set
+
+ANM:
+  name: ANM
+  description: ""
+  access: no-con/no-set
+
+ATC:
+  name: ATC
+  description: ""
+  access: no-con/no-set
+
+AUTCKP:
+  name: AUTCKP
+  description: ""
+  access: no-con/no-set
+
+AUTSW:
+  name: AUTSW
+  description: ""
+  access: no-con/no-set
+
+BADACT:
+  name: BADACT
+  description: ""
+  access: no-con/no-set
+
+BADALM:
+  name: BADALM
+  description: ""
+  access: no-con/no-set
+
+BADOPT:
+  name: BADOPT
+  description: ""
+  access: no-con/no-set
+
+BADRNG:
+  name: BADRNG
+  description: ""
+  access: no-con/no-set
+
+BAG:
+  name: BAG
+  description: ""
+  access: no-con/no-set
+
+BAO:
+  name: BAO
+  description: ""
+  access: no-con/no-set
+
+BAP:
+  name: BAP
+  description: ""
+  access: no-con/no-set
+
+BAT:
+  name: BAT
+  description: ""
+  access: no-con/no-set
+
+BATCHO:
+  name: BATCHO
+  description: ""
+  access: no-con/no-set
+
+BAUD2M:
+  name: BAUD2M
+  description: ""
+  access: no-con/no-set
+
+BBIAS:
+  name: BBIAS
+  description: ""
+  access: no-con/no-set
+
+BCALCI:
+  name: BCALCI
+  description: ""
+  access: no-con/no-set
+
+BCDOP:
+  name: BCDOP
+  description: ""
+  access: no-con/no-set
+
+BEROPT:
+  name: BEROPT
+  description: ""
+  access: no-con/no-set
+
+BI0001:
+  name: BI0001
+  description: ""
+  access: no-con/no-set
+
+BI0002:
+  name: BI0002
+  description: ""
+  access: no-con/no-set
+
+BI0003:
+  name: BI0003
+  description: ""
+  access: no-con/no-set
+
+BI0004:
+  name: BI0004
+  description: ""
+  access: no-con/no-set
+
+BI0005:
+  name: BI0005
+  description: ""
+  access: no-con/no-set
+
+BI0006:
+  name: BI0006
+  description: ""
+  access: no-con/no-set
+
+BI0007:
+  name: BI0007
+  description: ""
+  access: no-con/no-set
+
+BI0008:
+  name: BI0008
+  description: ""
+  access: no-con/no-set
+
+BI0009:
+  name: BI0009
+  description: ""
+  access: no-con/no-set
+
+BI0010:
+  name: BI0010
+  description: ""
+  access: no-con/no-set
+
+BI0011:
+  name: BI0011
+  description: ""
+  access: no-con/no-set
+
+BI0012:
+  name: BI0012
+  description: ""
+  access: no-con/no-set
+
+BI0013:
+  name: BI0013
+  description: ""
+  access: no-con/no-set
+
+BI0014:
+  name: BI0014
+  description: ""
+  access: no-con/no-set
+
+BI0015:
+  name: BI0015
+  description: ""
+  access: no-con/no-set
+
+BI0016:
+  name: BI0016
+  description: ""
+  access: no-con/no-set
+
+BI0017:
+  name: BI0017
+  description: ""
+  access: no-con/no-set
+
+BI0018:
+  name: BI0018
+  description: ""
+  access: no-con/no-set
+
+BI0019:
+  name: BI0019
+  description: ""
+  access: no-con/no-set
+
+BI0020:
+  name: BI0020
+  description: ""
+  access: no-con/no-set
+
+BI0021:
+  name: BI0021
+  description: ""
+  access: no-con/no-set
+
+BI0022:
+  name: BI0022
+  description: ""
+  access: no-con/no-set
+
+BI0023:
+  name: BI0023
+  description: ""
+  access: no-con/no-set
+
+BI0024:
+  name: BI0024
+  description: ""
+  access: no-con/no-set
+
+BI01:
+  name: BI01
+  description: ""
+  access: no-con/no-set
+
+BI02:
+  name: BI02
+  description: ""
+  access: no-con/no-set
+
+BI03:
+  name: BI03
+  description: ""
+  access: no-con/no-set
+
+BI04:
+  name: BI04
+  description: ""
+  access: no-con/no-set
+
+BI05:
+  name: BI05
+  description: ""
+  access: no-con/no-set
+
+BI06:
+  name: BI06
+  description: ""
+  access: no-con/no-set
+
+BI07:
+  name: BI07
+  description: ""
+  access: no-con/no-set
+
+BI08:
+  name: BI08
+  description: ""
+  access: no-con/no-set
+
+BI09:
+  name: BI09
+  description: ""
+  access: no-con/no-set
+
+BI10:
+  name: BI10
+  description: ""
+  access: no-con/no-set
+
+BI11:
+  name: BI11
+  description: ""
+  access: no-con/no-set
+
+BI12:
+  name: BI12
+  description: ""
+  access: no-con/no-set
+
+BI13:
+  name: BI13
+  description: ""
+  access: no-con/no-set
+
+BI14:
+  name: BI14
+  description: ""
+  access: no-con/no-set
+
+BI15:
+  name: BI15
+  description: ""
+  access: no-con/no-set
+
+BI16:
+  name: BI16
+  description: ""
+  access: no-con/no-set
+
+BIAS:
+  name: BIAS
+  description: ""
+  access: no-con/no-set
+
+BIN:
+  name: BIN
+  description: ""
+  access: no-con/no-set
+
+BMEAS:
+  name: BMEAS
+  description: ""
+  access: no-con/no-set
+
+BNDX:
+  name: BNDX
+  description: ""
+  access: no-con/no-set
+
+BO0001:
+  name: BO0001
+  description: ""
+  access: no-con/no-set
+
+BO0002:
+  name: BO0002
+  description: ""
+  access: no-con/no-set
+
+BO0003:
+  name: BO0003
+  description: ""
+  access: no-con/no-set
+
+BO0004:
+  name: BO0004
+  description: ""
+  access: no-con/no-set
+
+BO0005:
+  name: BO0005
+  description: ""
+  access: no-con/no-set
+
+BO0006:
+  name: BO0006
+  description: ""
+  access: no-con/no-set
+
+BO0007:
+  name: BO0007
+  description: ""
+  access: no-con/no-set
+
+BO0008:
+  name: BO0008
+  description: ""
+  access: no-con/no-set
+
+BO0009:
+  name: BO0009
+  description: ""
+  access: no-con/no-set
+
+BO0010:
+  name: BO0010
+  description: ""
+  access: no-con/no-set
+
+BO0011:
+  name: BO0011
+  description: ""
+  access: no-con/no-set
+
+BO0012:
+  name: BO0012
+  description: ""
+  access: no-con/no-set
+
+BO0013:
+  name: BO0013
+  description: ""
+  access: no-con/no-set
+
+BO0014:
+  name: BO0014
+  description: ""
+  access: no-con/no-set
+
+BO0015:
+  name: BO0015
+  description: ""
+  access: no-con/no-set
+
+BO0016:
+  name: BO0016
+  description: ""
+  access: no-con/no-set
+
+BPCSTM:
+  name: BPCSTM
+  description: ""
+  access: no-con/no-set
+
+BSCALE:
+  name: BSCALE
+  description: ""
+  access: no-con/no-set
+
+BTIME:
+  name: BTIME
+  description: ""
+  access: no-con/no-set
+
+BTIME1:
+  name: BTIME1
+  description: ""
+  access: no-con/no-set
+
+BTIME2:
+  name: BTIME2
+  description: ""
+  access: no-con/no-set
+
+BTRKOP:
+  name: BTRKOP
+  description: ""
+  access: no-con/no-set
+
+BUSOPT:
+  name: BUSOPT
+  description: ""
+  access: no-con/no-set
+
+BUSTYP:
+  name: BUSTYP
+  description: ""
+  access: no-con/no-set
+
+BUSWDS:
+  name: BUSWDS
+  description: ""
+  access: no-con/no-set
+
+BYPAS1:
+  name: BYPAS1
+  description: ""
+  access: no-con/no-set
+
+BYPAS2:
+  name: BYPAS2
+  description: ""
+  access: no-con/no-set
+
+BYPAS3:
+  name: BYPAS3
+  description: ""
+  access: no-con/no-set
+
+BYPAS4:
+  name: BYPAS4
+  description: ""
+  access: no-con/no-set
+
+BYPAS5:
+  name: BYPAS5
+  description: ""
+  access: no-con/no-set
+
+BYPAS6:
+  name: BYPAS6
+  description: ""
+  access: no-con/no-set
+
+BYPAS7:
+  name: BYPAS7
+  description: ""
+  access: no-con/no-set
+
+BYPAS8:
+  name: BYPAS8
+  description: ""
+  access: no-con/no-set
+
+CASINP:
+  name: CASINP
+  description: ""
+  access: no-con/no-set
+
+CASNDX:
+  name: CASNDX
+  description: ""
+  access: no-con/no-set
+
+CEOPT:
+  name: CEOPT
+  description: ""
+  access: no-con/no-set
+
+CFGOP2:
+  name: CFGOP2
+  description: ""
+  access: no-con/no-set
+
+CFGOPT:
+  name: CFGOPT
+  description: ""
+  access: no-con/no-set
+
+CHAN:
+  name: CHAN
+  description: ""
+  access: no-con/no-set
+
+CHAREN:
+  name: CHAREN
+  description: ""
+  access: no-con/no-set
+
+CINHIB:
+  name: CINHIB
+  description: ""
+  access: no-con/no-set
+
+CINMSK:
+  name: CINMSK
+  description: ""
+  access: no-con/no-set
+
+CKPOPT:
+  name: CKPOPT
+  description: ""
+  access: no-con/no-set
+
+CLEAR:
+  name: CLEAR
+  description: ""
+  access: no-con/no-set
+
+CLPOPT:
+  name: CLPOPT
+  description: ""
+  access: no-con/no-set
+
+CPARM1:
+  name: CPARM1
+  description: ""
+  access: no-con/no-set
+
+CPARM2:
+  name: CPARM2
+  description: ""
+  access: no-con/no-set
+
+CPARM3:
+  name: CPARM3
+  description: ""
+  access: no-con/no-set
+
+CPARM4:
+  name: CPARM4
+  description: ""
+  access: no-con/no-set
+
+CPARM5:
+  name: CPARM5
+  description: ""
+  access: no-con/no-set
+
+CPARM6:
+  name: CPARM6
+  description: ""
+  access: no-con/no-set
+
+CPCONT:
+  name: CPCONT
+  description: ""
+  access: no-con/no-set
+
+CPMEAS:
+  name: CPMEAS
+  description: ""
+  access: no-con/no-set
+
+CSPACE:
+  name: CSPACE
+  description: ""
+  access: no-con/no-set
+
+DALOPT:
+  name: DALOPT
+  description: ""
+  access: no-con/no-set
+
+DELTI1:
+  name: DELTI1
+  description: ""
+  access: no-con/no-set
+
+DELTI2:
+  name: DELTI2
+  description: ""
+  access: no-con/no-set
+
+DELTI3:
+  name: DELTI3
+  description: ""
+  access: no-con/no-set
+
+DELTI4:
+  name: DELTI4
+  description: ""
+  access: no-con/no-set
+
+DELTI5:
+  name: DELTI5
+  description: ""
+  access: no-con/no-set
+
+DELTI6:
+  name: DELTI6
+  description: ""
+  access: no-con/no-set
+
+DELTI7:
+  name: DELTI7
+  description: ""
+  access: no-con/no-set
+
+DELTI8:
+  name: DELTI8
+  description: ""
+  access: no-con/no-set
+
+DELTIC:
+  name: DELTIC
+  description: ""
+  access: no-con/no-set
+
+DELTO1:
+  name: Delta (O1)
+  description: change delta, output 1
+  access: no-con/no-set
+
+DELTO2:
+  name: DELTO2
+  description: ""
+  access: no-con/no-set
+
+DELTO3:
+  name: DELTO3
+  description: ""
+  access: no-con/no-set
+
+DELTO4:
+  name: DELTO4
+  description: ""
+  access: no-con/no-set
+
+DELTO5:
+  name: DELTO5
+  description: ""
+  access: no-con/no-set
+
+DELTO6:
+  name: DELTO6
+  description: ""
+  access: no-con/no-set
+
+DELTO7:
+  name: DELTO7
+  description: ""
+  access: no-con/no-set
+
+DELTO8:
+  name: DELTO8
+  description: ""
+  access: no-con/no-set
+
+DELTO9:
+  name: DELTO9
+  description: ""
+  access: no-con/no-set
+
+DERIV:
+  name: DERIV
+  description: ""
+  access: no-con/no-set
+
+DESCRP:
+  name: Descriptor
+  description: descriptor
+  access: no-con/no-set
+
+DEVADB:
+  name: DEVADB
+  description: ""
+  access: no-con/no-set
+
+DEVGRP:
+  name: DEVGRP
+  description: ""
+  access: no-con/no-set
+
+DEVINC:
+  name: DEVINC
+  description: ""
+  access: no-con/no-set
+
+DEVLIM:
+  name: DEVLIM
+  description: ""
+  access: no-con/no-set
+
+DEVPRI:
+  name: DEVPRI
+  description: ""
+  access: no-con/no-set
+
+DEVRAL:
+  name: DEVRAL
+  description: ""
+  access: no-con/no-set
+
+DEVTIM:
+  name: DEVTIM
+  description: ""
+  access: no-con/no-set
+
+DEV_ID:
+  name: DEV_ID
+  description: ""
+  access: no-con/no-set
+
+DM:
+  name: DM
+  description: ""
+  access: no-con/no-set
+
+DNRATE:
+  name: DNRATE
+  description: ""
+  access: no-con/no-set
+
+DPLOC:
+  name: DPLOC
+  description: ""
+  access: no-con/no-set
+
+DRVRID:
+  name: DRVRID
+  description: ""
+  access: no-con/no-set
+
+DT:
+  name: DT
+  description: ""
+  access: no-con/no-set
+
+DTBITS:
+  name: DTBITS
+  description: ""
+  access: no-con/no-set
+
+DTIME:
+  name: DTIME
+  description: ""
+  access: no-con/no-set
+
+DTOPT:
+  name: DTOPT
+  description: ""
+  access: no-con/no-set
+
+DV1:
+  name: DV1
+  description: ""
+  access: no-con/no-set
+
+DV10:
+  name: DV10
+  description: ""
+  access: no-con/no-set
+
+DV11:
+  name: DV11
+  description: ""
+  access: no-con/no-set
+
+DV12:
+  name: DV12
+  description: ""
+  access: no-con/no-set
+
+DV13:
+  name: DV13
+  description: ""
+  access: no-con/no-set
+
+DV14:
+  name: DV14
+  description: ""
+  access: no-con/no-set
+
+DV15:
+  name: DV15
+  description: ""
+  access: no-con/no-set
+
+DV16:
+  name: DV16
+  description: ""
+  access: no-con/no-set
+
+DV2:
+  name: DV2
+  description: ""
+  access: no-con/no-set
+
+DV3:
+  name: DV3
+  description: ""
+  access: no-con/no-set
+
+DV4:
+  name: DV4
+  description: ""
+  access: no-con/no-set
+
+DV5:
+  name: DV5
+  description: ""
+  access: no-con/no-set
+
+DV6:
+  name: DV6
+  description: ""
+  access: no-con/no-set
+
+DV7:
+  name: DV7
+  description: ""
+  access: no-con/no-set
+
+DV8:
+  name: DV8
+  description: ""
+  access: no-con/no-set
+
+DV9:
+  name: DV9
+  description: ""
+  access: no-con/no-set
+
+DVADDR:
+  name: DVADDR
+  description: ""
+  access: no-con/no-set
+
+DVNAME:
+  name: DVNAME
+  description: ""
+  access: no-con/no-set
+
+DVOPTS:
+  name: DVOPTS
+  description: ""
+  access: no-con/no-set
+
+DVTYPE:
+  name: DVTYPE
+  description: ""
+  access: no-con/no-set
+
+EI1:
+  name: EI1
+  description: ""
+  access: no-con/no-set
+
+EI2:
+  name: EI2
+  description: ""
+  access: no-con/no-set
+
+EI3:
+  name: EI3
+  description: ""
+  access: no-con/no-set
+
+EI4:
+  name: EI4
+  description: ""
+  access: no-con/no-set
+
+EI5:
+  name: EI5
+  description: ""
+  access: no-con/no-set
+
+EI6:
+  name: EI6
+  description: ""
+  access: no-con/no-set
+
+EI7:
+  name: EI7
+  description: ""
+  access: no-con/no-set
+
+EI8:
+  name: EI8
+  description: ""
+  access: no-con/no-set
+
+EIC:
+  name: EIC
+  description: ""
+  access: no-con/no-set
+
+EIN:
+  name: EIN
+  description: ""
+  access: no-con/no-set
+
+ENDP:
+  name: ENDP
+  description: ""
+  access: no-con/no-set
+
+ENDPMD:
+  name: ENDPMD
+  description: ""
+  access: no-con/no-set
+
+EO1:
+  name: Units (O1)
+  description: eng units, output 1
+  access: no-con/no-set
+
+EO1_1:
+  name: EO1_1
+  description: ""
+  access: no-con/no-set
+
+EO1_2:
+  name: EO1_2
+  description: ""
+  access: no-con/no-set
+
+EO1_3:
+  name: EO1_3
+  description: ""
+  access: no-con/no-set
+
+EO1_4:
+  name: EO1_4
+  description: ""
+  access: no-con/no-set
+
+EO1_5:
+  name: EO1_5
+  description: ""
+  access: no-con/no-set
+
+EO1_6:
+  name: EO1_6
+  description: ""
+  access: no-con/no-set
+
+EO1_7:
+  name: EO1_7
+  description: ""
+  access: no-con/no-set
+
+EO1_8:
+  name: EO1_8
+  description: ""
+  access: no-con/no-set
+
+EO1_9:
+  name: EO1_9
+  description: ""
+  access: no-con/no-set
+
+EO2:
+  name: EO2
+  description: ""
+  access: no-con/no-set
+
+EO3:
+  name: EO3
+  description: ""
+  access: no-con/no-set
+
+EO4:
+  name: EO4
+  description: ""
+  access: no-con/no-set
+
+EROP1:
+  name: EROP1
+  description: ""
+  access: no-con/no-set
+
+EROP10:
+  name: EROP10
+  description: ""
+  access: no-con/no-set
+
+EROP11:
+  name: EROP11
+  description: ""
+  access: no-con/no-set
+
+EROP12:
+  name: EROP12
+  description: ""
+  access: no-con/no-set
+
+EROP13:
+  name: EROP13
+  description: ""
+  access: no-con/no-set
+
+EROP14:
+  name: EROP14
+  description: ""
+  access: no-con/no-set
+
+EROP15:
+  name: EROP15
+  description: ""
+  access: no-con/no-set
+
+EROP16:
+  name: EROP16
+  description: ""
+  access: no-con/no-set
+
+EROP2:
+  name: EROP2
+  description: ""
+  access: no-con/no-set
+
+EROP3:
+  name: EROP3
+  description: ""
+  access: no-con/no-set
+
+EROP4:
+  name: EROP4
+  description: ""
+  access: no-con/no-set
+
+EROP5:
+  name: EROP5
+  description: ""
+  access: no-con/no-set
+
+EROP6:
+  name: EROP6
+  description: ""
+  access: no-con/no-set
+
+EROP7:
+  name: EROP7
+  description: ""
+  access: no-con/no-set
+
+EROP8:
+  name: EROP8
+  description: ""
+  access: no-con/no-set
+
+EROP9:
+  name: EROP9
+  description: ""
+  access: no-con/no-set
+
+EROPT:
+  name: EROPT
+  description: ""
+  access: no-con/no-set
+
+ERROPT:
+  name: ERROPT
+  description: ""
+  access: no-con/no-set
+
+ESPEED:
+  name: ESPEED
+  description: ""
+  access: no-con/no-set
+
+EXTBLK:
+  name: Extender
+  description: extender block
+  access: con/set
+
+EXTOPT:
+  name: EXTOPT
+  description: ""
+  access: no-con/no-set
+
+EXTYPE:
+  name: EXTYPE
+  description: ""
+  access: no-con/no-set
+
+FBK:
+  name: FBK
+  description: ""
+  access: no-con/no-set
+
+FIBER:
+  name: FIBER
+  description: ""
+  access: no-con/no-set
+
+FILEID:
+  name: FILEID
+  description: ""
+  access: no-con/no-set
+
+FILTER:
+  name: FILTER
+  description: ""
+  access: no-con/no-set
+
+FLBOPT:
+  name: FLBOPT
+  description: ""
+  access: no-con/no-set
+
+FLOP:
+  name: FLOP
+  description: ""
+  access: no-con/no-set
+
+FLOPTC:
+  name: FLOPTC
+  description: ""
+  access: no-con/no-set
+
+FLOP_1:
+  name: FLOP_1
+  description: ""
+  access: no-con/no-set
+
+FLOP_2:
+  name: FLOP_2
+  description: ""
+  access: no-con/no-set
+
+FLOP_3:
+  name: FLOP_3
+  description: ""
+  access: no-con/no-set
+
+FLOP_4:
+  name: FLOP_4
+  description: ""
+  access: no-con/no-set
+
+FLOP_5:
+  name: FLOP_5
+  description: ""
+  access: no-con/no-set
+
+FLOP_6:
+  name: FLOP_6
+  description: ""
+  access: no-con/no-set
+
+FLOP_7:
+  name: FLOP_7
+  description: ""
+  access: no-con/no-set
+
+FLOP_8:
+  name: FLOP_8
+  description: ""
+  access: no-con/no-set
+
+FOLLOW:
+  name: FOLLOW
+  description: ""
+  access: no-con/no-set
+
+FPE05:
+  name: FPE05
+  description: ""
+  access: no-con/no-set
+
+FPE07:
+  name: FPE07
+  description: ""
+  access: no-con/no-set
+
+FPE08:
+  name: FPE08
+  description: ""
+  access: no-con/no-set
+
+FPM05:
+  name: FPM05
+  description: ""
+  access: no-con/no-set
+
+FPM07:
+  name: FPM07
+  description: ""
+  access: no-con/no-set
+
+FPM08:
+  name: FPM08
+  description: ""
+  access: no-con/no-set
+
+FPM09:
+  name: FPM09
+  description: ""
+  access: no-con/no-set
+
+FPMMD:
+  name: FPMMD
+  description: ""
+  access: no-con/no-set
+
+FS5D02:
+  name: FS5D02
+  description: ""
+  access: no-con/no-set
+
+FS5D04:
+  name: FS5D04
+  description: ""
+  access: no-con/no-set
+
+FS5D09:
+  name: FS5D09
+  description: ""
+  access: no-con/no-set
+
+FS5DMD:
+  name: FS5DMD
+  description: ""
+  access: no-con/no-set
+
+FS6D02:
+  name: FS6D02
+  description: ""
+  access: no-con/no-set
+
+FS6D04:
+  name: FS6D04
+  description: ""
+  access: no-con/no-set
+
+FS6D09:
+  name: FS6D09
+  description: ""
+  access: no-con/no-set
+
+FS6DMD:
+  name: FS6DMD
+  description: ""
+  access: no-con/no-set
+
+FS7D02:
+  name: FS7D02
+  description: ""
+  access: no-con/no-set
+
+FS7D04:
+  name: FS7D04
+  description: ""
+  access: no-con/no-set
+
+FS8D02:
+  name: FS8D02
+  description: ""
+  access: no-con/no-set
+
+FS8D04:
+  name: FS8D04
+  description: ""
+  access: no-con/no-set
+
+FSCOUT:
+  name: FSCOUT
+  description: ""
+  access: no-con/no-set
+
+FSDE05:
+  name: FSDE05
+  description: ""
+  access: no-con/no-set
+
+FSDE08:
+  name: FSDE08
+  description: ""
+  access: no-con/no-set
+
+FSDLAY:
+  name: FSDLAY
+  description: ""
+  access: no-con/no-set
+
+FSDM05:
+  name: FSDM05
+  description: ""
+  access: no-con/no-set
+
+FSDM08:
+  name: FSDM08
+  description: ""
+  access: no-con/no-set
+
+FSDM09:
+  name: FSDM09
+  description: ""
+  access: no-con/no-set
+
+FSDMMD:
+  name: FSDMMD
+  description: ""
+  access: no-con/no-set
+
+FSENAB:
+  name: FSENAB
+  description: ""
+  access: no-con/no-set
+
+FSIOUT:
+  name: FSIOUT
+  description: ""
+  access: no-con/no-set
+
+FSME05:
+  name: FSME05
+  description: ""
+  access: no-con/no-set
+
+FSME08:
+  name: FSME08
+  description: ""
+  access: no-con/no-set
+
+FSMM02:
+  name: FSMM02
+  description: ""
+  access: no-con/no-set
+
+FSMM04:
+  name: FSMM04
+  description: ""
+  access: no-con/no-set
+
+FSMM05:
+  name: FSMM05
+  description: ""
+  access: no-con/no-set
+
+FSMM08:
+  name: FSMM08
+  description: ""
+  access: no-con/no-set
+
+FSMM09:
+  name: FSMM09
+  description: ""
+  access: no-con/no-set
+
+FSMMMD:
+  name: FSMMMD
+  description: ""
+  access: no-con/no-set
+
+FSOPTN:
+  name: FSOPTN
+  description: ""
+  access: no-con/no-set
+
+FSOUT:
+  name: FSOUT
+  description: ""
+  access: no-con/no-set
+
+FTHREQ:
+  name: FTHREQ
+  description: ""
+  access: no-con/no-set
+
+FTIM:
+  name: FTIM
+  description: ""
+  access: no-con/no-set
+
+FTIMTC:
+  name: FTIMTC
+  description: ""
+  access: no-con/no-set
+
+FTIM_1:
+  name: FTIM_1
+  description: ""
+  access: no-con/no-set
+
+FTIM_2:
+  name: FTIM_2
+  description: ""
+  access: no-con/no-set
+
+FTIM_3:
+  name: FTIM_3
+  description: ""
+  access: no-con/no-set
+
+FTIM_4:
+  name: FTIM_4
+  description: ""
+  access: no-con/no-set
+
+FTIM_5:
+  name: FTIM_5
+  description: ""
+  access: no-con/no-set
+
+FTIM_6:
+  name: FTIM_6
+  description: ""
+  access: no-con/no-set
+
+FTIM_7:
+  name: FTIM_7
+  description: ""
+  access: no-con/no-set
+
+FTIM_8:
+  name: FTIM_8
+  description: ""
+  access: no-con/no-set
+
+FTNREQ:
+  name: FTNREQ
+  description: ""
+  access: no-con/no-set
+
+GAIN:
+  name: GAIN
+  description: ""
+  access: no-con/no-set
+
+GAP:
+  name: GAP
+  description: ""
+  access: no-con/no-set
+
+GAPDBM:
+  name: GAPDBM
+  description: ""
+  access: no-con/no-set
+
+GAPMD:
+  name: GAPMD
+  description: ""
+  access: no-con/no-set
+
+GR1DV1:
+  name: GR1DV1
+  description: ""
+  access: no-con/no-set
+
+GR1DV2:
+  name: GR1DV2
+  description: ""
+  access: no-con/no-set
+
+GR1DV3:
+  name: GR1DV3
+  description: ""
+  access: no-con/no-set
+
+GR1DV4:
+  name: GR1DV4
+  description: ""
+  access: no-con/no-set
+
+GR1DV5:
+  name: GR1DV5
+  description: ""
+  access: no-con/no-set
+
+GR1DV6:
+  name: GR1DV6
+  description: ""
+  access: no-con/no-set
+
+GR1DV7:
+  name: GR1DV7
+  description: ""
+  access: no-con/no-set
+
+GR1DV8:
+  name: GR1DV8
+  description: ""
+  access: no-con/no-set
+
+GR2DV1:
+  name: GR2DV1
+  description: ""
+  access: no-con/no-set
+
+GR2DV2:
+  name: GR2DV2
+  description: ""
+  access: no-con/no-set
+
+GR2DV3:
+  name: GR2DV3
+  description: ""
+  access: no-con/no-set
+
+GR2DV4:
+  name: GR2DV4
+  description: ""
+  access: no-con/no-set
+
+GR2DV5:
+  name: GR2DV5
+  description: ""
+  access: no-con/no-set
+
+GR2DV6:
+  name: GR2DV6
+  description: ""
+  access: no-con/no-set
+
+GR2DV7:
+  name: GR2DV7
+  description: ""
+  access: no-con/no-set
+
+GR2DV8:
+  name: GR2DV8
+  description: ""
+  access: no-con/no-set
+
+GR3DV1:
+  name: GR3DV1
+  description: ""
+  access: no-con/no-set
+
+GR3DV2:
+  name: GR3DV2
+  description: ""
+  access: no-con/no-set
+
+GR3DV3:
+  name: GR3DV3
+  description: ""
+  access: no-con/no-set
+
+GR3DV4:
+  name: GR3DV4
+  description: ""
+  access: no-con/no-set
+
+GR3DV5:
+  name: GR3DV5
+  description: ""
+  access: no-con/no-set
+
+GR3DV6:
+  name: GR3DV6
+  description: ""
+  access: no-con/no-set
+
+GR3DV7:
+  name: GR3DV7
+  description: ""
+  access: no-con/no-set
+
+GR3DV8:
+  name: GR3DV8
+  description: ""
+  access: no-con/no-set
+
+GR4:
+  name: GR4
+  description: ""
+  access: no-con/no-set
+
+GR5:
+  name: GR5
+  description: ""
+  access: no-con/no-set
+
+GR6:
+  name: GR6
+  description: ""
+  access: no-con/no-set
+
+GR7:
+  name: GR7
+  description: ""
+  access: no-con/no-set
+
+GR8:
+  name: GR8
+  description: ""
+  access: no-con/no-set
+
+GRPNUM:
+  name: GRPNUM
+  description: ""
+  access: no-con/no-set
+
+HABLIM:
+  name: HABLIM
+  description: ""
+  access: no-con/no-set
+
+HABTXT:
+  name: HABTXT
+  description: ""
+  access: no-con/no-set
+
+HAL:
+  name: HAL
+  description: ""
+  access: no-con/no-set
+
+HAOPT:
+  name: HAOPT
+  description: ""
+  access: no-con/no-set
+
+HAT:
+  name: HAT
+  description: ""
+  access: no-con/no-set
+
+HDALIM:
+  name: HDALIM
+  description: ""
+  access: no-con/no-set
+
+HDATXT:
+  name: HDATXT
+  description: ""
+  access: no-con/no-set
+
+HHAGRP:
+  name: HHAGRP
+  description: ""
+  access: no-con/no-set
+
+HHALIM:
+  name: HHALIM
+  description: ""
+  access: no-con/no-set
+
+HHAOPT:
+  name: HHAOPT
+  description: ""
+  access: no-con/no-set
+
+HHAPRI:
+  name: HHAPRI
+  description: ""
+  access: no-con/no-set
+
+HHATXT:
+  name: HHATXT
+  description: ""
+  access: no-con/no-set
+
+HLAOPT:
+  name: HLAOPT
+  description: ""
+  access: no-con/no-set
+
+HLDB:
+  name: HLDB
+  description: ""
+  access: no-con/no-set
+
+HLGP:
+  name: HLGP
+  description: ""
+  access: no-con/no-set
+
+HLOP:
+  name: HLOP
+  description: ""
+  access: no-con/no-set
+
+HLPR:
+  name: HLPR
+  description: ""
+  access: no-con/no-set
+
+HMLIM:
+  name: HMLIM
+  description: ""
+  access: no-con/no-set
+
+HOALIM:
+  name: HOALIM
+  description: ""
+  access: no-con/no-set
+
+HOATXT:
+  name: HOATXT
+  description: ""
+  access: no-con/no-set
+
+HOLD:
+  name: HOLD
+  description: ""
+  access: no-con/no-set
+
+HOLDDI:
+  name: HOLDDI
+  description: ""
+  access: no-con/no-set
+
+HOLDMD:
+  name: HOLDMD
+  description: ""
+  access: no-con/no-set
+
+HOLIM:
+  name: HOLIM
+  description: ""
+  access: no-con/no-set
+
+HORVAL:
+  name: HORVAL
+  description: ""
+  access: no-con/no-set
+
+HSCI1:
+  name: HSCI1
+  description: ""
+  access: no-con/no-set
+
+HSCI2:
+  name: HSCI2
+  description: ""
+  access: no-con/no-set
+
+HSCI3:
+  name: HSCI3
+  description: ""
+  access: no-con/no-set
+
+HSCI4:
+  name: HSCI4
+  description: ""
+  access: no-con/no-set
+
+HSCI5:
+  name: HSCI5
+  description: ""
+  access: no-con/no-set
+
+HSCI6:
+  name: HSCI6
+  description: ""
+  access: no-con/no-set
+
+HSCI7:
+  name: HSCI7
+  description: ""
+  access: no-con/no-set
+
+HSCI8:
+  name: HSCI8
+  description: ""
+  access: no-con/no-set
+
+HSCIC:
+  name: HSCIC
+  description: ""
+  access: no-con/no-set
+
+HSCIN:
+  name: HSCIN
+  description: ""
+  access: no-con/no-set
+
+HSCO1:
+  name: High Scale (O1)
+  description: high scale, output 1
+  access: no-con/no-set
+
+HSCO2:
+  name: HSCO2
+  description: ""
+  access: no-con/no-set
+
+HSCO3:
+  name: HSCO3
+  description: ""
+  access: no-con/no-set
+
+HSCO4:
+  name: HSCO4
+  description: ""
+  access: no-con/no-set
+
+HSCO5:
+  name: HSCO5
+  description: ""
+  access: no-con/no-set
+
+HSCO6:
+  name: HSCO6
+  description: ""
+  access: no-con/no-set
+
+HSCO7:
+  name: HSCO7
+  description: ""
+  access: no-con/no-set
+
+HSCO8:
+  name: HSCO8
+  description: ""
+  access: no-con/no-set
+
+HSCO9:
+  name: HSCO9
+  description: ""
+  access: no-con/no-set
+
+HWTYPE:
+  name: HWTYPE
+  description: ""
+  access: no-con/no-set
+
+HZONE:
+  name: HZONE
+  description: ""
+  access: no-con/no-set
+
+IFLMSK:
+  name: IFLMSK
+  description: ""
+  access: no-con/no-set
+
+IFLPAT:
+  name: IFLPAT
+  description: ""
+  access: no-con/no-set
+
+IFL_1:
+  name: IFL_1
+  description: ""
+  access: no-con/no-set
+
+IFL_10:
+  name: IFL_10
+  description: ""
+  access: no-con/no-set
+
+IFL_11:
+  name: IFL_11
+  description: ""
+  access: no-con/no-set
+
+IFL_12:
+  name: IFL_12
+  description: ""
+  access: no-con/no-set
+
+IFL_13:
+  name: IFL_13
+  description: ""
+  access: no-con/no-set
+
+IFL_14:
+  name: IFL_14
+  description: ""
+  access: no-con/no-set
+
+IFL_15:
+  name: IFL_15
+  description: ""
+  access: no-con/no-set
+
+IFL_16:
+  name: IFL_16
+  description: ""
+  access: no-con/no-set
+
+IFL_17:
+  name: IFL_17
+  description: ""
+  access: no-con/no-set
+
+IFL_18:
+  name: IFL_18
+  description: ""
+  access: no-con/no-set
+
+IFL_19:
+  name: IFL_19
+  description: ""
+  access: no-con/no-set
+
+IFL_2:
+  name: IFL_2
+  description: ""
+  access: no-con/no-set
+
+IFL_20:
+  name: IFL_20
+  description: ""
+  access: no-con/no-set
+
+IFL_21:
+  name: IFL_21
+  description: ""
+  access: no-con/no-set
+
+IFL_22:
+  name: IFL_22
+  description: ""
+  access: no-con/no-set
+
+IFL_23:
+  name: IFL_23
+  description: ""
+  access: no-con/no-set
+
+IFL_24:
+  name: IFL_24
+  description: ""
+  access: no-con/no-set
+
+IFL_25:
+  name: IFL_25
+  description: ""
+  access: no-con/no-set
+
+IFL_26:
+  name: IFL_26
+  description: ""
+  access: no-con/no-set
+
+IFL_27:
+  name: IFL_27
+  description: ""
+  access: no-con/no-set
+
+IFL_28:
+  name: IFL_28
+  description: ""
+  access: no-con/no-set
+
+IFL_29:
+  name: IFL_29
+  description: ""
+  access: no-con/no-set
+
+IFL_3:
+  name: IFL_3
+  description: ""
+  access: no-con/no-set
+
+IFL_30:
+  name: IFL_30
+  description: ""
+  access: no-con/no-set
+
+IFL_31:
+  name: IFL_31
+  description: ""
+  access: no-con/no-set
+
+IFL_32:
+  name: IFL_32
+  description: ""
+  access: no-con/no-set
+
+IFL_4:
+  name: IFL_4
+  description: ""
+  access: no-con/no-set
+
+IFL_5:
+  name: IFL_5
+  description: ""
+  access: no-con/no-set
+
+IFL_6:
+  name: IFL_6
+  description: ""
+  access: no-con/no-set
+
+IFL_7:
+  name: IFL_7
+  description: ""
+  access: no-con/no-set
+
+IFL_8:
+  name: IFL_8
+  description: ""
+  access: no-con/no-set
+
+IFL_9:
+  name: IFL_9
+  description: ""
+  access: no-con/no-set
+
+II0001:
+  name: II0001
+  description: ""
+  access: no-con/no-set
+
+II0002:
+  name: II0002
+  description: ""
+  access: no-con/no-set
+
+II0003:
+  name: II0003
+  description: ""
+  access: no-con/no-set
+
+II0004:
+  name: II0004
+  description: ""
+  access: no-con/no-set
+
+II0005:
+  name: II0005
+  description: ""
+  access: no-con/no-set
+
+II0006:
+  name: II0006
+  description: ""
+  access: no-con/no-set
+
+II0007:
+  name: II0007
+  description: ""
+  access: no-con/no-set
+
+II0008:
+  name: II0008
+  description: ""
+  access: no-con/no-set
+
+II01:
+  name: II01
+  description: ""
+  access: no-con/no-set
+
+II02:
+  name: II02
+  description: ""
+  access: no-con/no-set
+
+IIN:
+  name: IIN
+  description: ""
+  access: no-con/no-set
+
+IM:
+  name: IM
+  description: ""
+  access: no-con/no-set
+
+IN:
+  name: IN
+  description: ""
+  access: no-con/no-set
+
+IN1:
+  name: IN1
+  description: ""
+  access: no-con/no-set
+
+IN10:
+  name: IN10
+  description: ""
+  access: no-con/no-set
+
+IN11:
+  name: IN11
+  description: ""
+  access: no-con/no-set
+
+IN12:
+  name: IN12
+  description: ""
+  access: no-con/no-set
+
+IN13:
+  name: IN13
+  description: ""
+  access: no-con/no-set
+
+IN14:
+  name: IN14
+  description: ""
+  access: no-con/no-set
+
+IN15:
+  name: IN15
+  description: ""
+  access: no-con/no-set
+
+IN16:
+  name: IN16
+  description: ""
+  access: no-con/no-set
+
+IN17:
+  name: IN17
+  description: ""
+  access: no-con/no-set
+
+IN18:
+  name: IN18
+  description: ""
+  access: no-con/no-set
+
+IN19:
+  name: IN19
+  description: ""
+  access: no-con/no-set
+
+IN2:
+  name: IN2
+  description: ""
+  access: no-con/no-set
+
+IN20:
+  name: IN20
+  description: ""
+  access: no-con/no-set
+
+IN21:
+  name: IN21
+  description: ""
+  access: no-con/no-set
+
+IN22:
+  name: IN22
+  description: ""
+  access: no-con/no-set
+
+IN23:
+  name: IN23
+  description: ""
+  access: no-con/no-set
+
+IN24:
+  name: IN24
+  description: ""
+  access: no-con/no-set
+
+IN25:
+  name: IN25
+  description: ""
+  access: no-con/no-set
+
+IN26:
+  name: IN26
+  description: ""
+  access: no-con/no-set
+
+IN27:
+  name: IN27
+  description: ""
+  access: no-con/no-set
+
+IN28:
+  name: IN28
+  description: ""
+  access: no-con/no-set
+
+IN29:
+  name: IN29
+  description: ""
+  access: no-con/no-set
+
+IN3:
+  name: IN3
+  description: ""
+  access: no-con/no-set
+
+IN30:
+  name: IN30
+  description: ""
+  access: no-con/no-set
+
+IN31:
+  name: IN31
+  description: ""
+  access: no-con/no-set
+
+IN32:
+  name: IN32
+  description: ""
+  access: no-con/no-set
+
+IN4:
+  name: IN4
+  description: ""
+  access: no-con/no-set
+
+IN5:
+  name: IN5
+  description: ""
+  access: no-con/no-set
+
+IN6:
+  name: IN6
+  description: ""
+  access: no-con/no-set
+
+IN7:
+  name: IN7
+  description: ""
+  access: no-con/no-set
+
+IN8:
+  name: IN8
+  description: ""
+  access: no-con/no-set
+
+IN9:
+  name: IN9
+  description: ""
+  access: no-con/no-set
+
+INCOPT:
+  name: INCOPT
+  description: ""
+  access: no-con/no-set
+
+INDCON:
+  name: INDCON
+  description: ""
+  access: no-con/no-set
+
+INDSPT:
+  name: INDSPT
+  description: ""
+  access: no-con/no-set
+
+INHALM:
+  name: INHALM
+  description: ""
+  access: no-con/no-set
+
+INHDWN:
+  name: INHDWN
+  description: ""
+  access: no-con/no-set
+
+INHIB:
+  name: INHIB
+  description: ""
+  access: no-con/no-set
+
+INHOPT:
+  name: INHOPT
+  description: ""
+  access: no-con/no-set
+
+INHPRT:
+  name: INHPRT
+  description: ""
+  access: no-con/no-set
+
+INHUP:
+  name: INHUP
+  description: ""
+  access: no-con/no-set
+
+INITCL:
+  name: INITCL
+  description: ""
+  access: no-con/no-set
+
+INITI:
+  name: INITI
+  description: ""
+  access: no-con/no-set
+
+INITLR:
+  name: INITLR
+  description: ""
+  access: no-con/no-set
+
+INITMA:
+  name: INITMA
+  description: ""
+  access: no-con/no-set
+
+INITMR:
+  name: INITMR
+  description: ""
+  access: no-con/no-set
+
+INITON:
+  name: INITON
+  description: ""
+  access: no-con/no-set
+
+INITSE:
+  name: INITSE
+  description: ""
+  access: no-con/no-set
+
+INITTE:
+  name: INITTE
+  description: ""
+  access: no-con/no-set
+
+INI_PT:
+  name: INI_PT
+  description: ""
+  access: no-con/no-set
+
+INP1:
+  name: INP1
+  description: ""
+  access: no-con/no-set
+
+INP2:
+  name: INP2
+  description: ""
+  access: no-con/no-set
+
+INP3:
+  name: INP3
+  description: ""
+  access: no-con/no-set
+
+INP4:
+  name: INP4
+  description: ""
+  access: no-con/no-set
+
+INP5:
+  name: INP5
+  description: ""
+  access: no-con/no-set
+
+INP6:
+  name: INP6
+  description: ""
+  access: no-con/no-set
+
+INP7:
+  name: INP7
+  description: ""
+  access: no-con/no-set
+
+INP8:
+  name: INP8
+  description: ""
+  access: no-con/no-set
+
+INPUTS:
+  name: INPUTS
+  description: ""
+  access: no-con/no-set
+
+INT:
+  name: INT
+  description: ""
+  access: no-con/no-set
+
+INVALM:
+  name: INVALM
+  description: ""
+  access: no-con/no-set
+
+INVCO:
+  name: INVCO
+  description: ""
+  access: no-con/no-set
+
+INVDFI:
+  name: INVDFI
+  description: ""
+  access: no-con/no-set
+
+INVLIM:
+  name: INVLIM
+  description: ""
+  access: no-con/no-set
+
+INVOPT:
+  name: INVOPT
+  description: ""
+  access: no-con/no-set
+
+IN_1:
+  name: IN_1
+  description: ""
+  access: no-con/no-set
+
+IN_10:
+  name: IN_10
+  description: ""
+  access: no-con/no-set
+
+IN_11:
+  name: IN_11
+  description: ""
+  access: no-con/no-set
+
+IN_12:
+  name: IN_12
+  description: ""
+  access: no-con/no-set
+
+IN_13:
+  name: IN_13
+  description: ""
+  access: no-con/no-set
+
+IN_14:
+  name: IN_14
+  description: ""
+  access: no-con/no-set
+
+IN_15:
+  name: IN_15
+  description: ""
+  access: no-con/no-set
+
+IN_16:
+  name: IN_16
+  description: ""
+  access: no-con/no-set
+
+IN_2:
+  name: IN_2
+  description: ""
+  access: no-con/no-set
+
+IN_3:
+  name: IN_3
+  description: ""
+  access: no-con/no-set
+
+IN_4:
+  name: IN_4
+  description: ""
+  access: no-con/no-set
+
+IN_5:
+  name: IN_5
+  description: ""
+  access: no-con/no-set
+
+IN_6:
+  name: IN_6
+  description: ""
+  access: no-con/no-set
+
+IN_7:
+  name: IN_7
+  description: ""
+  access: no-con/no-set
+
+IN_8:
+  name: IN_8
+  description: ""
+  access: no-con/no-set
+
+IN_9:
+  name: IN_9
+  description: ""
+  access: no-con/no-set
+
+IO0001:
+  name: IO0001
+  description: ""
+  access: no-con/no-set
+
+IO0002:
+  name: IO0002
+  description: ""
+  access: no-con/no-set
+
+IO0003:
+  name: IO0003
+  description: ""
+  access: no-con/no-set
+
+IO0004:
+  name: IO0004
+  description: ""
+  access: no-con/no-set
+
+IO0005:
+  name: IO0005
+  description: ""
+  access: no-con/no-set
+
+IOMIDR:
+  name: IOMIDR
+  description: ""
+  access: no-con/no-set
+
+IOMOPT:
+  name: IOMOPT
+  description: ""
+  access: no-con/no-set
+
+IOM_ID:
+  name: FBM
+  description: FBM identifier
+  access: no-con/no-set
+
+ITMAX:
+  name: ITMAX
+  description: ""
+  access: no-con/no-set
+
+ITMIN:
+  name: ITMIN
+  description: ""
+  access: no-con/no-set
+
+IVO:
+  name: IVO
+  description: ""
+  access: no-con/no-set
+
+IVO_1:
+  name: IVO_1
+  description: ""
+  access: no-con/no-set
+
+IVO_10:
+  name: IVO_10
+  description: ""
+  access: no-con/no-set
+
+IVO_11:
+  name: IVO_11
+  description: ""
+  access: no-con/no-set
+
+IVO_12:
+  name: IVO_12
+  description: ""
+  access: no-con/no-set
+
+IVO_13:
+  name: IVO_13
+  description: ""
+  access: no-con/no-set
+
+IVO_14:
+  name: IVO_14
+  description: ""
+  access: no-con/no-set
+
+IVO_15:
+  name: IVO_15
+  description: ""
+  access: no-con/no-set
+
+IVO_16:
+  name: IVO_16
+  description: ""
+  access: no-con/no-set
+
+IVO_17:
+  name: IVO_17
+  description: ""
+  access: no-con/no-set
+
+IVO_18:
+  name: IVO_18
+  description: ""
+  access: no-con/no-set
+
+IVO_19:
+  name: IVO_19
+  description: ""
+  access: no-con/no-set
+
+IVO_2:
+  name: IVO_2
+  description: ""
+  access: no-con/no-set
+
+IVO_20:
+  name: IVO_20
+  description: ""
+  access: no-con/no-set
+
+IVO_21:
+  name: IVO_21
+  description: ""
+  access: no-con/no-set
+
+IVO_22:
+  name: IVO_22
+  description: ""
+  access: no-con/no-set
+
+IVO_23:
+  name: IVO_23
+  description: ""
+  access: no-con/no-set
+
+IVO_24:
+  name: IVO_24
+  description: ""
+  access: no-con/no-set
+
+IVO_25:
+  name: IVO_25
+  description: ""
+  access: no-con/no-set
+
+IVO_26:
+  name: IVO_26
+  description: ""
+  access: no-con/no-set
+
+IVO_27:
+  name: IVO_27
+  description: ""
+  access: no-con/no-set
+
+IVO_28:
+  name: IVO_28
+  description: ""
+  access: no-con/no-set
+
+IVO_29:
+  name: IVO_29
+  description: ""
+  access: no-con/no-set
+
+IVO_3:
+  name: IVO_3
+  description: ""
+  access: no-con/no-set
+
+IVO_30:
+  name: IVO_30
+  description: ""
+  access: no-con/no-set
+
+IVO_31:
+  name: IVO_31
+  description: ""
+  access: no-con/no-set
+
+IVO_32:
+  name: IVO_32
+  description: ""
+  access: no-con/no-set
+
+IVO_4:
+  name: IVO_4
+  description: ""
+  access: no-con/no-set
+
+IVO_5:
+  name: IVO_5
+  description: ""
+  access: no-con/no-set
+
+IVO_6:
+  name: IVO_6
+  description: ""
+  access: no-con/no-set
+
+IVO_7:
+  name: IVO_7
+  description: ""
+  access: no-con/no-set
+
+IVO_8:
+  name: IVO_8
+  description: ""
+  access: no-con/no-set
+
+IVO_9:
+  name: IVO_9
+  description: ""
+  access: no-con/no-set
+
+KBIAS:
+  name: KBIAS
+  description: ""
+  access: no-con/no-set
+
+KD:
+  name: KD
+  description: ""
+  access: no-con/no-set
+
+KMEAS:
+  name: KMEAS
+  description: ""
+  access: no-con/no-set
+
+KSCALE:
+  name: KSCALE
+  description: ""
+  access: no-con/no-set
+
+KZONE:
+  name: KZONE
+  description: ""
+  access: no-con/no-set
+
+LABLIM:
+  name: LABLIM
+  description: ""
+  access: no-con/no-set
+
+LABTXT:
+  name: LABTXT
+  description: ""
+  access: no-con/no-set
+
+LAG2:
+  name: LAG2
+  description: ""
+  access: no-con/no-set
+
+LAGTIM:
+  name: LAGTIM
+  description: ""
+  access: no-con/no-set
+
+LAGTMD:
+  name: LAGTMD
+  description: ""
+  access: no-con/no-set
+
+LAL:
+  name: LAL
+  description: ""
+  access: no-con/no-set
+
+LASTGV:
+  name: LASTGV
+  description: ""
+  access: no-con/no-set
+
+LAT:
+  name: LAT
+  description: ""
+  access: no-con/no-set
+
+LDALIM:
+  name: LDALIM
+  description: ""
+  access: no-con/no-set
+
+LDATXT:
+  name: LDATXT
+  description: ""
+  access: no-con/no-set
+
+LGAIN:
+  name: LGAIN
+  description: ""
+  access: no-con/no-set
+
+LI01:
+  name: LI01
+  description: ""
+  access: no-con/no-set
+
+LI02:
+  name: LI02
+  description: ""
+  access: no-con/no-set
+
+LIM:
+  name: LIM
+  description: ""
+  access: no-con/no-set
+
+LIMOPT:
+  name: LIMOPT
+  description: ""
+  access: no-con/no-set
+
+LLALIM:
+  name: LLALIM
+  description: ""
+  access: no-con/no-set
+
+LLATXT:
+  name: LLATXT
+  description: ""
+  access: no-con/no-set
+
+LLOPT:
+  name: LLOPT
+  description: ""
+  access: no-con/no-set
+
+LMLIM:
+  name: LMLIM
+  description: ""
+  access: no-con/no-set
+
+LOAD1:
+  name: LOAD1
+  description: ""
+  access: no-con/no-set
+
+LOAD2:
+  name: LOAD2
+  description: ""
+  access: no-con/no-set
+
+LOAD3:
+  name: LOAD3
+  description: ""
+  access: no-con/no-set
+
+LOAD4:
+  name: LOAD4
+  description: ""
+  access: no-con/no-set
+
+LOALIM:
+  name: LOALIM
+  description: ""
+  access: no-con/no-set
+
+LOATXT:
+  name: LOATXT
+  description: ""
+  access: no-con/no-set
+
+LOCSP:
+  name: LOCSP
+  description: ""
+  access: no-con/no-set
+
+LOCSW:
+  name: LOCSW
+  description: ""
+  access: no-con/no-set
+
+LOLIM:
+  name: LOLIM
+  description: ""
+  access: no-con/no-set
+
+LOOPID:
+  name: Loop ID
+  description: loop identifier
+  access: no-con/set
+
+LORVAL:
+  name: LORVAL
+  description: ""
+  access: no-con/no-set
+
+LR:
+  name: LR
+  description: ""
+  access: no-con/no-set
+
+LSCI1:
+  name: LSCI1
+  description: ""
+  access: no-con/no-set
+
+LSCI2:
+  name: LSCI2
+  description: ""
+  access: no-con/no-set
+
+LSCI3:
+  name: LSCI3
+  description: ""
+  access: no-con/no-set
+
+LSCI4:
+  name: LSCI4
+  description: ""
+  access: no-con/no-set
+
+LSCI5:
+  name: LSCI5
+  description: ""
+  access: no-con/no-set
+
+LSCI6:
+  name: LSCI6
+  description: ""
+  access: no-con/no-set
+
+LSCI7:
+  name: LSCI7
+  description: ""
+  access: no-con/no-set
+
+LSCI8:
+  name: LSCI8
+  description: ""
+  access: no-con/no-set
+
+LSCIC:
+  name: LSCIC
+  description: ""
+  access: no-con/no-set
+
+LSCIN:
+  name: LSCIN
+  description: ""
+  access: no-con/no-set
+
+LSCO1:
+  name: Low Scale (O1)
+  description: low scale, output 1
+  access: no-con/no-set
+
+LSCO2:
+  name: LSCO2
+  description: ""
+  access: no-con/no-set
+
+LSCO3:
+  name: LSCO3
+  description: ""
+  access: no-con/no-set
+
+LSCO4:
+  name: LSCO4
+  description: ""
+  access: no-con/no-set
+
+LSCO5:
+  name: LSCO5
+  description: ""
+  access: no-con/no-set
+
+LSCO6:
+  name: LSCO6
+  description: ""
+  access: no-con/no-set
+
+LSCO7:
+  name: LSCO7
+  description: ""
+  access: no-con/no-set
+
+LSCO8:
+  name: LSCO8
+  description: ""
+  access: no-con/no-set
+
+LSCO9:
+  name: LSCO9
+  description: ""
+  access: no-con/no-set
+
+LZONE:
+  name: LZONE
+  description: ""
+  access: no-con/no-set
+
+M01:
+  name: M01
+  description: ""
+  access: no-con/no-set
+
+M02:
+  name: M02
+  description: ""
+  access: no-con/no-set
+
+M03:
+  name: M03
+  description: ""
+  access: no-con/no-set
+
+M04:
+  name: M04
+  description: ""
+  access: no-con/no-set
+
+M05:
+  name: M05
+  description: ""
+  access: no-con/no-set
+
+M06:
+  name: M06
+  description: ""
+  access: no-con/no-set
+
+M07:
+  name: M07
+  description: ""
+  access: no-con/no-set
+
+M08:
+  name: M08
+  description: ""
+  access: no-con/no-set
+
+M09:
+  name: M09
+  description: ""
+  access: no-con/no-set
+
+M10:
+  name: M10
+  description: ""
+  access: no-con/no-set
+
+M11:
+  name: M11
+  description: ""
+  access: no-con/no-set
+
+M12:
+  name: M12
+  description: ""
+  access: no-con/no-set
+
+M13:
+  name: M13
+  description: ""
+  access: no-con/no-set
+
+M14:
+  name: M14
+  description: ""
+  access: no-con/no-set
+
+M15:
+  name: M15
+  description: ""
+  access: no-con/no-set
+
+M16:
+  name: M16
+  description: ""
+  access: no-con/no-set
+
+M17:
+  name: M17
+  description: ""
+  access: no-con/no-set
+
+M18:
+  name: M18
+  description: ""
+  access: no-con/no-set
+
+M19:
+  name: M19
+  description: ""
+  access: no-con/no-set
+
+M20:
+  name: M20
+  description: ""
+  access: no-con/no-set
+
+M21:
+  name: M21
+  description: ""
+  access: no-con/no-set
+
+M22:
+  name: M22
+  description: ""
+  access: no-con/no-set
+
+M23:
+  name: M23
+  description: ""
+  access: no-con/no-set
+
+M24:
+  name: M24
+  description: ""
+  access: no-con/no-set
+
+MA:
+  name: MA
+  description: ""
+  access: no-con/no-set
+
+MAE_1:
+  name: MAE_1
+  description: ""
+  access: no-con/no-set
+
+MAE_10:
+  name: MAE_10
+  description: ""
+  access: no-con/no-set
+
+MAE_11:
+  name: MAE_11
+  description: ""
+  access: no-con/no-set
+
+MAE_12:
+  name: MAE_12
+  description: ""
+  access: no-con/no-set
+
+MAE_13:
+  name: MAE_13
+  description: ""
+  access: no-con/no-set
+
+MAE_14:
+  name: MAE_14
+  description: ""
+  access: no-con/no-set
+
+MAE_15:
+  name: MAE_15
+  description: ""
+  access: no-con/no-set
+
+MAE_16:
+  name: MAE_16
+  description: ""
+  access: no-con/no-set
+
+MAE_2:
+  name: MAE_2
+  description: ""
+  access: no-con/no-set
+
+MAE_3:
+  name: MAE_3
+  description: ""
+  access: no-con/no-set
+
+MAE_4:
+  name: MAE_4
+  description: ""
+  access: no-con/no-set
+
+MAE_5:
+  name: MAE_5
+  description: ""
+  access: no-con/no-set
+
+MAE_6:
+  name: MAE_6
+  description: ""
+  access: no-con/no-set
+
+MAE_7:
+  name: MAE_7
+  description: ""
+  access: no-con/no-set
+
+MAE_8:
+  name: MAE_8
+  description: ""
+  access: no-con/no-set
+
+MAE_9:
+  name: MAE_9
+  description: ""
+  access: no-con/no-set
+
+MALOPT:
+  name: MALOPT
+  description: ""
+  access: no-con/no-set
+
+MANALM:
+  name: MANALM
+  description: ""
+  access: no-con/no-set
+
+MANDEC:
+  name: MANDEC
+  description: ""
+  access: no-con/no-set
+
+MANFS:
+  name: MANFS
+  description: ""
+  access: no-con/no-set
+
+MANFTR:
+  name: MANFTR
+  description: ""
+  access: no-con/no-set
+
+MANINC:
+  name: MANINC
+  description: ""
+  access: no-con/no-set
+
+MANSW:
+  name: MANSW
+  description: ""
+  access: no-con/no-set
+
+MBADOP:
+  name: MBADOP
+  description: ""
+  access: no-con/no-set
+
+MBIAS:
+  name: MBIAS
+  description: ""
+  access: no-con/no-set
+
+MCLOPT:
+  name: MCLOPT
+  description: ""
+  access: no-con/no-set
+
+MEAS:
+  name: MEAS
+  description: ""
+  access: no-con/no-set
+
+MEASDB:
+  name: MEASDB
+  description: ""
+  access: no-con/no-set
+
+MEASGR:
+  name: MEASGR
+  description: ""
+  access: no-con/no-set
+
+MEASHL:
+  name: MEASHL
+  description: ""
+  access: no-con/no-set
+
+MEASHT:
+  name: MEASHT
+  description: ""
+  access: no-con/no-set
+
+MEASLL:
+  name: MEASLL
+  description: ""
+  access: no-con/no-set
+
+MEASLT:
+  name: MEASLT
+  description: ""
+  access: no-con/no-set
+
+MEASNM:
+  name: MEASNM
+  description: ""
+  access: no-con/no-set
+
+MEASPR:
+  name: MEASPR
+  description: ""
+  access: no-con/no-set
+
+MEAS_1:
+  name: MEAS_1
+  description: ""
+  access: no-con/no-set
+
+MEAS_2:
+  name: MEAS_2
+  description: ""
+  access: no-con/no-set
+
+MEAS_3:
+  name: MEAS_3
+  description: ""
+  access: no-con/no-set
+
+MEAS_4:
+  name: MEAS_4
+  description: ""
+  access: no-con/no-set
+
+MEAS_5:
+  name: MEAS_5
+  description: ""
+  access: no-con/no-set
+
+MEAS_6:
+  name: MEAS_6
+  description: ""
+  access: no-con/no-set
+
+MEAS_7:
+  name: MEAS_7
+  description: ""
+  access: no-con/no-set
+
+MEAS_8:
+  name: MEAS_8
+  description: ""
+  access: no-con/no-set
+
+MEAS_P:
+  name: MEAS_P
+  description: ""
+  access: no-con/no-set
+
+MEAS_S:
+  name: MEAS_S
+  description: ""
+  access: no-con/no-set
+
+MEROPT:
+  name: MEROPT
+  description: ""
+  access: no-con/no-set
+
+MESLIM:
+  name: MESLIM
+  description: ""
+  access: no-con/no-set
+
+MGAIN:
+  name: MGAIN
+  description: ""
+  access: no-con/no-set
+
+MINTIM:
+  name: MINTIM
+  description: ""
+  access: no-con/no-set
+
+MMAOPT:
+  name: MMAOPT
+  description: ""
+  access: no-con/no-set
+
+MNDUTD:
+  name: MNDUTD
+  description: ""
+  access: no-con/no-set
+
+MNDUTH:
+  name: MNDUTH
+  description: ""
+  access: no-con/no-set
+
+MNDUTI:
+  name: MNDUTI
+  description: ""
+  access: no-con/no-set
+
+MNDUTL:
+  name: MNDUTL
+  description: ""
+  access: no-con/no-set
+
+MODOPT:
+  name: MODOPT
+  description: ""
+  access: no-con/no-set
+
+MPOLL:
+  name: MPOLL
+  description: ""
+  access: no-con/no-set
+
+MSCALE:
+  name: MSCALE
+  description: ""
+  access: no-con/no-set
+
+MSGGR1:
+  name: MSGGR1
+  description: ""
+  access: no-con/no-set
+
+MSGGR2:
+  name: MSGGR2
+  description: ""
+  access: no-con/no-set
+
+MSGGR3:
+  name: MSGGR3
+  description: ""
+  access: no-con/no-set
+
+MSGGR4:
+  name: MSGGR4
+  description: ""
+  access: no-con/no-set
+
+MSK_1:
+  name: MSK_1
+  description: ""
+  access: no-con/no-set
+
+MSK_10:
+  name: MSK_10
+  description: ""
+  access: no-con/no-set
+
+MSK_11:
+  name: MSK_11
+  description: ""
+  access: no-con/no-set
+
+MSK_12:
+  name: MSK_12
+  description: ""
+  access: no-con/no-set
+
+MSK_13:
+  name: MSK_13
+  description: ""
+  access: no-con/no-set
+
+MSK_14:
+  name: MSK_14
+  description: ""
+  access: no-con/no-set
+
+MSK_15:
+  name: MSK_15
+  description: ""
+  access: no-con/no-set
+
+MSK_16:
+  name: MSK_16
+  description: ""
+  access: no-con/no-set
+
+MSK_2:
+  name: MSK_2
+  description: ""
+  access: no-con/no-set
+
+MSK_3:
+  name: MSK_3
+  description: ""
+  access: no-con/no-set
+
+MSK_4:
+  name: MSK_4
+  description: ""
+  access: no-con/no-set
+
+MSK_5:
+  name: MSK_5
+  description: ""
+  access: no-con/no-set
+
+MSK_6:
+  name: MSK_6
+  description: ""
+  access: no-con/no-set
+
+MSK_7:
+  name: MSK_7
+  description: ""
+  access: no-con/no-set
+
+MSK_8:
+  name: MSK_8
+  description: ""
+  access: no-con/no-set
+
+MSK_9:
+  name: MSK_9
+  description: ""
+  access: no-con/no-set
+
+MTRF:
+  name: MTRF
+  description: ""
+  access: no-con/no-set
+
+MTRFAC:
+  name: MTRFAC
+  description: ""
+  access: no-con/no-set
+
+MTRF_1:
+  name: MTRF_1
+  description: ""
+  access: no-con/no-set
+
+MTRF_2:
+  name: MTRF_2
+  description: ""
+  access: no-con/no-set
+
+MTRF_3:
+  name: MTRF_3
+  description: ""
+  access: no-con/no-set
+
+MTRF_4:
+  name: MTRF_4
+  description: ""
+  access: no-con/no-set
+
+MTRF_5:
+  name: MTRF_5
+  description: ""
+  access: no-con/no-set
+
+MTRF_6:
+  name: MTRF_6
+  description: ""
+  access: no-con/no-set
+
+MTRF_7:
+  name: MTRF_7
+  description: ""
+  access: no-con/no-set
+
+MTRF_8:
+  name: MTRF_8
+  description: ""
+  access: no-con/no-set
+
+MULTIN:
+  name: MULTIN
+  description: ""
+  access: no-con/no-set
+
+NAME:
+  name: Name
+  description: block name
+  access: no-con/no-set
+
+NASOPT:
+  name: NASOPT
+  description: ""
+  access: no-con/no-set
+
+NASTDB:
+  name: NASTDB
+  description: ""
+  access: no-con/no-set
+
+NLNBLK:
+  name: NLNBLK
+  description: ""
+  access: no-con/no-set
+
+NM0:
+  name: NM0
+  description: ""
+  access: no-con/no-set
+
+NM1:
+  name: NM1
+  description: ""
+  access: no-con/no-set
+
+NONLOP:
+  name: NONLOP
+  description: ""
+  access: no-con/no-set
+
+NRBUS:
+  name: NRBUS
+  description: ""
+  access: no-con/no-set
+
+NUMBIT:
+  name: NUMBIT
+  description: ""
+  access: no-con/no-set
+
+NUMBKT:
+  name: NUMBKT
+  description: ""
+  access: no-con/no-set
+
+NUMINP:
+  name: NUMINP
+  description: ""
+  access: no-con/no-set
+
+OALOPT:
+  name: OALOPT
+  description: ""
+  access: no-con/no-set
+
+OCTNUM:
+  name: OCTNUM
+  description: ""
+  access: no-con/no-set
+
+"ON":
+  name: "ON"
+  description: ""
+  access: no-con/no-set
+
+OORENB:
+  name: OORENB
+  description: ""
+  access: no-con/no-set
+
+OP_GRP:
+  name: OP_GRP
+  description: ""
+  access: no-con/no-set
+
+OP_OPT:
+  name: OP_OPT
+  description: ""
+  access: no-con/no-set
+
+OP_PRI:
+  name: OP_PRI
+  description: ""
+  access: no-con/no-set
+
+OP_TXT:
+  name: OP_TXT
+  description: ""
+  access: no-con/no-set
+
+ORAG:
+  name: ORAG
+  description: ""
+  access: no-con/no-set
+
+ORAO:
+  name: ORAO
+  description: ""
+  access: no-con/no-set
+
+ORAP:
+  name: ORAP
+  description: ""
+  access: no-con/no-set
+
+ORAT:
+  name: ORAT
+  description: ""
+  access: no-con/no-set
+
+OSV:
+  name: Variance
+  description: output span variance
+  access: no-con/no-set
+
+OSV_1:
+  name: OSV_1
+  description: ""
+  access: no-con/no-set
+
+OSV_2:
+  name: OSV_2
+  description: ""
+  access: no-con/no-set
+
+OSV_3:
+  name: OSV_3
+  description: ""
+  access: no-con/no-set
+
+OSV_4:
+  name: OSV_4
+  description: ""
+  access: no-con/no-set
+
+OSV_5:
+  name: OSV_5
+  description: ""
+  access: no-con/no-set
+
+OSV_6:
+  name: OSV_6
+  description: ""
+  access: no-con/no-set
+
+OSV_7:
+  name: OSV_7
+  description: ""
+  access: no-con/no-set
+
+OSV_8:
+  name: OSV_8
+  description: ""
+  access: no-con/no-set
+
+OSV_9:
+  name: OSV_9
+  description: ""
+  access: no-con/no-set
+
+OUTADB:
+  name: OUTADB
+  description: ""
+  access: no-con/no-set
+
+OUTGRP:
+  name: OUTGRP
+  description: ""
+  access: no-con/no-set
+
+OUTMSK:
+  name: OUTMSK
+  description: ""
+  access: no-con/no-set
+
+OUTNM:
+  name: OUTNM
+  description: ""
+  access: no-con/no-set
+
+OUTOPT:
+  name: OUTOPT
+  description: ""
+  access: no-con/no-set
+
+OUTPRI:
+  name: OUTPRI
+  description: ""
+  access: no-con/no-set
+
+OVRDIS:
+  name: OVRDIS
+  description: ""
+  access: no-con/no-set
+
+P09E05:
+  name: P09E05
+  description: ""
+  access: no-con/no-set
+
+P09M05:
+  name: P09M05
+  description: ""
+  access: no-con/no-set
+
+P10E05:
+  name: P10E05
+  description: ""
+  access: no-con/no-set
+
+P10M05:
+  name: P10M05
+  description: ""
+  access: no-con/no-set
+
+P11E05:
+  name: P11E05
+  description: ""
+  access: no-con/no-set
+
+P11M05:
+  name: P11M05
+  description: ""
+  access: no-con/no-set
+
+P12E05:
+  name: P12E05
+  description: ""
+  access: no-con/no-set
+
+P12M05:
+  name: P12M05
+  description: ""
+  access: no-con/no-set
+
+P13E05:
+  name: P13E05
+  description: ""
+  access: no-con/no-set
+
+P13F09:
+  name: P13F09
+  description: ""
+  access: no-con/no-set
+
+P13M05:
+  name: P13M05
+  description: ""
+  access: no-con/no-set
+
+P13N09:
+  name: P13N09
+  description: ""
+  access: no-con/no-set
+
+P14E05:
+  name: P14E05
+  description: ""
+  access: no-con/no-set
+
+P14F09:
+  name: P14F09
+  description: ""
+  access: no-con/no-set
+
+P14M05:
+  name: P14M05
+  description: ""
+  access: no-con/no-set
+
+P14N09:
+  name: P14N09
+  description: ""
+  access: no-con/no-set
+
+P15E05:
+  name: P15E05
+  description: ""
+  access: no-con/no-set
+
+P15F09:
+  name: P15F09
+  description: ""
+  access: no-con/no-set
+
+P15M05:
+  name: P15M05
+  description: ""
+  access: no-con/no-set
+
+P15N09:
+  name: P15N09
+  description: ""
+  access: no-con/no-set
+
+P16E05:
+  name: P16E05
+  description: ""
+  access: no-con/no-set
+
+P16F09:
+  name: P16F09
+  description: ""
+  access: no-con/no-set
+
+P16M05:
+  name: P16M05
+  description: ""
+  access: no-con/no-set
+
+P16N09:
+  name: P16N09
+  description: ""
+  access: no-con/no-set
+
+PAKCIN:
+  name: PAKCIN
+  description: ""
+  access: no-con/no-set
+
+PARENT:
+  name: PARENT
+  description: ""
+  access: no-con/no-set
+
+PARITY:
+  name: PARITY
+  description: ""
+  access: no-con/no-set
+
+PAT_1:
+  name: PAT_1
+  description: ""
+  access: no-con/no-set
+
+PAT_10:
+  name: PAT_10
+  description: ""
+  access: no-con/no-set
+
+PAT_11:
+  name: PAT_11
+  description: ""
+  access: no-con/no-set
+
+PAT_12:
+  name: PAT_12
+  description: ""
+  access: no-con/no-set
+
+PAT_13:
+  name: PAT_13
+  description: ""
+  access: no-con/no-set
+
+PAT_14:
+  name: PAT_14
+  description: ""
+  access: no-con/no-set
+
+PAT_15:
+  name: PAT_15
+  description: ""
+  access: no-con/no-set
+
+PAT_16:
+  name: PAT_16
+  description: ""
+  access: no-con/no-set
+
+PAT_2:
+  name: PAT_2
+  description: ""
+  access: no-con/no-set
+
+PAT_3:
+  name: PAT_3
+  description: ""
+  access: no-con/no-set
+
+PAT_4:
+  name: PAT_4
+  description: ""
+  access: no-con/no-set
+
+PAT_5:
+  name: PAT_5
+  description: ""
+  access: no-con/no-set
+
+PAT_6:
+  name: PAT_6
+  description: ""
+  access: no-con/no-set
+
+PAT_7:
+  name: PAT_7
+  description: ""
+  access: no-con/no-set
+
+PAT_8:
+  name: PAT_8
+  description: ""
+  access: no-con/no-set
+
+PAT_9:
+  name: PAT_9
+  description: ""
+  access: no-con/no-set
+
+PBAND:
+  name: PBAND
+  description: ""
+  access: no-con/no-set
+
+PBAND1:
+  name: PBAND1
+  description: ""
+  access: no-con/no-set
+
+PBAND2:
+  name: PBAND2
+  description: ""
+  access: no-con/no-set
+
+PBMAX:
+  name: PBMAX
+  description: ""
+  access: no-con/no-set
+
+PBMIN:
+  name: PBMIN
+  description: ""
+  access: no-con/no-set
+
+PCNTOP:
+  name: PCNTOP
+  description: ""
+  access: no-con/no-set
+
+PERIOD:
+  name: Period
+  description: block sample time
+  access: no-con/no-set
+
+PFSOPT:
+  name: PFSOPT
+  description: ""
+  access: no-con/no-set
+
+PFSOUT:
+  name: PFSOUT
+  description: ""
+  access: no-con/no-set
+
+PHASE:
+  name: Phase
+  description: block execute phase
+  access: no-con/no-set
+
+PIDBLK:
+  name: PIDBLK
+  description: ""
+  access: no-con/no-set
+
+PIDRCL:
+  name: PIDRCL
+  description: ""
+  access: no-con/no-set
+
+PIOWDT:
+  name: PIOWDT
+  description: ""
+  access: no-con/no-set
+
+PKCOGP:
+  name: PKCOGP
+  description: ""
+  access: no-con/no-set
+
+PKCOPT:
+  name: PKCOPT
+  description: ""
+  access: no-con/no-set
+
+PKINGP:
+  name: PKINGP
+  description: ""
+  access: no-con/no-set
+
+PKIOPT:
+  name: PKIOPT
+  description: ""
+  access: no-con/no-set
+
+PLSOPT:
+  name: PLSOPT
+  description: ""
+  access: no-con/no-set
+
+PM:
+  name: PM
+  description: ""
+  access: no-con/no-set
+
+PNLOPT:
+  name: PNLOPT
+  description: ""
+  access: no-con/no-set
+
+PNT_NO:
+  name: Point
+  description: FBM point number
+  access: no-con/no-set
+
+PORTEX:
+  name: PORTEX
+  description: ""
+  access: no-con/no-set
+
+PORTNO:
+  name: PORTNO
+  description: ""
+  access: no-con/no-set
+
+PRESET:
+  name: PRESET
+  description: ""
+  access: no-con/no-set
+
+PRIBLK:
+  name: PRIBLK
+  description: ""
+  access: no-con/no-set
+
+PRITIM:
+  name: PRITIM
+  description: ""
+  access: no-con/no-set
+
+PRLOAD:
+  name: PRLOAD
+  description: ""
+  access: no-con/no-set
+
+PROG:
+  name: PROG
+  description: ""
+  access: no-con/no-set
+
+PROGLT:
+  name: PROGLT
+  description: ""
+  access: no-con/no-set
+
+PROGUT:
+  name: PROGUT
+  description: ""
+  access: no-con/no-set
+
+PROPT:
+  name: PROPT
+  description: ""
+  access: no-con/no-set
+
+PR_FL:
+  name: PR_FL
+  description: ""
+  access: no-con/no-set
+
+PR_TYP:
+  name: PR_TYP
+  description: ""
+  access: no-con/no-set
+
+RAMP:
+  name: RAMP
+  description: ""
+  access: no-con/no-set
+
+RAMPIN:
+  name: RAMPIN
+  description: ""
+  access: no-con/no-set
+
+RBIAS:
+  name: RBIAS
+  description: ""
+  access: no-con/no-set
+
+RBKTIM:
+  name: RBKTIM
+  description: ""
+  access: no-con/no-set
+
+RDALGO:
+  name: RDALGO
+  description: ""
+  access: no-con/no-set
+
+REMSW:
+  name: REMSW
+  description: ""
+  access: no-con/no-set
+
+REPTIM:
+  name: REPTIM
+  description: ""
+  access: no-con/no-set
+
+REPTMD:
+  name: REPTMD
+  description: ""
+  access: no-con/no-set
+
+REPTOP:
+  name: REPTOP
+  description: ""
+  access: no-con/no-set
+
+REQID:
+  name: REQID
+  description: ""
+  access: no-con/no-set
+
+RES01:
+  name: RES01
+  description: ""
+  access: no-con/no-set
+
+RES02:
+  name: RES02
+  description: ""
+  access: no-con/no-set
+
+RES04:
+  name: RES04
+  description: ""
+  access: no-con/no-set
+
+RES09:
+  name: RES09
+  description: ""
+  access: no-con/no-set
+
+RESMD:
+  name: RESMD
+  description: ""
+  access: no-con/no-set
+
+RESVL1:
+  name: RESVL1
+  description: ""
+  access: no-con/no-set
+
+RESVL2:
+  name: RESVL2
+  description: ""
+  access: no-con/no-set
+
+RESVL3:
+  name: RESVL3
+  description: ""
+  access: no-con/no-set
+
+RESVL4:
+  name: RESVL4
+  description: ""
+  access: no-con/no-set
+
+RESVL5:
+  name: RESVL5
+  description: ""
+  access: no-con/no-set
+
+RESVL6:
+  name: RESVL6
+  description: ""
+  access: no-con/no-set
+
+RESVL7:
+  name: RESVL7
+  description: ""
+  access: no-con/no-set
+
+RESVL8:
+  name: RESVL8
+  description: ""
+  access: no-con/no-set
+
+REVOPT:
+  name: REVOPT
+  description: ""
+  access: no-con/no-set
+
+RI0001:
+  name: RI0001
+  description: ""
+  access: no-con/no-set
+
+RI0002:
+  name: RI0002
+  description: ""
+  access: no-con/no-set
+
+RI0003:
+  name: RI0003
+  description: ""
+  access: no-con/no-set
+
+RI0004:
+  name: RI0004
+  description: ""
+  access: no-con/no-set
+
+RI0005:
+  name: RI0005
+  description: ""
+  access: no-con/no-set
+
+RI0006:
+  name: RI0006
+  description: ""
+  access: no-con/no-set
+
+RI0007:
+  name: RI0007
+  description: ""
+  access: no-con/no-set
+
+RI0008:
+  name: RI0008
+  description: ""
+  access: no-con/no-set
+
+RI0009:
+  name: RI0009
+  description: ""
+  access: no-con/no-set
+
+RI0010:
+  name: RI0010
+  description: ""
+  access: no-con/no-set
+
+RI0011:
+  name: RI0011
+  description: ""
+  access: no-con/no-set
+
+RI0012:
+  name: RI0012
+  description: ""
+  access: no-con/no-set
+
+RI0013:
+  name: RI0013
+  description: ""
+  access: no-con/no-set
+
+RI0014:
+  name: RI0014
+  description: ""
+  access: no-con/no-set
+
+RI0015:
+  name: RI0015
+  description: ""
+  access: no-con/no-set
+
+RI01:
+  name: RI01
+  description: ""
+  access: no-con/no-set
+
+RI02:
+  name: RI02
+  description: ""
+  access: no-con/no-set
+
+RI03:
+  name: RI03
+  description: ""
+  access: no-con/no-set
+
+RI04:
+  name: RI04
+  description: ""
+  access: no-con/no-set
+
+RI05:
+  name: RI05
+  description: ""
+  access: no-con/no-set
+
+RI06:
+  name: RI06
+  description: ""
+  access: no-con/no-set
+
+RI07:
+  name: RI07
+  description: ""
+  access: no-con/no-set
+
+RI08:
+  name: RI08
+  description: ""
+  access: no-con/no-set
+
+RINP:
+  name: RINP
+  description: ""
+  access: no-con/no-set
+
+RMPDWN:
+  name: RMPDWN
+  description: ""
+  access: no-con/no-set
+
+RMPOPT:
+  name: RMPOPT
+  description: ""
+  access: no-con/no-set
+
+RMPUP:
+  name: RMPUP
+  description: ""
+  access: no-con/no-set
+
+RO0001:
+  name: RO0001
+  description: ""
+  access: no-con/no-set
+
+RO0002:
+  name: RO0002
+  description: ""
+  access: no-con/no-set
+
+RO0003:
+  name: RO0003
+  description: ""
+  access: no-con/no-set
+
+RO0004:
+  name: RO0004
+  description: ""
+  access: no-con/no-set
+
+RO0005:
+  name: RO0005
+  description: ""
+  access: no-con/no-set
+
+RO0006:
+  name: RO0006
+  description: ""
+  access: no-con/no-set
+
+RO0007:
+  name: RO0007
+  description: ""
+  access: no-con/no-set
+
+RO0008:
+  name: RO0008
+  description: ""
+  access: no-con/no-set
+
+RO0009:
+  name: RO0009
+  description: ""
+  access: no-con/no-set
+
+RO0010:
+  name: RO0010
+  description: ""
+  access: no-con/no-set
+
+RO0011:
+  name: RO0011
+  description: ""
+  access: no-con/no-set
+
+RO0012:
+  name: RO0012
+  description: ""
+  access: no-con/no-set
+
+RO0013:
+  name: RO0013
+  description: ""
+  access: no-con/no-set
+
+RO0014:
+  name: RO0014
+  description: ""
+  access: no-con/no-set
+
+RO0015:
+  name: RO0015
+  description: ""
+  access: no-con/no-set
+
+ROC1:
+  name: ROC1
+  description: ""
+  access: no-con/no-set
+
+ROC10:
+  name: ROC10
+  description: ""
+  access: no-con/no-set
+
+ROC11:
+  name: ROC11
+  description: ""
+  access: no-con/no-set
+
+ROC12:
+  name: ROC12
+  description: ""
+  access: no-con/no-set
+
+ROC13:
+  name: ROC13
+  description: ""
+  access: no-con/no-set
+
+ROC14:
+  name: ROC14
+  description: ""
+  access: no-con/no-set
+
+ROC15:
+  name: ROC15
+  description: ""
+  access: no-con/no-set
+
+ROC16:
+  name: ROC16
+  description: ""
+  access: no-con/no-set
+
+ROC1MD:
+  name: ROC1MD
+  description: ""
+  access: no-con/no-set
+
+ROC2:
+  name: ROC2
+  description: ""
+  access: no-con/no-set
+
+ROC2MD:
+  name: ROC2MD
+  description: ""
+  access: no-con/no-set
+
+ROC3:
+  name: ROC3
+  description: ""
+  access: no-con/no-set
+
+ROC3MD:
+  name: ROC3MD
+  description: ""
+  access: no-con/no-set
+
+ROC4:
+  name: ROC4
+  description: ""
+  access: no-con/no-set
+
+ROC4MD:
+  name: ROC4MD
+  description: ""
+  access: no-con/no-set
+
+ROC5:
+  name: ROC5
+  description: ""
+  access: no-con/no-set
+
+ROC6:
+  name: ROC6
+  description: ""
+  access: no-con/no-set
+
+ROC7:
+  name: ROC7
+  description: ""
+  access: no-con/no-set
+
+ROC8:
+  name: ROC8
+  description: ""
+  access: no-con/no-set
+
+ROC9:
+  name: ROC9
+  description: ""
+  access: no-con/no-set
+
+ROCGRP:
+  name: ROCGRP
+  description: ""
+  access: no-con/no-set
+
+ROCLIM:
+  name: ROCLIM
+  description: ""
+  access: no-con/no-set
+
+ROCOPT:
+  name: ROCOPT
+  description: ""
+  access: no-con/no-set
+
+ROCPRI:
+  name: ROCPRI
+  description: ""
+  access: no-con/no-set
+
+ROCTIM:
+  name: ROCTIM
+  description: ""
+  access: no-con/no-set
+
+ROCTXT:
+  name: ROCTXT
+  description: ""
+  access: no-con/no-set
+
+ROCV:
+  name: ROCV
+  description: ""
+  access: no-con/no-set
+
+RSP:
+  name: RSP
+  description: ""
+  access: no-con/no-set
+
+RSTACT:
+  name: RSTACT
+  description: ""
+  access: no-con/no-set
+
+RSTMA:
+  name: RSTMA
+  description: ""
+  access: no-con/no-set
+
+SAG:
+  name: SAG
+  description: ""
+  access: no-con/no-set
+
+SAO:
+  name: SAO
+  description: ""
+  access: no-con/no-set
+
+SAP:
+  name: SAP
+  description: ""
+  access: no-con/no-set
+
+SBAUD:
+  name: SBAUD
+  description: ""
+  access: no-con/no-set
+
+SCGRP:
+  name: SCGRP
+  description: ""
+  access: no-con/no-set
+
+SCI:
+  name: SCI
+  description: signal condition index
+  access: no-con/no-set
+
+SCI_1:
+  name: SCI_1
+  description: ""
+  access: no-con/no-set
+
+SCI_2:
+  name: SCI_2
+  description: ""
+  access: no-con/no-set
+
+SCI_3:
+  name: SCI_3
+  description: ""
+  access: no-con/no-set
+
+SCI_4:
+  name: SCI_4
+  description: ""
+  access: no-con/no-set
+
+SCI_5:
+  name: SCI_5
+  description: ""
+  access: no-con/no-set
+
+SCI_6:
+  name: SCI_6
+  description: ""
+  access: no-con/no-set
+
+SCI_7:
+  name: SCI_7
+  description: ""
+  access: no-con/no-set
+
+SCI_8:
+  name: SCI_8
+  description: ""
+  access: no-con/no-set
+
+SCO:
+  name: SCO
+  description: ""
+  access: no-con/no-set
+
+SCOPT:
+  name: SCOPT
+  description: ""
+  access: no-con/no-set
+
+SCTXT0:
+  name: SCTXT0
+  description: ""
+  access: no-con/no-set
+
+SCTXT1:
+  name: SCTXT1
+  description: ""
+  access: no-con/no-set
+
+SECTIM:
+  name: SECTIM
+  description: ""
+  access: no-con/no-set
+
+SELOPT:
+  name: SELOPT
+  description: ""
+  access: no-con/no-set
+
+SELREQ:
+  name: SELREQ
+  description: ""
+  access: no-con/no-set
+
+SET:
+  name: SET
+  description: ""
+  access: no-con/no-set
+
+SETFS:
+  name: SETFS
+  description: ""
+  access: no-con/no-set
+
+SETPT:
+  name: SETPT
+  description: ""
+  access: no-con/no-set
+
+SFILID:
+  name: SFILID
+  description: ""
+  access: no-con/no-set
+
+SIMCIN:
+  name: SIMCIN
+  description: ""
+  access: no-con/no-set
+
+SIMOPT:
+  name: SIMOPT
+  description: ""
+  access: no-con/no-set
+
+SME05:
+  name: SME05
+  description: ""
+  access: no-con/no-set
+
+SMM05:
+  name: SMM05
+  description: ""
+  access: no-con/no-set
+
+SMODE:
+  name: SMODE
+  description: ""
+  access: no-con/no-set
+
+SMPM09:
+  name: SMPM09
+  description: ""
+  access: no-con/no-set
+
+SN0001:
+  name: SN0001
+  description: ""
+  access: no-con/no-set
+
+SN0002:
+  name: SN0002
+  description: ""
+  access: no-con/no-set
+
+SN0003:
+  name: SN0003
+  description: ""
+  access: no-con/no-set
+
+SN0004:
+  name: SN0004
+  description: ""
+  access: no-con/no-set
+
+SN0005:
+  name: SN0005
+  description: ""
+  access: no-con/no-set
+
+SN0006:
+  name: SN0006
+  description: ""
+  access: no-con/no-set
+
+SN0007:
+  name: SN0007
+  description: ""
+  access: no-con/no-set
+
+SN0008:
+  name: SN0008
+  description: ""
+  access: no-con/no-set
+
+SN0009:
+  name: SN0009
+  description: ""
+  access: no-con/no-set
+
+SN0010:
+  name: SN0010
+  description: ""
+  access: no-con/no-set
+
+SPCLMP:
+  name: SPCLMP
+  description: ""
+  access: no-con/no-set
+
+SPHLIM:
+  name: SPHLIM
+  description: ""
+  access: no-con/no-set
+
+SPLCOP:
+  name: SPLCOP
+  description: ""
+  access: no-con/no-set
+
+SPLLAG:
+  name: SPLLAG
+  description: ""
+  access: no-con/no-set
+
+SPLLIM:
+  name: SPLLIM
+  description: ""
+  access: no-con/no-set
+
+SPLRDY:
+  name: SPLRDY
+  description: ""
+  access: no-con/no-set
+
+SPRAMP:
+  name: SPRAMP
+  description: ""
+  access: no-con/no-set
+
+SPRATE:
+  name: SPRATE
+  description: ""
+  access: no-con/no-set
+
+SPROPT:
+  name: SPROPT
+  description: ""
+  access: no-con/no-set
+
+SPT:
+  name: SPT
+  description: ""
+  access: no-con/no-set
+
+SPTARG:
+  name: SPTARG
+  description: ""
+  access: no-con/no-set
+
+STARTP:
+  name: STARTP
+  description: ""
+  access: no-con/no-set
+
+STBITS:
+  name: STBITS
+  description: ""
+  access: no-con/no-set
+
+STEP01:
+  name: STEP01
+  description: ""
+  access: no-con/no-set
+
+STEP02:
+  name: STEP02
+  description: ""
+  access: no-con/no-set
+
+STEP03:
+  name: STEP03
+  description: ""
+  access: no-con/no-set
+
+STEP04:
+  name: STEP04
+  description: ""
+  access: no-con/no-set
+
+STEP05:
+  name: STEP05
+  description: ""
+  access: no-con/no-set
+
+STEP06:
+  name: STEP06
+  description: ""
+  access: no-con/no-set
+
+STEP07:
+  name: STEP07
+  description: ""
+  access: no-con/no-set
+
+STEP08:
+  name: STEP08
+  description: ""
+  access: no-con/no-set
+
+STEP09:
+  name: STEP09
+  description: ""
+  access: no-con/no-set
+
+STEP10:
+  name: STEP10
+  description: ""
+  access: no-con/no-set
+
+STEP11:
+  name: STEP11
+  description: ""
+  access: no-con/no-set
+
+STEP12:
+  name: STEP12
+  description: ""
+  access: no-con/no-set
+
+STEP13:
+  name: STEP13
+  description: ""
+  access: no-con/no-set
+
+STEP14:
+  name: STEP14
+  description: ""
+  access: no-con/no-set
+
+STEP15:
+  name: STEP15
+  description: ""
+  access: no-con/no-set
+
+STEP16:
+  name: STEP16
+  description: ""
+  access: no-con/no-set
+
+STEP17:
+  name: STEP17
+  description: ""
+  access: no-con/no-set
+
+STEP18:
+  name: STEP18
+  description: ""
+  access: no-con/no-set
+
+STEP19:
+  name: STEP19
+  description: ""
+  access: no-con/no-set
+
+STEP20:
+  name: STEP20
+  description: ""
+  access: no-con/no-set
+
+STEP21:
+  name: STEP21
+  description: ""
+  access: no-con/no-set
+
+STEP22:
+  name: STEP22
+  description: ""
+  access: no-con/no-set
+
+STEP23:
+  name: STEP23
+  description: ""
+  access: no-con/no-set
+
+STEP24:
+  name: STEP24
+  description: ""
+  access: no-con/no-set
+
+STEP25:
+  name: STEP25
+  description: ""
+  access: no-con/no-set
+
+STEP26:
+  name: STEP26
+  description: ""
+  access: no-con/no-set
+
+STEP27:
+  name: STEP27
+  description: ""
+  access: no-con/no-set
+
+STEP28:
+  name: STEP28
+  description: ""
+  access: no-con/no-set
+
+STEP29:
+  name: STEP29
+  description: ""
+  access: no-con/no-set
+
+STEP30:
+  name: STEP30
+  description: ""
+  access: no-con/no-set
+
+STEP31:
+  name: STEP31
+  description: ""
+  access: no-con/no-set
+
+STEP32:
+  name: STEP32
+  description: ""
+  access: no-con/no-set
+
+STEP33:
+  name: STEP33
+  description: ""
+  access: no-con/no-set
+
+STEP34:
+  name: STEP34
+  description: ""
+  access: no-con/no-set
+
+STEP35:
+  name: STEP35
+  description: ""
+  access: no-con/no-set
+
+STEP36:
+  name: STEP36
+  description: ""
+  access: no-con/no-set
+
+STEP37:
+  name: STEP37
+  description: ""
+  access: no-con/no-set
+
+STEP38:
+  name: STEP38
+  description: ""
+  access: no-con/no-set
+
+STEP39:
+  name: STEP39
+  description: ""
+  access: no-con/no-set
+
+STEP40:
+  name: STEP40
+  description: ""
+  access: no-con/no-set
+
+STEP41:
+  name: STEP41
+  description: ""
+  access: no-con/no-set
+
+STEP42:
+  name: STEP42
+  description: ""
+  access: no-con/no-set
+
+STEP43:
+  name: STEP43
+  description: ""
+  access: no-con/no-set
+
+STEP44:
+  name: STEP44
+  description: ""
+  access: no-con/no-set
+
+STEP45:
+  name: STEP45
+  description: ""
+  access: no-con/no-set
+
+STEP46:
+  name: STEP46
+  description: ""
+  access: no-con/no-set
+
+STEP47:
+  name: STEP47
+  description: ""
+  access: no-con/no-set
+
+STEP48:
+  name: STEP48
+  description: ""
+  access: no-con/no-set
+
+STEP49:
+  name: STEP49
+  description: ""
+  access: no-con/no-set
+
+STEP50:
+  name: STEP50
+  description: ""
+  access: no-con/no-set
+
+STHREQ:
+  name: STHREQ
+  description: ""
+  access: no-con/no-set
+
+STNREQ:
+  name: STNREQ
+  description: ""
+  access: no-con/no-set
+
+STPOPT:
+  name: STPOPT
+  description: ""
+  access: no-con/no-set
+
+STRKOP:
+  name: STRKOP
+  description: ""
+  access: no-con/no-set
+
+STRPMD:
+  name: STRPMD
+  description: ""
+  access: no-con/no-set
+
+SUPGRP:
+  name: SUPGRP
+  description: ""
+  access: no-con/no-set
+
+SUPOPT:
+  name: SUPOPT
+  description: ""
+  access: no-con/no-set
+
+SWTYPE:
+  name: SWTYPE
+  description: ""
+  access: no-con/no-set
+
+SYSCFG:
+  name: SYSCFG
+  description: ""
+  access: no-con/no-set
+
+SYSOPT:
+  name: SYSOPT
+  description: ""
+  access: no-con/no-set
+
+TCTRL:
+  name: TCTRL
+  description: ""
+  access: no-con/no-set
+
+THRESH:
+  name: THRESH
+  description: ""
+  access: no-con/no-set
+
+TIMINI:
+  name: TIMINI
+  description: ""
+  access: no-con/no-set
+
+TOGGLE:
+  name: TOGGLE
+  description: ""
+  access: no-con/no-set
+
+TRACK:
+  name: TRACK
+  description: ""
+  access: no-con/no-set
+
+TRKENL:
+  name: TRKENL
+  description: ""
+  access: no-con/no-set
+
+TSAMPL:
+  name: TSAMPL
+  description: ""
+  access: no-con/no-set
+
+TYPE:
+  name: Type
+  description: block type
+  access: no-con/no-set
+
+UNCLMP:
+  name: UNCLMP
+  description: ""
+  access: no-con/no-set
+
+UPDOWN:
+  name: UPDOWN
+  description: ""
+  access: no-con/no-set
+
+UPDPER:
+  name: UPDPER
+  description: ""
+  access: no-con/no-set
+
+UPRATE:
+  name: UPRATE
+  description: ""
+  access: no-con/no-set
+
+VALUE:
+  name: VALUE
+  description: ""
+  access: no-con/no-set
+
+VERNUM:
+  name: VERNUM
+  description: ""
+  access: no-con/no-set
+
+WDTMR:
+  name: WDTMR
+  description: ""
+  access: no-con/no-set
+
+WIDTH:
+  name: WIDTH
+  description: ""
+  access: no-con/no-set
+
+XREFIN:
+  name: XREFIN
+  description: ""
+  access: no-con/no-set
+
+XREFOP:
+  name: XREFOP
+  description: ""
+  access: no-con/no-set
+
+X_1:
+  name: X_1
+  description: ""
+  access: no-con/no-set
+
+X_10:
+  name: X_10
+  description: ""
+  access: no-con/no-set
+
+X_10MD:
+  name: X_10MD
+  description: ""
+  access: no-con/no-set
+
+X_11:
+  name: X_11
+  description: ""
+  access: no-con/no-set
+
+X_11MD:
+  name: X_11MD
+  description: ""
+  access: no-con/no-set
+
+X_12:
+  name: X_12
+  description: ""
+  access: no-con/no-set
+
+X_12MD:
+  name: X_12MD
+  description: ""
+  access: no-con/no-set
+
+X_13:
+  name: X_13
+  description: ""
+  access: no-con/no-set
+
+X_13MD:
+  name: X_13MD
+  description: ""
+  access: no-con/no-set
+
+X_14:
+  name: X_14
+  description: ""
+  access: no-con/no-set
+
+X_14MD:
+  name: X_14MD
+  description: ""
+  access: no-con/no-set
+
+X_15:
+  name: X_15
+  description: ""
+  access: no-con/no-set
+
+X_15MD:
+  name: X_15MD
+  description: ""
+  access: no-con/no-set
+
+X_16:
+  name: X_16
+  description: ""
+  access: no-con/no-set
+
+X_16MD:
+  name: X_16MD
+  description: ""
+  access: no-con/no-set
+
+X_17:
+  name: X_17
+  description: ""
+  access: no-con/no-set
+
+X_17MD:
+  name: X_17MD
+  description: ""
+  access: no-con/no-set
+
+X_18:
+  name: X_18
+  description: ""
+  access: no-con/no-set
+
+X_18MD:
+  name: X_18MD
+  description: ""
+  access: no-con/no-set
+
+X_19:
+  name: X_19
+  description: ""
+  access: no-con/no-set
+
+X_19MD:
+  name: X_19MD
+  description: ""
+  access: no-con/no-set
+
+X_1MD:
+  name: X_1MD
+  description: ""
+  access: no-con/no-set
+
+X_2:
+  name: X_2
+  description: ""
+  access: no-con/no-set
+
+X_20:
+  name: X_20
+  description: ""
+  access: no-con/no-set
+
+X_20MD:
+  name: X_20MD
+  description: ""
+  access: no-con/no-set
+
+X_21:
+  name: X_21
+  description: ""
+  access: no-con/no-set
+
+X_21MD:
+  name: X_21MD
+  description: ""
+  access: no-con/no-set
+
+X_2MD:
+  name: X_2MD
+  description: ""
+  access: no-con/no-set
+
+X_3:
+  name: X_3
+  description: ""
+  access: no-con/no-set
+
+X_3MD:
+  name: X_3MD
+  description: ""
+  access: no-con/no-set
+
+X_4:
+  name: X_4
+  description: ""
+  access: no-con/no-set
+
+X_4MD:
+  name: X_4MD
+  description: ""
+  access: no-con/no-set
+
+X_5:
+  name: X_5
+  description: ""
+  access: no-con/no-set
+
+X_5MD:
+  name: X_5MD
+  description: ""
+  access: no-con/no-set
+
+X_6:
+  name: X_6
+  description: ""
+  access: no-con/no-set
+
+X_6MD:
+  name: X_6MD
+  description: ""
+  access: no-con/no-set
+
+X_7:
+  name: X_7
+  description: ""
+  access: no-con/no-set
+
+X_7MD:
+  name: X_7MD
+  description: ""
+  access: no-con/no-set
+
+X_8:
+  name: X_8
+  description: ""
+  access: no-con/no-set
+
+X_8MD:
+  name: X_8MD
+  description: ""
+  access: no-con/no-set
+
+X_9:
+  name: X_9
+  description: ""
+  access: no-con/no-set
+
+X_9MD:
+  name: X_9MD
+  description: ""
+  access: no-con/no-set
+
+Y_1:
+  name: Y_1
+  description: ""
+  access: no-con/no-set
+
+Y_10:
+  name: Y_10
+  description: ""
+  access: no-con/no-set
+
+Y_10MD:
+  name: Y_10MD
+  description: ""
+  access: no-con/no-set
+
+Y_11:
+  name: Y_11
+  description: ""
+  access: no-con/no-set
+
+Y_11MD:
+  name: Y_11MD
+  description: ""
+  access: no-con/no-set
+
+Y_12:
+  name: Y_12
+  description: ""
+  access: no-con/no-set
+
+Y_12MD:
+  name: Y_12MD
+  description: ""
+  access: no-con/no-set
+
+Y_13:
+  name: Y_13
+  description: ""
+  access: no-con/no-set
+
+Y_13MD:
+  name: Y_13MD
+  description: ""
+  access: no-con/no-set
+
+Y_14:
+  name: Y_14
+  description: ""
+  access: no-con/no-set
+
+Y_14MD:
+  name: Y_14MD
+  description: ""
+  access: no-con/no-set
+
+Y_15:
+  name: Y_15
+  description: ""
+  access: no-con/no-set
+
+Y_15MD:
+  name: Y_15MD
+  description: ""
+  access: no-con/no-set
+
+Y_16:
+  name: Y_16
+  description: ""
+  access: no-con/no-set
+
+Y_16MD:
+  name: Y_16MD
+  description: ""
+  access: no-con/no-set
+
+Y_17:
+  name: Y_17
+  description: ""
+  access: no-con/no-set
+
+Y_17MD:
+  name: Y_17MD
+  description: ""
+  access: no-con/no-set
+
+Y_18:
+  name: Y_18
+  description: ""
+  access: no-con/no-set
+
+Y_18MD:
+  name: Y_18MD
+  description: ""
+  access: no-con/no-set
+
+Y_19:
+  name: Y_19
+  description: ""
+  access: no-con/no-set
+
+Y_19MD:
+  name: Y_19MD
+  description: ""
+  access: no-con/no-set
+
+Y_1MD:
+  name: Y_1MD
+  description: ""
+  access: no-con/no-set
+
+Y_2:
+  name: Y_2
+  description: ""
+  access: no-con/no-set
+
+Y_20:
+  name: Y_20
+  description: ""
+  access: no-con/no-set
+
+Y_20MD:
+  name: Y_20MD
+  description: ""
+  access: no-con/no-set
+
+Y_21:
+  name: Y_21
+  description: ""
+  access: no-con/no-set
+
+Y_21MD:
+  name: Y_21MD
+  description: ""
+  access: no-con/no-set
+
+Y_2MD:
+  name: Y_2MD
+  description: ""
+  access: no-con/no-set
+
+Y_3:
+  name: Y_3
+  description: ""
+  access: no-con/no-set
+
+Y_3MD:
+  name: Y_3MD
+  description: ""
+  access: no-con/no-set
+
+Y_4:
+  name: Y_4
+  description: ""
+  access: no-con/no-set
+
+Y_4MD:
+  name: Y_4MD
+  description: ""
+  access: no-con/no-set
+
+Y_5:
+  name: Y_5
+  description: ""
+  access: no-con/no-set
+
+Y_5MD:
+  name: Y_5MD
+  description: ""
+  access: no-con/no-set
+
+Y_6:
+  name: Y_6
+  description: ""
+  access: no-con/no-set
+
+Y_6MD:
+  name: Y_6MD
+  description: ""
+  access: no-con/no-set
+
+Y_7:
+  name: Y_7
+  description: ""
+  access: no-con/no-set
+
+Y_7MD:
+  name: Y_7MD
+  description: ""
+  access: no-con/no-set
+
+Y_8:
+  name: Y_8
+  description: ""
+  access: no-con/no-set
+
+Y_8MD:
+  name: Y_8MD
+  description: ""
+  access: no-con/no-set
+
+Y_9:
+  name: Y_9
+  description: ""
+  access: no-con/no-set
+
+Y_9MD:
+  name: Y_9MD
+  description: ""
+  access: no-con/no-set
