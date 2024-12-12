@@ -31,7 +31,7 @@ class FoxData:
 def initialise_data(data_pickle_path: Path, dump_file_glob: Generator[Path, None, None]) -> Data:
     """Load pickled data if it exists otherwise generate and pickle data."""
     with gc_disabled():
-        if data_pickle_path.is_file() and False:
+        if data_pickle_path.is_file():
             with open(data_pickle_path, mode="rb") as file:
                 data = pickle.load(file)  # noqa: S301
 
