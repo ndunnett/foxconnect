@@ -1,5 +1,8 @@
+/.devcontainer
 /.git
 /.venv
+/Dockerfile
+/docker-compose.yaml
 **/*.egg-info
 **/build
 **/target
