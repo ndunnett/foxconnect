@@ -106,7 +106,7 @@ async def table() -> str:
         form = await request.form
         parameters = [key.removeprefix("parameter-").upper() for key in form if key.startswith("parameter-")]
 
-        if len(parameters):
+        if len(parameters) > 0:
             current_fields = {key.removeprefix("query-"): val for key, val in form.items() if key.startswith("query-")}
             fields = {key: current_fields.get(key) or "" for key in parameters}
         else:
