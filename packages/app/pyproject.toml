@@ -5,10 +5,15 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "app"
 version = "0.0.1"
+requires-python = ">=3.12"
 dependencies = [
-    "quart_d3graphviz",
-    "quart_foxdata",
-    "quart_htmx",
-    "Quart",
-    "python-dotenv",
+    "foxdata",
+    "pyd3graphviz",
+    "pyhtmx",
+    "utils",
+    "Hypercorn == 0.17.3",
+    "python-dotenv == 1.1.0",
+    "Quart == 0.20.0",
+    "uvloop == 0.21.0",
+    "XlsxWriter == 3.2.2",
 ]

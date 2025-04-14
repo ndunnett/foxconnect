@@ -3,7 +3,6 @@
   "service": "app-dev",
   "workspaceFolder": "/home/foxconnect/repo",
   "remoteUser": "foxconnect",
-  "postCreateCommand": "[ ! -f .env ] && echo \"SECRET_KEY=\\\"$(uv run -mq uuid)\\\"\" >> .env",
   "customizations": {
     "vscode": {
       "extensions": [

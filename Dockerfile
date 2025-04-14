@@ -1,17 +1,17 @@
-ARG APP_FACTORY=app:create_app
-ARG APP_HOST=0.0.0.0
-ARG APP_PORT=5000
-ARG USERNAME=foxconnect
+ARG APP_HOST="0.0.0.0"
+ARG APP_PORT="5000"
+ARG USERNAME="foxconnect"
 
 
 # ---------------------
 # BASE IMAGE
-# updates the ubuntu image, sets new non-root user,
+# updates the base image, sets new non-root user,
 # cleans up files, and sets all common environment variables
 # ---------------------
 FROM ubuntu:noble AS base
 ARG USERNAME
-ENV FC_USERNAME="$USERNAME" FC_HOME="/home/$USERNAME"
+ENV FC_USERNAME="$USERNAME"
+ENV FC_HOME="/home/$USERNAME"
 ENV FC_REPO_PATH="$FC_HOME/repo"
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -49,13 +49,12 @@ ENV PYTHONUNBUFFERED="1"
 ENV UV_LINK_MODE="copy"
 
 # set project environment variables
-ARG APP_FACTORY
 ARG APP_HOST
 ARG APP_PORT
-ENV FC_APP_FACTORY="$APP_FACTORY" FC_APP_HOST="$APP_HOST" FC_APP_PORT="$APP_PORT"
+ENV FC_APP_HOST="$APP_HOST" FC_APP_PORT="$APP_PORT"
 ENV UV_PROJECT_ENVIRONMENT="$FC_REPO_PATH/.venv"
 ENV UV_PYTHON_INSTALL_DIR="$FC_HOME/python"
-ENV PYO3_PYTHON="$FC_REPO_PATH/.venv/bin/python"
+ENV PYO3_PYTHON="$UV_PROJECT_ENVIRONMENT/bin/python"
 ENV QUART_FOXDATA_ICC_DUMPS_PATH="$FC_HOME/icc_dumps"
 ENV QUART_FOXDATA_DATA_PICKLE_PATH="$FC_HOME/data.pickle"
 
@@ -69,38 +68,31 @@ WORKDIR "$FC_REPO_PATH"
 # ---------------------
 FROM base AS dev
 
+# install general dev tools and rustup
 USER root
 ARG DEBIAN_FRONTEND=noninteractive
 RUN <<EOT
     set -eux
     apt update
-    # install general dev tools
-    apt install -y wget zsh git
-    # install rust dependencies
-    apt install -y ca-certificates libc6-dev pkg-config libssl-dev clang
-    # cleanup
+    apt install -y --no-install-recommends \
+    wget zsh git ca-certificates libc6-dev gcc rustup
     apt clean
     rm -rf /var/lib/apt/lists/*
 EOT
 USER "$FC_USERNAME"
 
-# install rust
-RUN set -eux; wget -qO - https://sh.rustup.rs | sh -s -- -y
-ENV PATH="$FC_HOME/.cargo/bin:$PATH"
-
-# install nvm, node, and yarn
-ARG NVM_GH_API="https://api.github.com/repos/nvm-sh/nvm/releases/latest"
-ARG NVM_DIR="$FC_HOME/.nvm"
-ENV NVM_DIR="$NVM_DIR" NODE_ENV="production"
+# install rust toolchain
 RUN <<EOT
-    set -ex
-    NVM_VERSION="$(wget -qO - "$NVM_GH_API" | grep tag_name | cut -d\" -f4)"
-    NVM_INSTALL_URL="https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh"
-    wget -qO - "$NVM_INSTALL_URL" | bash
-    . "$NVM_DIR/nvm.sh"
-    nvm install 20
-    corepack enable
+    set -eux
+    rustup set profile minimal
+    rustup default 1.86
+    rustup component add rustfmt clippy
 EOT
+
+# install node and yarn
+COPY --from=node:22-bookworm-slim --chown="$FC_USERNAME:$FC_USERNAME" /opt/ /opt/
+COPY --from=node:22-bookworm-slim --chown="$FC_USERNAME:$FC_USERNAME" /usr/local/ /usr/local/
+RUN set -eux; corepack enable
 
 # install uv
 COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /uvx /bin/
@@ -132,12 +124,10 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # ---------------------
 # PRODUCTION IMAGE
-# copies the project runtime from the builder image into a clean base image and runs hypercorn server
+# copies the project runtime from the builder image into a clean base image and runs the server
 # ---------------------
 FROM base AS production
 COPY --from=builder --chown="$FC_USERNAME:$FC_USERNAME" "$UV_PYTHON_INSTALL_DIR" "$UV_PYTHON_INSTALL_DIR"
 COPY --from=builder --chown="$FC_USERNAME:$FC_USERNAME" "$UV_PROJECT_ENVIRONMENT" "$UV_PROJECT_ENVIRONMENT"
 COPY --from=builder --chown="$FC_USERNAME:$FC_USERNAME" "$FC_REPO_PATH/.env*" "$FC_REPO_PATH/"
-
-CMD . "$UV_PROJECT_ENVIRONMENT/bin/activate"; \
-    hypercorn "$FC_APP_FACTORY()" --bind "$FC_APP_HOST:$FC_APP_PORT"
+CMD "$UV_PROJECT_ENVIRONMENT/bin/python" -m app --host "$FC_APP_HOST" --port "$FC_APP_PORT"

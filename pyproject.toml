@@ -1,43 +1,29 @@
-[project]
-name = "FoxConnect"
-version = "0.0.1"
-description = "Web based tool to automatically generate logic flow diagrams for Foxboro I/A series DCS based on configuration files dumped from the ICC."
-readme = "README.md"
-requires-python = ">=3.10"
-dependencies = [
-    "app",
-    "pyfastmurmur3",
-    "quart_d3graphviz",
-    "quart_foxdata",
-    "quart_htmx",
-    "Quart == 0.20.0",
-    "Hypercorn == 0.17.3",
-    "billiard == 4.2.1",
-    "python-dotenv == 1.1.0",
-    "XlsxWriter == 3.2.2",
-    "PyYAML == 6.0.2",
-]
-
 [tool.uv]
 dev-dependencies = ["setuptools"]
 
 [tool.uv.sources]
 app = { workspace = true }
+foxdata = { workspace = true }
+pyd3graphviz = { workspace = true }
 pyfastmurmur3 = { workspace = true }
-quart_d3graphviz = { workspace = true }
-quart_foxdata = { workspace = true }
-quart_htmx = { workspace = true }
+pyhtmx = { workspace = true }
+utils = { workspace = true }
 
 [tool.uv.workspace]
 members = ["packages/*"]
 
 [tool.ruff]
 line-length = 120
+namespace-packages = ["packages/utils/src"]
+target-version = "py312"
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 docstring-code-format = true
+
+[tool.ruff.per-file-ignores]
+"setup.py" = ["INP001"]
 
 [tool.ruff.lint]
 ignore = ["ANN401", "B023", "PYI021", "PYI048", "RET505"]

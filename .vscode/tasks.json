@@ -2,50 +2,65 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "FoxConnect: run Quart debug server",
+      "label": "FoxConnect: run development server",
       "type": "shell",
-      "command": ". ${env:FC_REPO_PATH}/.venv/bin/activate; quart --debug --app ${env:FC_APP_FACTORY} run --host=${env:FC_APP_HOST} --port=${env:FC_APP_PORT}",
-      "problemMatcher": []
+      "command": "uv run -m app --host=${env:FC_APP_HOST} --port=${env:FC_APP_PORT} --dev",
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${env:FC_REPO_PATH}"
+      }
     },
     {
-      "label": "FoxConnect: run hypercorn server",
+      "label": "FoxConnect: run production server",
       "type": "shell",
-      "command": ". ${env:FC_REPO_PATH}/.venv/bin/activate; hypercorn \"${env:FC_APP_FACTORY}()\" --bind ${env:FC_APP_HOST}:${env:FC_APP_PORT}",
-      "problemMatcher": []
+      "command": "uv run -m app --host=${env:FC_APP_HOST} --port=${env:FC_APP_PORT}",
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${env:FC_REPO_PATH}"
+      }
+    },
+    {
+      "label": "FoxConnect: generate fresh secret key .env",
+      "type": "shell",
+      "command": "rm -f .env && echo \"SECRET_KEY=\\\"$(uv run -mq --no-project uuid)\\\"\" >> .env",
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${env:FC_REPO_PATH}"
+      }
     },
     {
       "label": "FoxConnect: clean repo",
       "type": "shell",
       "command": "git clean -Xdf",
+      "problemMatcher": [],
       "options": {
         "cwd": "${env:FC_REPO_PATH}"
-      },
-      "problemMatcher": []
+      }
     },
     {
       "label": "FoxConnect: uv sync --refresh",
       "type": "shell",
-      "command": "uv sync --refresh",
+      "command": "uv sync --refresh --managed-python",
+      "problemMatcher": [],
       "options": {
         "cwd": "${env:FC_REPO_PATH}"
       },
-      "problemMatcher": [],
       "group": {
         "kind": "build",
-        "isDefault": false
+        "isDefault": true
       }
     },
     {
       "label": "FoxConnect: uv sync --reinstall",
       "type": "shell",
-      "command": "uv sync --reinstall",
+      "command": "uv sync --reinstall --managed-python",
+      "problemMatcher": [],
       "options": {
         "cwd": "${env:FC_REPO_PATH}"
       },
-      "problemMatcher": [],
       "group": {
         "kind": "build",
-        "isDefault": true
+        "isDefault": false
       }
     }
   ]

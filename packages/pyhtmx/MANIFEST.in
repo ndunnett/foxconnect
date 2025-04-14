@@ -1,0 +1,2 @@
+include src/pyhtmx/node_modules/htmx.org/dist/*
+include src/pyhtmx/node_modules/htmx.org/LICENSE

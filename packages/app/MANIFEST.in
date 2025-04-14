@@ -1,2 +1,2 @@
-graft src/app/*/static
-graft src/app/*/templates
+graft src/app/blueprints/*/static
+graft src/app/blueprints/*/templates

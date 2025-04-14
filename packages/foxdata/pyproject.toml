@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "foxdata"
+version = "0.0.1"
+requires-python = ">=3.12"
+dependencies = [
+    "pyfastmurmur3",
+    "utils",
+    "billiard == 4.2.1",
+    "PyYAML == 6.0.2",
+]

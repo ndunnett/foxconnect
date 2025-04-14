@@ -3,10 +3,12 @@ This module is a thin wrapper around the Rust crate [fastmurmur3](https://crates
 implementation of the [MurmurHash3 algorithm](https://en.wikipedia.org/wiki/MurmurHash).
 """
 
-def hash(text: str) -> int:  # noqa: A001
-    """Fast, non-cryptographic hash function.
+def murmur3(content: bytes) -> int:
+    """Fast, non-cryptographic hash function. Takes a `bytes` object and returns the hash as an `int`.
 
     .. code-block:: python
-        foo = fastmurmur3.hash("bar")
+        from fastmurmur3 import murmur3
+
+        foo = murmur3("bar".encode())
     """
     ...
