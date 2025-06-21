@@ -1,6 +1,6 @@
 [package]
 name = "pyfastmurmur3"
-version = "0.2.2"
+version = "0.2.3"
 edition = "2021"
 
 [lib]
@@ -9,7 +9,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 fastmurmur3 = "0.2.0"
-pyo3 = { version = "0.24.1", features = ["extension-module"] }
+pyo3 = { version = "0.25.1", features = ["extension-module"] }
 
 [profile.dev]
 lto = "off"

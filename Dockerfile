@@ -85,17 +85,17 @@ USER "$FC_USERNAME"
 RUN <<EOT
     set -eux
     rustup set profile minimal
-    rustup default 1.86
+    rustup default 1.87
     rustup component add rustfmt clippy
 EOT
 
 # install node and yarn
-COPY --from=node:22-bookworm-slim --chown="$FC_USERNAME:$FC_USERNAME" /opt/ /opt/
-COPY --from=node:22-bookworm-slim --chown="$FC_USERNAME:$FC_USERNAME" /usr/local/ /usr/local/
+COPY --from=node:24-bookworm-slim --chown="$FC_USERNAME:$FC_USERNAME" /opt/ /opt/
+COPY --from=node:24-bookworm-slim --chown="$FC_USERNAME:$FC_USERNAME" /usr/local/ /usr/local/
 RUN set -eux; corepack enable
 
 # install uv
-COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.7 /uv /uvx /bin/
 
 # replace entrypoint
 CMD sleep infinity
