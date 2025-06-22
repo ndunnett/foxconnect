@@ -22,41 +22,81 @@ quote-style = "double"
 indent-style = "space"
 docstring-code-format = true
 
-[tool.ruff.per-file-ignores]
-"setup.py" = ["INP001"]
+[tool.ruff.lint.per-file-ignores]
+"setup.py" = [
+    "INP001", # Checks for packages that are missing an __init__.py file
+]
 
 [tool.ruff.lint]
-ignore = ["ANN401", "B023", "PYI021", "PYI048", "RET505"]
+ignore = [
+    "COM812", # Conflicts with formatter
+    "D100",   # Missing docstring in public module
+    "D101",   # Missing docstring in public class
+    "D102",   # Missing dostring in public method
+    "D103",   # Missing dostring in public function
+    "D104",   # Missing dostring in public package
+    "D105",   # Missing docstring in magic method
+    "D106",   # Missing dostring in public nested class
+    "D107",   # Missing dostring in `__init__`
+    "D203",   # Conflicts with D211
+    "D205",   # 1 blank line required between summary line and description
+    "D212",   # Conflicts with D213
+    "PIE790", # Remove unnecessary `...`
+    "PYI021", # Docstrings should not be included in stubs
+    "PYI048", # Function body must contain exactly one statement
+    "RET505", # Unnecessary `else` after `return` statement
+]
 
 extend-select = [
-    "E",
-    "W",
-    "N",
-    "ANN",
-    "C90",
-    "UP",
-    "ASYNC",
-    "S",
-    "FBT",
-    "B",
-    "A",
-    "COM",
-    "C4",
-    "FA",
-    "ISC",
-    "ICN",
-    "INP",
-    "PYI",
-    "Q",
-    "RET",
-    "SLF",
-    "SLOT",
-    "SIM",
-    "TID",
-    "TC",
-    "INT",
-    "PL",
-    "FLY",
-    "PERF",
-    "RUF",
+    "ERA",   # [eradicate](https://docs.astral.sh/ruff/rules/#eradicate-era)
+    "YTT",   # [flake8-2020](https://docs.astral.sh/ruff/rules/#flake8-2020-ytt)
+    "ANN",   # [flake8-annotations](https://docs.astral.sh/ruff/rules/#flake8-annotations-ann)
+    "ASYNC", # [flake8-async](https://docs.astral.sh/ruff/rules/#flake8-async-async)
+    "S",     # [flake8-bandit](https://docs.astral.sh/ruff/rules/#flake8-bandit-s)
+    "BLE",   # [flake8-blind-except](https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble)
+    "FBT",   # [flake8-boolean-trap](https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt)
+    "B",     # [flake8-bugbear](https://docs.astral.sh/ruff/rules/#flake8-bugbear-b)
+    "A",     # [flake8-builtins](https://docs.astral.sh/ruff/rules/#flake8-builtins-a)
+    "COM",   # [flake8-commas](https://docs.astral.sh/ruff/rules/#flake8-commas-com)
+    "C4",    # [flake8-comprehensions](https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4)
+    "DTZ",   # [flake8-datetimez](https://docs.astral.sh/ruff/rules/#flake8-datetimez-dtz)
+    "EM",    # [flake8-errmsg](https://docs.astral.sh/ruff/rules/#flake8-errmsg-em)
+    "FIX",   # [flake8-fixme](https://docs.astral.sh/ruff/rules/#flake8-fixme-fix)
+    "FA",    # [flake8-future-annotations](https://docs.astral.sh/ruff/rules/#flake8-future-annotations-fa)
+    "INT",   # [flake8-gettext](https://docs.astral.sh/ruff/rules/#flake8-gettext-int)
+    "ISC",   # [flake8-implicit-str-concat](https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc)
+    "ICN",   # [flake8-import-conventions](https://docs.astral.sh/ruff/rules/#flake8-import-conventions-icn)
+    "LOG",   # [flake8-logging](https://docs.astral.sh/ruff/rules/#flake8-logging-log)
+    "G",     # [flake8-logging-format](https://docs.astral.sh/ruff/rules/#flake8-logging-format-g)
+    "INP",   # [flake8-no-pep420](https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp)
+    "PIE",   # [flake8-pie](https://docs.astral.sh/ruff/rules/#flake8-pie-pie)
+    "T20",   # [flake8-print](https://docs.astral.sh/ruff/rules/#flake8-print-t20)
+    "PYI",   # [flake8-pyi](https://docs.astral.sh/ruff/rules/#flake8-pyi-pyi)
+    "PT",    # [flake8-pytest-style](https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt)
+    "Q",     # [flake8-quotes](https://docs.astral.sh/ruff/rules/#flake8-quotes-q)
+    "RSE",   # [flake8-raise](https://docs.astral.sh/ruff/rules/#flake8-raise-rse)
+    "RET",   # [flake8-return](https://docs.astral.sh/ruff/rules/#flake8-return-ret)
+    "SLF",   # [flake8-self](https://docs.astral.sh/ruff/rules/#flake8-self-slf)
+    "SIM",   # [flake8-simplify](https://docs.astral.sh/ruff/rules/#flake8-simplify-sim)
+    "SLOT",  # [flake8-slots](https://docs.astral.sh/ruff/rules/#flake8-slots-slot)
+    "TID",   # [flake8-tidy-imports](https://docs.astral.sh/ruff/rules/#flake8-tidy-imports-tid)
+    "TD",    # [flake8-todos](https://docs.astral.sh/ruff/rules/#flake8-todos-td)
+    "TC",    # [flake8-type-checking](https://docs.astral.sh/ruff/rules/#flake8-type-checking-tc)
+    "ARG",   # [flake8-unused-arguments](https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg)
+    "PTH",   # [flake8-use-pathlib](https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth)
+    "FLY",   # [flynt](https://docs.astral.sh/ruff/rules/#flynt-fly)
+    "I",     # [isort](https://docs.astral.sh/ruff/rules/#isort-i)
+    "C90",   # [mccabe](https://docs.astral.sh/ruff/rules/#mccabe-c90)
+    "N",     # [pep8-naming](https://docs.astral.sh/ruff/rules/#pep8-naming-n)
+    "PERF",  # [Perflint](https://docs.astral.sh/ruff/rules/#perflint-perf)
+    "E",     # [pycodestyle - Error](https://docs.astral.sh/ruff/rules/#error-e)
+    "W",     # [pycodestyle - Warning](https://docs.astral.sh/ruff/rules/#warning-w)
+    "D",     # [pydocstyle](https://docs.astral.sh/ruff/rules/#pydocstyle-d)
+    "F",     # [Pyflakes](https://docs.astral.sh/ruff/rules/#pyflakes-f)
+    "PGH",   # [pygrep-hooks](https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh)
+    "PL",    # [Pylint](https://docs.astral.sh/ruff/rules/#pylint-pl)
+    "UP",    # [pyupgrade](https://docs.astral.sh/ruff/rules/#pyupgrade-up)
+    "FURB",  # [refurb](https://docs.astral.sh/ruff/rules/#refurb-furb)
+    "RUF",   # [Ruff-specific rules](https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf)
+    "TRY",   # [tryceratops](https://docs.astral.sh/ruff/rules/#tryceratops-try)
 ]
