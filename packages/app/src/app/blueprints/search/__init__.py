@@ -33,12 +33,11 @@ def init_app(app: Quart) -> None:
 
 def generate_pagination(page: int, lines: int, total: int) -> list[PaginationButton]:
     """Generate pagination components for given page, lines, and total results."""
-
     last_page = math.ceil(total / lines)
     indices = filter(lambda x: 0 < x <= last_page, (1, page - 2, page - 1, page, page + 1, page + 2, last_page))
 
     def fold_indices(acc: list[PaginationButton], i: int) -> list[PaginationButton]:
-        """Inserts a disabled button between page number gaps and filters out repeated indices."""
+        """Insert a disabled button between page number gaps and filters out repeated indices."""
         empty = len(acc) == 0
         repeated = not empty and (last := acc[-1].value) is not None and i == last
         discontinuous = not empty and (last := acc[-1].value) is not None and i - last != 1
@@ -62,7 +61,6 @@ def generate_search_inputs(fields: tuple[tuple[str, str | None], ...]) -> dict[s
 
 def fetch_data(query: dict) -> dict:
     """Process query to fetch all data and components needed to render the table body and footer."""
-
     data = query_blocks(query["fields"])
     start = (query["page"] - 1) * query["lines"]
     end = start + query["lines"]
@@ -86,7 +84,6 @@ def fetch_data(query: dict) -> dict:
 @bp.route("")
 async def index() -> str:
     """Render the main search index page."""
-
     query = {
         "page": session.get("page", 1),
         "lines": session.get("lines", 18),
@@ -104,7 +101,6 @@ async def index() -> str:
 @bp.route("/table", methods=["POST"])
 async def table() -> str:
     """Render the table body dynamic content via HTMX."""
-
     if request.htmx.request:
         form = await request.form
         parameters = [key.removeprefix("parameter-").upper() for key in form if key.startswith("parameter-")]
@@ -131,13 +127,12 @@ async def table() -> str:
             **fetch_data(query),
         )
 
-    raise BadHtmxRequest()
+    raise BadHtmxRequest
 
 
 @bp.route("/configuration", methods=["GET"])
 async def configuration() -> str:
     """Render the configuration panel via HTMX."""
-
     if request.htmx.request:
         current_params = [
             RemovableParameter(name, pinned=(name.upper() in ("COMPOUND", "NAME")))
@@ -146,30 +141,27 @@ async def configuration() -> str:
 
         return await render_template("search_configuration.html.j2", current_params=current_params)
 
-    raise BadHtmxRequest()
+    raise BadHtmxRequest
 
 
 @bp.route("/delete", methods=["DELETE"])
 async def delete() -> str:
     """Return an empty string for HTMX delete requests."""
-
     return ""
 
 
 @bp.route("/add_parameter", methods=["GET"])
 async def add_parameter() -> str:
     """Get a parameter to add to the queried parameters in the configuration panel."""
-
     if request.htmx.request and (trigger := request.htmx.trigger) and (name := trigger.removeprefix("add-").upper()):
         return str(RemovableParameter(name))
 
-    raise BadHtmxRequest()
+    raise BadHtmxRequest
 
 
 @bp.route("/search_parameters", methods=["POST"])
 async def search_parameters() -> str:
     """Get a list of parameters that can be added in the configuration panel."""
-
     if request.htmx.request:
         form = await request.form
 
@@ -181,13 +173,12 @@ async def search_parameters() -> str:
         else:
             return ""
 
-    raise BadHtmxRequest()
+    raise BadHtmxRequest
 
 
 @bp.route("/export_spreadsheet", methods=["GET"])
 async def export_spreadsheet() -> Response:
     """Generate spreadsheet and serve file to download."""
-
     fields = session["fields"]
     data = query_blocks(fields)
     file = BytesIO()

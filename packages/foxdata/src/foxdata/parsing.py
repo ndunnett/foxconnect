@@ -4,7 +4,7 @@ from collections.abc import Iterator
 from pathlib import Path
 
 import yaml
-from billiard import Pool  # type: ignore
+from billiard import Pool  # type: ignore[attr-defined]
 
 from .models import Block, Connection, Data, Parameter, ParameterReference
 
@@ -53,14 +53,13 @@ def generate_data(dump_file_glob: Iterator[Path]) -> Data:
 
 
 def parse_dump_file(path: Path) -> tuple[Block, ...]:
-    """Parses dump file at path and returns tuple of Block objects."""
-    with open(path, encoding="utf-8") as file:
+    """Parse dump file at path and returns tuple of Block objects."""
+    with path.open(encoding="utf-8") as file:
         return tuple(parse_block(chunk, path) for chunk in file.read().strip().split("\nEND\n"))
 
 
 def parse_block(chunk: str, path: Path) -> Block:
-    """Parses chunk from a config file into a Block object."""
-
+    """Parse chunk from a config file into a Block object."""
     config = {
         split[0].strip(): split[1].strip()
         for line in chunk.splitlines()
@@ -79,7 +78,7 @@ def parse_block(chunk: str, path: Path) -> Block:
 
 
 def parse_parameters() -> dict[str, Parameter]:
-    """Parses parameter metadata from YAML file."""
+    """Parse parameter metadata from YAML file."""
     with (importlib.resources.files("foxdata") / "parameters.yaml").open() as file:
         data = yaml.safe_load(file)
 

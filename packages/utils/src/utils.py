@@ -3,6 +3,14 @@ import subprocess
 from collections.abc import Callable, Generator, Iterable
 from contextlib import contextmanager
 from pathlib import Path
+from typing import Protocol, runtime_checkable
+
+
+@runtime_checkable
+class Stringable(Protocol):
+    """Protocol for types that support being cast to a string."""
+
+    def __str__(self) -> str: ...
 
 
 @contextmanager
@@ -18,7 +26,7 @@ def gc_disabled() -> Generator[None]:
 
 
 def filter_map[X, Y](function: Callable[[X], Y | None], iterable: Iterable[X]) -> Generator[Y]:
-    """Maps function over iterable and yields results that are not None."""
+    """Map a function over an iterable and yield results that are not `None`."""
     for element in iterable:
         if (result := function(element)) is not None:
             yield result
@@ -34,10 +42,10 @@ def maybe_float(s: str) -> str | float:
 
 def yarn_install(package_path: Path | None = None, node_modules_link: Path | None = None) -> None:
     """
-    Runs `yarn install` as a subprocess and optionally sets a symbolic link to node_modules.
-    Expects yarn to be available locally.
-    """
+    Run `yarn install` as a subprocess and optionally set a symbolic link to node_modules.
 
+    Expects yarn to be available locally, only works on Unix based operating systems.
+    """
     subprocess.run(
         args="y | yarn install",
         cwd=package_path,

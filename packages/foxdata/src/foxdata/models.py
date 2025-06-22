@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import IntFlag
-from typing import Any
 
 from fastmurmur3 import murmur3
 
@@ -36,11 +35,10 @@ class Block:
     """Represents configured block within the DCS."""
 
     config: dict[str, str]
-    meta: dict[str, Any]
+    meta: dict[str, str]
     connections: set[Connection]
 
     def __repr__(self) -> str:
-        """<compound>:<block>"""
         return f"{self.compound}:{self.name}"
 
     def __eq__(self, other: object) -> bool:
@@ -58,7 +56,7 @@ class Block:
     def __hash__(self) -> int:
         return murmur3(repr(self).encode())
 
-    def __getitem__(self, name: str) -> Any | None:
+    def __getitem__(self, name: str) -> str | None:
         if (k := name.lower()) in self.meta:
             return self.meta[k]
         elif (k := name.upper()) in self.config:
@@ -93,7 +91,6 @@ class ParameterReference:
     parameter: str
 
     def __repr__(self) -> str:
-        """<compound>:<block>.<parameter>"""
         return f"{self.compound}:{self.name}.{self.parameter}"
 
     def __lt__(self, other: ParameterReference) -> bool:
@@ -115,7 +112,6 @@ class Connection:
     sink: ParameterReference
 
     def __repr__(self) -> str:
-        """<source> --> <sink>"""
         return f"{self.source!r} --> {self.sink!r}"
 
     def __lt__(self, other: Connection) -> bool:

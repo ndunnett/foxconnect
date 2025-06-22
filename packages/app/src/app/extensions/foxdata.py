@@ -10,7 +10,8 @@ from utils import filter_map
 
 
 class FoxData:
-    """This is a Quart extension to handle the data for the application.
+    """
+    Quart extension to handle the data for the application.
 
     ICC dumps are parsed and pickled according to `FOXDATA_ICC_DUMPS_PATH` and
     `FOXDATA_DATA_PICKLE_PATH` configuration values.
@@ -23,17 +24,18 @@ class FoxData:
             self.init_app(app)
 
     def init_app(self, app: Quart) -> None:
-        """Initialises the extension for a given Quart instance.
+        """
+        Initialise the extension for a given Quart instance.
 
         * Registers the extension with the app
         * Initialises the data object
         """
-
         app.extensions["foxdata"] = self
 
         for conf in ("FOXDATA_ICC_DUMPS_PATH", "FOXDATA_DATA_PICKLE_PATH"):
             if conf not in app.config or app.config[conf] is None:
-                raise RuntimeError(f"Configuration key '{conf}' not set")
+                description = f"Configuration key '{conf}' not set"
+                raise RuntimeError(description)
 
         icc_dumps_path = Path(app.config["FOXDATA_ICC_DUMPS_PATH"])
         data_pickle_path = Path(app.config["FOXDATA_DATA_PICKLE_PATH"])
@@ -81,7 +83,6 @@ def query_blocks(query: tuple[tuple[str, str], ...]) -> list[dict[str, str]]:
 
 def query_parameters(query: str, exclude: Iterable[str] | None = None) -> list[Parameter]:
     """Return list of parameters that contain the query string (case-insensitive) in the metadata."""
-
     if not exclude:
         exclude = ("COMPOUND", "NAME")
 

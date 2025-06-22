@@ -10,7 +10,8 @@ from werkzeug.exceptions import BadRequest
 
 
 class Htmx:
-    """This is a Quart extension to provide server side HTMX functionality.
+    """
+    Quart extension to provide server side HTMX functionality.
 
     Distribution files from the HTMX Node package are served as static files
     via a blueprint called "htmx", and the Request and Response classes are
@@ -22,13 +23,13 @@ class Htmx:
             self.init_app(app)
 
     def init_app(self, app: Quart) -> None:
-        """Initialises the extension for a given Quart instance.
+        """
+        Initialise the extension for a given Quart instance.
 
         * Registers the extension with the app
         * Overrides the Request and Response classes
         * Creates the blueprint to serve static files
         """
-
         blueprint = Blueprint("htmx", __name__, static_folder=htmx_node_modules(), url_prefix="/htmx")
         app.register_blueprint(blueprint)
         app.request_class = Request
@@ -37,7 +38,8 @@ class Htmx:
 
 
 class BadHtmxRequest(BadRequest):
-    """*400* `Bad Request`
+    """
+    *400* `Bad Request`.
 
     Raise if a non-HTMX request is received at an endpoint which is not meant to handle non-HTMX requests.
     """
@@ -51,7 +53,6 @@ class Request(BaseRequest):
     @property
     def htmx(self) -> HtmxRequestHelper:
         """Provides convenient access to [HTMX request headers](https://htmx.org/docs/#request-headers)."""
-
         if not hasattr(self, "_htmx"):
             self._htmx = HtmxRequestHelper(lambda key: self.headers.get(key))
 
@@ -64,7 +65,6 @@ class Response(BaseResponse):
     @property
     def htmx(self) -> HtmxResponseHelper:
         """Allows setting [HTMX response headers](https://htmx.org/docs/#response-headers) easily via methods."""
-
         if not hasattr(self, "_htmx"):
             self._htmx = HtmxResponseHelper(lambda key, value: (self.headers.set(key, value), self)[1])
 
@@ -72,8 +72,9 @@ class Response(BaseResponse):
 
 
 # reannotations to add HTMX type hints
-async def make_response(*args: Any) -> Response:  # type: ignore
-    """Create a response, a simple wrapper function.
+async def make_response(*args: Any) -> Response:  # noqa: ANN401
+    """
+    Create a response, a simple wrapper function.
 
     This is most useful when you want to alter a Response before
     returning it, for example:
@@ -87,4 +88,4 @@ async def make_response(*args: Any) -> Response:  # type: ignore
 
 
 make_response.__code__ = base_make_response.__code__
-request: Request = base_request  # type: ignore
+request: Request = base_request  # type: ignore[assignment]

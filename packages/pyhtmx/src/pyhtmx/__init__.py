@@ -1,6 +1,4 @@
-"""
-This module contains the HTMX distribution files and helper functionality.
-"""
+"""Contains the HTMX distribution files and helper functionality."""
 
 import importlib.resources
 import json
@@ -13,7 +11,7 @@ __all__ = ("HtmxRequestHelper", "HtmxResponseHelper", "HtmxSwapStyle", "htmx_nod
 
 
 def htmx_node_modules() -> Traversable:
-    """Returns a traversable to the `node_modules` directory for HTMX distribution files."""
+    """Return a traversable to the `node_modules` directory for HTMX distribution files."""
     return importlib.resources.files("pyhtmx") / "node_modules"
 
 
@@ -22,7 +20,8 @@ HTMX_FALSE = "false"
 
 
 class HtmxSwapStyle(StrEnum):
-    """Enum to represent HTMX swap styles.
+    """
+    Enum to represent HTMX swap styles.
 
     All enumerations correspond to the [hx-swap](https://htmx.org/attributes/hx-swap/) attribute:
 
@@ -108,106 +107,106 @@ class HtmxResponseHelper[T]:
         self._set_header = set_header
 
     def location(self, path: str | None = None, **kwargs: dict[str, str]) -> T:
-        """Allows you to do a client-side redirect that does not do a full page reload.
+        """
+        Do a client-side redirect that does not do a full page reload.
 
         Uses [HX-Location](https://htmx.org/headers/hx-location/) response header.
         """
-
         if len(kwargs) == 0 and path is not None:
             return self._set_header("HX-Location", path)
         else:
             return self._set_header("HX-Location", json.dumps({"path": path} | kwargs))
 
     def push_url(self, url: str | Literal[False]) -> T:
-        """Pushes a new url into the history stack.
+        """
+        Push a new url into the history stack.
 
         Uses [HX-Push-Url](https://htmx.org/headers/hx-push-url/) response header.
         """
-
         if url is False:
             return self._set_header("HX-Push-Url", HTMX_FALSE)
         else:
             return self._set_header("HX-Push-Url", url)
 
     def redirect(self, url: str) -> T:
-        """Can be used to do a client-side redirect to a new location.
+        """
+        Can be used to do a client-side redirect to a new location.
 
         Uses [HX-Redirect](https://htmx.org/headers/hx-redirect/) response header.
         """
-
         return self._set_header("HX-Redirect", url)
 
     def refresh(self, *, refresh: bool = True) -> T:
-        """If true the client-side will do a full refresh of the page.
+        """
+        If true the client-side will do a full refresh of the page.
 
         Uses `HX-Refresh` response header.
         """
-
         return self._set_header("HX-Refresh", HTMX_TRUE if refresh else HTMX_FALSE)
 
     def replace_url(self, url: str | Literal[False]) -> T:
-        """Replaces the current URL in the location bar.
+        """
+        Replace the current URL in the location bar.
 
         Uses [HX-Replace-Url](https://htmx.org/headers/hx-replace-url/) response header.
         """
-
         if url is False:
             return self._set_header("HX-Replace-Url", HTMX_FALSE)
         else:
             return self._set_header("HX-Replace-Url", url)
 
     def reswap(self, swap_style: HtmxSwapStyle) -> T:
-        """Allows you to specify how the response will be swapped.
+        """
+        Specify how the response will be swapped.
 
         Uses [HX-Reswap](https://htmx.org/attributes/hx-swap/) response header.
         """
-
         return self._set_header("HX-Reswap", swap_style)
 
     def retarget(self, selector: str) -> T:
-        """A CSS selector that updates the target of the content update to a different element on the page.
+        """
+        Update the target of the content update to a different element on the page.
 
         Uses `HX-Retarget` response header.
         """
-
         return self._set_header("HX-Retarget", selector)
 
     def reselect(self, selector: str) -> T:
-        """A CSS selector that allows you to choose which part of the response is used to be swapped in.
+        """
+        Choose which part of the response is used to be swapped in.
 
         Uses `HX-Reselect` response header.
         """
-
         return self._set_header("HX-Reselect", selector)
 
     def trigger(self, trigger: str | dict) -> T:
-        """Allows you to trigger client-side events.
+        """
+        Trigger client-side events.
 
         Uses [HX-Trigger](https://htmx.org/headers/hx-trigger/) response header.
         """
-
         if isinstance(trigger, str):
             return self._set_header("HX-Trigger", trigger)
         else:
             return self._set_header("HX-Trigger", json.dumps(trigger))
 
     def trigger_after_settle(self, trigger: str | dict) -> T:
-        """Allows you to trigger client-side events after the settle step.
+        """
+        Trigger client-side events after the settle step.
 
         Uses [HX-Trigger-After-Settle](https://htmx.org/headers/hx-trigger/) response header.
         """
-
         if isinstance(trigger, str):
             return self._set_header("HX-Trigger-After-Settle", trigger)
         else:
             return self._set_header("HX-Trigger-After-Settle", json.dumps(trigger))
 
     def trigger_after_swap(self, trigger: str | dict) -> T:
-        """Allows you to trigger client-side events after the swap step.
+        """
+        Trigger client-side events after the swap step.
 
         Uses [HX-Trigger-After-Swap](https://htmx.org/headers/hx-trigger/) response header.
         """
-
         if isinstance(trigger, str):
             return self._set_header("HX-Trigger-After-Swap", trigger)
         else:

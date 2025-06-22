@@ -12,14 +12,14 @@ def initialise_data(data_pickle_path: Path, dump_file_glob: Iterator[Path]) -> D
     """Load pickled data if it exists otherwise generate and pickle data."""
     with gc_disabled():
         if data_pickle_path.is_file():
-            with open(data_pickle_path, mode="rb") as file:
+            with data_pickle_path.open(mode="rb") as file:
                 data = pickle.load(file)  # noqa: S301
 
         else:
             data = generate_data(dump_file_glob)
             data_pickle_path.parent.resolve().mkdir(parents=True, exist_ok=True)
 
-            with open(data_pickle_path, mode="wb") as file:
+            with data_pickle_path.open(mode="wb") as file:
                 pickle.dump(data, file, protocol=pickle.HIGHEST_PROTOCOL)
 
     return data

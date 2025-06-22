@@ -1,7 +1,6 @@
-from typing import Any
-
 from foxdata.models import Block, Connection
 from quart import render_template
+from utils import Stringable
 
 from app.extensions.foxdata import get_block_from_ref
 
@@ -79,7 +78,7 @@ async def create_dot(root: Block, depth: int) -> str:
     return diagram.to_string()
 
 
-def quote_if_necessary(p: Any) -> str:
+def quote_if_necessary(p: Stringable) -> str:
     """
     If `p` is not wrapped in `'`, `"`, or `<<>>`, escape double quotes and new line characters
     and wrap `p` in double quotes.
@@ -106,9 +105,9 @@ def quote_if_necessary(p: Any) -> str:
 
 
 class DotChild:
-    """Represents a child of a DOT graph, ie. node/edge"""
+    """Represents a child of a DOT graph, ie. node/edge."""
 
-    def __init__(self, name: str, **attrs: Any) -> None:
+    def __init__(self, name: str, **attrs: Stringable) -> None:
         self.name = name
         self.attributes = dict(attrs)
 
@@ -122,11 +121,18 @@ class DotChild:
 
 
 class DotGraph:
-    """Represents a DOT graph and children"""
+    """Represents a DOT graph and children."""
 
     INDENT = " " * 4
 
-    def __init__(self, name: str = "diagram", *, graph_type: str = "graph", strict: bool = False, **attrs: Any) -> None:
+    def __init__(
+        self,
+        name: str = "diagram",
+        *,
+        graph_type: str = "graph",
+        strict: bool = False,
+        **attrs: Stringable,
+    ) -> None:
         self.name = name
         self.graph_type = graph_type
         self.strict = strict
@@ -134,10 +140,10 @@ class DotGraph:
         self.nodes = []
         self.edges = []
 
-    def add_node(self, name: str, **attrs: Any) -> None:
+    def add_node(self, name: str, **attrs: Stringable) -> None:
         self.nodes.append(DotChild(name, **attrs))
 
-    def add_edge(self, src: str, dst: str, **attrs: Any) -> None:
+    def add_edge(self, src: str, dst: str, **attrs: Stringable) -> None:
         self.edges.append(DotChild(f"{src} -- {dst}", **attrs))
 
     def to_string(self) -> str:

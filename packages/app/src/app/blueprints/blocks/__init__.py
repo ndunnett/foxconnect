@@ -19,14 +19,15 @@ def get_obj(compound: str, block: str) -> Block:
     if obj := get_block_from_name(compound, block):
         return obj
     else:
-        raise NotFound(f'Block "{compound}:{block}" not found.')
+        description = f'Block "{compound}:{block}" not found.'
+        raise NotFound(description)
 
 
 async def serve_plain_text(content: str) -> Response:
     """Serve content as plain text."""
     response = await make_response(content, 200)
     response.mimetype = "text/plain"
-    return response  # type: ignore
+    return response  # type: ignore[return-value]
 
 
 def get_depth(request: Request) -> int:
