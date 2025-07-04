@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "foxemu"
+version = "0.0.1"
+requires-python = ">=3.12"
+dependencies = [
+    "foxdata",
+    "utils",
+    "numpy == 2.3.1",
+    "pydot == 4.0.1",
+]

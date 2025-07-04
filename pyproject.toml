@@ -4,6 +4,7 @@ dev-dependencies = ["setuptools"]
 [tool.uv.sources]
 app = { workspace = true }
 foxdata = { workspace = true }
+foxemu = { workspace = true }
 pyd3graphviz = { workspace = true }
 pyfastmurmur3 = { workspace = true }
 pyhtmx = { workspace = true }
@@ -41,10 +42,13 @@ ignore = [
     "D203",   # Conflicts with D211
     "D205",   # 1 blank line required between summary line and description
     "D212",   # Conflicts with D213
+    "D400",   # Conflicts with D415
     "PIE790", # Remove unnecessary `...`
     "PYI021", # Docstrings should not be included in stubs
     "PYI048", # Function body must contain exactly one statement
     "RET505", # Unnecessary `else` after `return` statement
+    "TD002",  # Missing author in TODO
+    "TD003",  # Missing issue link for this TODO
 ]
 
 extend-select = [
@@ -72,7 +76,7 @@ extend-select = [
     "PIE",   # [flake8-pie](https://docs.astral.sh/ruff/rules/#flake8-pie-pie)
     "T20",   # [flake8-print](https://docs.astral.sh/ruff/rules/#flake8-print-t20)
     "PYI",   # [flake8-pyi](https://docs.astral.sh/ruff/rules/#flake8-pyi-pyi)
-    "PT",    # [flake8-pytest-style](https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt)
+    # "PT",    # [flake8-pytest-style](https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt)
     "Q",     # [flake8-quotes](https://docs.astral.sh/ruff/rules/#flake8-quotes-q)
     "RSE",   # [flake8-raise](https://docs.astral.sh/ruff/rules/#flake8-raise-rse)
     "RET",   # [flake8-return](https://docs.astral.sh/ruff/rules/#flake8-return-ret)

@@ -62,6 +62,18 @@
         "kind": "build",
         "isDefault": false
       }
+    },
+    {
+      "label": "FoxEmu: run tests",
+      "type": "shell",
+      "command": "uv run -m unittest",
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${env:FC_REPO_PATH}/packages/foxemu"
+      },
+      "presentation": {
+        "clear": true
+      }
     }
   ]
 }
