@@ -28,6 +28,9 @@
       {%- endfor %}
       <td>
         <div role="group" class="btn-group btn-group-sm float-end" aria-label="Links">
+          {% if result["TYPE"] == "CALC" %}
+          {{ button_link("Logic", url_for("calc.view_diagram", compound=result["COMPOUND"], block=result["NAME"])) }}
+          {% endif %}
           {{ button_link("Diagram", url_for("blocks.view_diagram", compound=result["COMPOUND"], block=result["NAME"]))
           }}
           {{ button_link("Detail", url_for("blocks.view_detail", compound=result["COMPOUND"], block=result["NAME"])) }}
@@ -54,12 +57,10 @@
       <div class="col text-end">
         <div class="btn-group btn-group-sm" role="group" aria-label="Toolbar">
           {# <button type="button" class="btn btn-outline-secondary">
-            <i class="bi bi-link" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-title="Permalink"></i>
+            <i class="bi bi-link" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Permalink"></i>
           </button> #}
           {# <button type="button" class="btn btn-outline-secondary">
-            <i class="bi bi-printer-fill" data-bs-toggle="tooltip" data-bs-placement="top"
-              data-bs-title="Print"></i>
+            <i class="bi bi-printer-fill" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Print"></i>
           </button> #}
           <a type="button" class="btn btn-outline-secondary" href="{{ url_for('search.export_spreadsheet') }}">
             <i class="bi bi-file-earmark-excel-fill" data-bs-toggle="tooltip" data-bs-placement="top"

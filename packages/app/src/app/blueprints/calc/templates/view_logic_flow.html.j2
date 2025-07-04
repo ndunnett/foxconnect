@@ -1,0 +1,24 @@
+{% extends 'base.html.j2' %}
+
+{% block title %}FoxConnect | {{ obj.compound }}:{{ obj.name }}{% endblock %}
+
+{% block head %}
+<script src="{{ url_for('d3graphviz.static', filename='d3/dist/d3.js') }}"></script>
+<script src="{{ url_for('d3graphviz.static', filename='@hpcc-js/wasm/dist/graphviz.umd.js') }}" type="javascript/worker"></script>
+<script src="{{ url_for('d3graphviz.static', filename='d3-graphviz/build/d3-graphviz.js') }}"></script>
+<link href="{{ url_for('calc.static', filename='diagram.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<input type="hidden" id="compound" name="compound" value="{{ obj.compound }}">
+<input type="hidden" id="block" name="block" value="{{ obj.name }}">
+<input type="hidden" id="depth" name="depth" value="{{ depth }}">
+<div class="vstack gap-0">
+  <div>{% include 'header.html.j2' %}</div>
+  <div id="diagram-container"></div>
+</div>
+{% endblock %}
+
+{% block tail %}
+<script src="{{ url_for('calc.static', filename='diagram.js') }}"></script>
+{% endblock %}

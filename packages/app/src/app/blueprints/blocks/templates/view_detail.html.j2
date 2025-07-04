@@ -7,6 +7,10 @@
   <div class="col">
     <div class="float-start"><h3>Block Detail</h3></div>
     <div role="group" class="btn-group btn-group-sm float-end" aria-label="Links">
+      {% if obj["TYPE"] == "CALC" %}
+      <a role="button" class="btn btn-outline-secondary btn-results"
+        href='{{url_for("calc.view_diagram", compound=obj.compound, block=obj.name)}}'>Logic</a>
+      {% endif %}
       <a role="button" class="btn btn-outline-secondary btn-results"
         href='{{url_for("blocks.view_diagram", compound=obj.compound, block=obj.name)}}'>Diagram</a>
     </div>
