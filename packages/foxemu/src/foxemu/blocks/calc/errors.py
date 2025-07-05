@@ -50,6 +50,7 @@ CALC_ERROR_DESCRIPTIONS = {
 class GraphingError(Enum):
     BREAKING_INSTRUCTION = auto()
     INVALID_OPERAND = auto()
+    INVALID_CONDITIONAL = auto()
 
     def __str__(self) -> str:
         return f"{self.description}"
@@ -62,4 +63,5 @@ class GraphingError(Enum):
 GRAPHING_ERROR_DESCRIPTIONS = {
     GraphingError.BREAKING_INSTRUCTION: "graphing not possible for opcode",
     GraphingError.INVALID_OPERAND: "invalid operand makes graphing impossible",
+    GraphingError.INVALID_CONDITIONAL: "invalid conditional opcode",
 }

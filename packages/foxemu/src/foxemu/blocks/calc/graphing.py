@@ -3,30 +3,36 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum, auto
 from itertools import pairwise
+from typing import TYPE_CHECKING
 
 from pydot import Dot, Edge, Node
 
-from .block import Calc, Step
 from .constants import (
     BRANCH_INSTRUCTIONS,
+    BREAKING_INSTRUCTIONS,
+    CONDITIONAL_BRANCHES,
     END_STEP_NUMBER,
     SPECIAL_INSTRUCTIONS,
     TERMINATION_INSTRUCTIONS,
 )
 from .errors import GraphingError
 
+if TYPE_CHECKING:
+    from .block import Calc, Step
+
 
 @dataclass
 class Group:
+    group_id: int
     steps: list[Step]
 
-    def to_node(self, group: int) -> Node:
+    def to_node(self) -> Node:
         node_style = "rounded" if self.steps[0].opcode in ("START", *TERMINATION_INSTRUCTIONS) else ""
         node_label = "\n".join(
             " ".join([step.opcode] + [str(operand) for operand in step.operands]) for step in self.steps
         )
         return Node(
-            name=f"Step {group}",
+            name=f"Step {self.group_id}",
             label=node_label,
             shape="box",
             style=node_style,
@@ -35,7 +41,7 @@ class Group:
         )
 
 
-class Condition(Enum):
+class ConditionalVariant(Enum):
     BIF = auto()
     BIZ = auto()
     BII = auto()
@@ -44,39 +50,61 @@ class Condition(Enum):
     BIT = auto()
 
     @staticmethod
-    def from_str(string: str) -> Condition:
+    def from_str(string: str) -> ConditionalVariant | GraphingError:  # noqa: PLR0911
         match string:
             case "BIF":
-                return Condition.BIF
+                return ConditionalVariant.BIF
             case "BIZ":
-                return Condition.BIZ
+                return ConditionalVariant.BIZ
             case "BII":
-                return Condition.BII
+                return ConditionalVariant.BII
             case "BIN":
-                return Condition.BIN
+                return ConditionalVariant.BIN
             case "BIP":
-                return Condition.BIP
+                return ConditionalVariant.BIP
             case "BIT":
-                return Condition.BIT
+                return ConditionalVariant.BIT
             case _:
-                msg = "invalid condition opcode"
-                raise RuntimeError(msg)
+                return GraphingError.INVALID_CONDITIONAL
 
-    def to_node(self, group: int) -> Node:
-        match self:
-            case Condition.BIF | Condition.BIZ:
+
+@dataclass
+class Conditional:
+    group_id: int
+    variant: ConditionalVariant
+    operand: int
+
+    @staticmethod
+    def from_step(group_id: int, step: Step) -> Conditional | GraphingError:
+        if not (len(step.operands) == 1 and isinstance(step.operands[0], int)):
+            return GraphingError.INVALID_OPERAND
+
+        variant = ConditionalVariant.from_str(step.opcode)
+
+        if isinstance(variant, ConditionalVariant):
+            return Conditional(
+                group_id=group_id,
+                variant=variant,
+                operand=step.operands[0],
+            )
+        else:
+            return variant
+
+    def to_node(self) -> Node:
+        match self.variant:
+            case ConditionalVariant.BIF | ConditionalVariant.BIZ:
                 node_label = "== 0?"
-            case Condition.BII:
+            case ConditionalVariant.BII:
                 node_label = "block\ninit?"
-            case Condition.BIN:
+            case ConditionalVariant.BIN:
                 node_label = "< 0?"
-            case Condition.BIP:
+            case ConditionalVariant.BIP:
                 node_label = ">= 0?"
-            case Condition.BIT:
+            case ConditionalVariant.BIT:
                 node_label = "!= 0?"
 
         return Node(
-            name=f"Step {group}",
+            name=f"Step {self.group_id}",
             label=node_label,
             shape="diamond",
             regular="true",
@@ -88,6 +116,47 @@ class Condition(Enum):
 
 
 @dataclass
+class Start:
+    def to_node(self) -> Node:
+        return Node(
+            name="Start",
+            label="START",
+            shape="box",
+            style="rounded",
+            regular="false",
+            fontname="Arial",
+        )
+
+
+@dataclass
+class End:
+    def to_node(self) -> Node:
+        return Node(
+            name="End",
+            label="END",
+            shape="box",
+            style="rounded",
+            regular="false",
+            fontname="Arial",
+        )
+
+
+@dataclass
+class Goto:
+    operand: int
+
+    @staticmethod
+    def from_step(step: Step) -> Goto | GraphingError:
+        if not (len(step.operands) == 1 and isinstance(step.operands[0], int)):
+            return GraphingError.INVALID_OPERAND
+
+        return Goto(operand=step.operands[0])
+
+
+GraphElement = Group | Conditional | Start | End
+
+
+@dataclass
 class GraphEdge:
     src: int
     dst: int
@@ -95,8 +164,8 @@ class GraphEdge:
 
     def to_edge(self) -> Edge:
         return Edge(
-            src=f"Step {self.src}",
-            dst=f"Step {self.dst}",
+            src=f"Step {self.src}" if self.src != 0 else "Start",
+            dst=f"Step {self.dst}" if self.dst != END_STEP_NUMBER else "End",
             label=self.label,
             dir="forward",
             fontname="Arial",
@@ -105,12 +174,12 @@ class GraphEdge:
 
 class Graph:
     name: str
-    nodes: dict[int, Group | Condition]
+    nodes: list[GraphElement]
     edges: list[GraphEdge]
 
     def __init__(self, block: Calc) -> None:
         self.name = f"{block.compound}__{block.name}__calc"
-        self.nodes = {}
+        self.nodes = [Start(), End()]
         self.edges = []
 
     def to_dot(self) -> Dot:
@@ -121,8 +190,8 @@ class Graph:
             bgcolor="transparent",
         )
 
-        for i, node in self.nodes.items():
-            dot.add_node(node.to_node(i))
+        for node in self.nodes:
+            dot.add_node(node.to_node())
 
         for edge in self.edges:
             dot.add_edge(edge.to_edge())
@@ -135,60 +204,36 @@ class Graph:
         graph = Graph(block)
         steps = block.steps.copy()
 
-        # Prepopulate start and end steps
-        steps[0] = Step(opcode="START", operands=())
-        steps[END_STEP_NUMBER] = Step(opcode="END", operands=())
-        graph.nodes[END_STEP_NUMBER] = Group([steps[END_STEP_NUMBER]])
-
         # Sort steps into groups, each set of steps that will always be executed
         # sequentially (ie. steps between branch origins and branch destinations)
         # will be put into it's own group and rendered as a singular node
-        groups = extract_groups(steps)
+        groups = parse_steps(steps)
+
+        if isinstance(groups, GraphingError):
+            return groups
 
         for (group_number, group), (next_group_number, next_group) in pairwise(groups.items()):
-            # Handle special nodes if group has 1 element
-            if len(group) == 1 and (step := group[0]):
-                match step.opcode:
-                    # Certain instructions can't be resolved into flow charts
-                    case "GTI":
-                        return GraphingError.BREAKING_INSTRUCTION
+            # Draw nodes and conditional edges
+            match group:
+                case Start():
+                    pass
+                case Group(_, steps):
+                    graph.nodes.append(group)
+                case Conditional(_, _, operand):
+                    graph.nodes.append(group)
+                    graph.edges.append(GraphEdge(src=group_number, dst=operand, label="true"))
+                    graph.edges.append(GraphEdge(src=group_number, dst=next_group_number, label="false"))
+                    continue
+                case Goto() | End():
+                    continue
 
-                    # Don't draw anything for termination instructions or unconditional branches
-                    case "END" | "EXIT" | "GTO":
-                        continue
-
-                    # Draw a node for condtional branches
-                    case "BIF" | "BII" | "BIN" | "BIP" | "BIT" | "BIZ":
-                        graph.nodes[group_number] = Condition.from_str(step.opcode)
-
-                        # Draw two edges for conditional branches
-                        if not (len(step.operands) == 1 and isinstance(step.operands[0], int)):
-                            return GraphingError.INVALID_OPERAND
-
-                        graph.edges.append(GraphEdge(src=group_number, dst=step.operands[0], label="true"))
-                        graph.edges.append(GraphEdge(src=group_number, dst=next_group_number, label="false"))
-                        continue
-
-                    # Otherwise draw a node
-                    case _:
-                        graph.nodes[group_number] = Group(group)
-
-            # Otherwise insert current group
-            else:
-                graph.nodes[group_number] = Group(group)
-
-            match next_group[0]:
+            match next_group:
                 # If the next step is an unconditional branch, draw an edge directly to the step it branches to
-                case Step("GTO", operands):
-                    if not (len(operands) == 1 and isinstance(operands[0], int)):
-                        return GraphingError.INVALID_OPERAND
-
-                    graph.edges.append(GraphEdge(src=group_number, dst=operands[0]))
-
+                case Goto(operand):
+                    graph.edges.append(GraphEdge(src=group_number, dst=operand))
                 # If the next step terminates the program, draw an edge to the end node
-                case Step("END" | "EXIT", operands):
+                case End():
                     graph.edges.append(GraphEdge(src=group_number, dst=END_STEP_NUMBER))
-
                 # Otherwise draw an edge to the next group
                 case _:
                     graph.edges.append(GraphEdge(src=group_number, dst=next_group_number))
@@ -196,17 +241,44 @@ class Graph:
         return graph
 
 
-def extract_groups(steps: dict[int, Step]) -> dict[int, list[Step]]:
+def parse_steps(steps: dict[int, Step]) -> dict[int, GraphElement | Goto] | GraphingError:
     """Sort steps into sequential execution groups."""
     stack = steps.copy()
-    groups = {}
+    groups: dict[int, GraphElement | Goto] = {}
+    groups[0] = Start()
+    groups[END_STEP_NUMBER] = End()
 
     while stack:
         i = next(iter(stack.keys()))
         step = stack.pop(i)
-        group = [step]
 
-        if step.opcode not in SPECIAL_INSTRUCTIONS:
+        # Fail on breaking instructions
+        if step.opcode in BREAKING_INSTRUCTIONS:
+            return GraphingError.BREAKING_INSTRUCTION
+
+        # Skip over termination instructions, these will be merged into a single end step
+        if step.opcode in TERMINATION_INSTRUCTIONS:
+            continue
+
+        # Put branch destinations into their own group
+        if step.opcode in BRANCH_INSTRUCTIONS:
+            branch = Conditional.from_step(i, step) if step.opcode in CONDITIONAL_BRANCHES else Goto.from_step(step)
+
+            if isinstance(branch, GraphingError):
+                return branch
+
+            groups[i] = branch
+
+            # Reroute branch destinations that would terminate to the merged end step
+            if steps[branch.operand].opcode in TERMINATION_INSTRUCTIONS:
+                step.operands = (END_STEP_NUMBER,)
+
+            # Put branch destination into its own group
+            elif branch.operand not in groups:
+                groups[branch.operand] = Group(branch.operand, [stack.pop(branch.operand)])
+
+        else:
+            group = [step]
             i_next = i + 1
 
             # Grab sequentially executed steps and put them into the current group
@@ -214,27 +286,11 @@ def extract_groups(steps: dict[int, Step]) -> dict[int, list[Step]]:
                 group.append(stack.pop(i_next))
                 i_next += 1
 
-        # Put branch destinations into their own group
-        elif step.opcode in BRANCH_INSTRUCTIONS:
-            if len(step.operands) == 1 and isinstance(step.operands[0], int):
-                branch_destination = step.operands[0]
-
-                # Reroute branch destinations that would terminate to the merged end step
-                if steps[branch_destination].opcode in TERMINATION_INSTRUCTIONS:
-                    step.operands = (END_STEP_NUMBER,)
-
-                # Put branch destination into its own group
-                elif branch_destination not in groups:
-                    groups[branch_destination] = [stack.pop(branch_destination)]
-
-        # Look for a preceding branch destination to join current group onto
-        i_previous = i - 1
-        if step.opcode in SPECIAL_INSTRUCTIONS:
-            groups[i] = group
-        elif i_previous in groups and groups[i_previous][0].opcode not in SPECIAL_INSTRUCTIONS:
-            groups[i_previous].extend(group)
-        else:
-            groups[i] = group
+            # Look for a preceding branch destination to join current group onto
+            if i - 1 in groups and (prev_group := groups[i - 1]) and isinstance(prev_group, Group):
+                prev_group.steps.extend(group)
+            else:
+                groups[i] = Group(i, group)
 
     # Sort resulting groups by order of first step number
     return {i: groups[i] for i in sorted(groups.keys())}
