@@ -8,7 +8,7 @@ ARG USERNAME="foxconnect"
 # updates the base image, sets new non-root user,
 # cleans up files, and sets all common environment variables
 # ---------------------
-FROM ubuntu:noble AS base
+FROM ubuntu:24.10 AS base
 ARG USERNAME
 ENV FC_USERNAME="$USERNAME"
 ENV FC_HOME="/home/$USERNAME"
